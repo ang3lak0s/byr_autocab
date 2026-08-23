@@ -2,30 +2,30 @@
   <!-- Left Card: Cost Breakdown & Materials -->
   <div class="summary-card">
     <div class="card-head">
-      <span class="card-badge">ESTIMATION ENGINE</span>
-      <h3 class="card-title">Material &amp; Cost Summary</h3>
+      <span class="card-badge">{{ 'COST.BADGE' | translate }}</span>
+      <h3 class="card-title">{{ 'COST.TITLE' | translate }}</h3>
     </div>
 
     <!-- Top Row: Total Cost Display & Material Panel Yield -->
     <div class="summary-top-row">
       <div class="total-box">
-        <span class="total-label">TOTAL ESTIMATED PROJECT COST:</span>
+        <span class="total-label">{{ 'COST.TOTAL_ESTIMATE_LABEL' | translate }}</span>
         <span class="total-amount">{{ costs.currencySymbol }}{{ costs.totalCost.toFixed(2) }}</span>
-        <span class="total-disclaimer">*Estimated cost for planning purposes. Subject to supplier pricing.</span>
+        <span class="total-disclaimer">{{ 'COST.DISCLAIMER' | translate }}</span>
       </div>
 
       <div class="material-stats">
         <div class="mat-row">
-          <span class="mat-label">Net Panel Surface Area:</span>
+          <span class="mat-label">{{ 'COST.NET_SURFACE_AREA' | translate }}</span>
           <span class="mat-val font-mono">{{ materials.totalNetPanelAreaM2 }} m&sup2; ({{ materials.totalNetPanelAreaSqFt }} sq ft)</span>
         </div>
         <div class="mat-row">
-          <span class="mat-label">Required (with {{ materials.wastePercent }}% waste):</span>
+          <span class="mat-label">{{ 'COST.REQUIRED_WITH_WASTE' | translate:{ waste: materials.wastePercent } }}</span>
           <span class="mat-val font-mono text-cyan">{{ materials.totalWithWasteAreaM2 }} m&sup2; ({{ materials.totalWithWasteAreaSqFt }} sq ft)</span>
         </div>
         <div class="mat-row">
-          <span class="mat-label">Standard 5'x5' Baltic Birch Sheets:</span>
-          <span class="mat-val font-mono text-amber">~{{ materials.estimatedSheetsCount }} Sheet(s)</span>
+          <span class="mat-label">{{ 'COST.EST_BALTIC_SHEETS' | translate }}</span>
+          <span class="mat-val font-mono text-amber">{{ 'COST.SHEETS_COUNT_EST' | translate:{ count: materials.estimatedSheetsCount } }}</span>
         </div>
       </div>
     </div>
@@ -33,31 +33,31 @@
     <!-- Itemized Cost Table -->
     <div class="cost-table">
       <div class="cost-row">
-        <span class="cost-item">Wood / Sheet Stock</span>
+        <span class="cost-item">{{ 'COST.ITEM_WOOD' | translate }}</span>
         <span class="cost-val font-mono">{{ costs.currencySymbol }}{{ costs.wood.toFixed(2) }}</span>
       </div>
       <div class="cost-row">
-        <span class="cost-item">Speakers &amp; Drivers</span>
+        <span class="cost-item">{{ 'COST.ITEM_SPEAKERS' | translate }}</span>
         <span class="cost-val font-mono">{{ costs.currencySymbol }}{{ costs.speakers.toFixed(2) }}</span>
       </div>
       <div class="cost-row">
-        <span class="cost-item">Tolex / Covering</span>
+        <span class="cost-item">{{ 'COST.ITEM_TOLEX' | translate }}</span>
         <span class="cost-val font-mono">{{ costs.currencySymbol }}{{ costs.tolex.toFixed(2) }}</span>
       </div>
       <div class="cost-row">
-        <span class="cost-item">Grill Cloth &amp; Piping</span>
+        <span class="cost-item">{{ 'COST.ITEM_GRILL' | translate }}</span>
         <span class="cost-val font-mono">{{ costs.currencySymbol }}{{ costs.grillCloth.toFixed(2) }}</span>
       </div>
       <div class="cost-row">
-        <span class="cost-item">Hardware (Corners, Handles, T-Nuts, Feet)</span>
+        <span class="cost-item">{{ 'COST.ITEM_HARDWARE' | translate }}</span>
         <span class="cost-val font-mono">{{ costs.currencySymbol }}{{ costs.hardware.toFixed(2) }}</span>
       </div>
       <div class="cost-row">
-        <span class="cost-item">Wiring, Jack Cup &amp; Electronics</span>
+        <span class="cost-item">{{ 'COST.ITEM_WIRING' | translate }}</span>
         <span class="cost-val font-mono">{{ costs.currencySymbol }}{{ costs.wiring.toFixed(2) }}</span>
       </div>
       <div class="cost-row">
-        <span class="cost-item">Miscellaneous (Glue, Fasteners, Batting)</span>
+        <span class="cost-item">{{ 'COST.ITEM_MISC' | translate }}</span>
         <span class="cost-val font-mono">{{ costs.currencySymbol }}{{ costs.misc.toFixed(2) }}</span>
       </div>
     </div>
@@ -66,14 +66,14 @@
   <!-- Right Card: Build Difficulty & Tool Checklist -->
   <div class="summary-card">
     <div class="card-head">
-      <span class="card-badge badge-tools">WORKSHOP READINESS</span>
-      <h3 class="card-title">Difficulty &amp; Tool Checklist</h3>
+      <span class="card-badge badge-tools">{{ 'DIFFICULTY.BADGE' | translate }}</span>
+      <h3 class="card-title">{{ 'DIFFICULTY.TITLE' | translate }}</h3>
     </div>
 
     <!-- Difficulty Level Banner -->
     <div class="difficulty-box" [ngClass]="difficulty.badgeClass">
       <div class="diff-header">
-        <span class="diff-tag">SKILL LEVEL:</span>
+        <span class="diff-tag">{{ 'DIFFICULTY.SKILL_LEVEL_LABEL' | translate }}</span>
         <span class="diff-level">{{ difficulty.level }}</span>
       </div>
       <p class="diff-summary">{{ difficulty.summary }}</p>
@@ -87,36 +87,36 @@
     <!-- Tool Categories -->
     <div class="tools-block">
       <div class="tool-section">
-        <span class="tool-section-title text-success">REQUIRED TOOLS:</span>
+        <span class="tool-section-title text-success">{{ 'DIFFICULTY.REQUIRED_TOOLS_LABEL' | translate }}</span>
         <ul class="tool-list">
           @for (tool of tools.requiredTools; track tool) {
             <li class="tool-item">
               <span class="tool-check text-success">&#10004;</span>
-              <span>{{ tool }}</span>
+              <span>{{ localizeTool(tool) }}</span>
             </li>
           }
         </ul>
       </div>
 
       <div class="tool-section">
-        <span class="tool-section-title text-amber">RECOMMENDED TOOLS:</span>
+        <span class="tool-section-title text-amber">{{ 'DIFFICULTY.RECOMMENDED_TOOLS_LABEL' | translate }}</span>
         <ul class="tool-list">
           @for (tool of tools.recommendedTools; track tool) {
             <li class="tool-item">
               <span class="tool-check text-amber">&#9656;</span>
-              <span>{{ tool }}</span>
+              <span>{{ localizeTool(tool) }}</span>
             </li>
           }
         </ul>
       </div>
 
       <div class="tool-section">
-        <span class="tool-section-title text-cyan">OPTIONAL / PRO GEAR:</span>
+        <span class="tool-section-title text-cyan">{{ 'DIFFICULTY.OPTIONAL_TOOLS_LABEL' | translate }}</span>
         <ul class="tool-list">
           @for (tool of tools.optionalTools; track tool) {
             <li class="tool-item">
               <span class="tool-check text-cyan">&bull;</span>
-              <span>{{ tool }}</span>
+              <span>{{ localizeTool(tool) }}</span>
             </li>
           }
         </ul>

@@ -11,16 +11,34 @@ import {
   SheetCutLayout,
 } from '../../../../domain/cabinet/models/sheet-cut-optimizer.model';
 import { SheetCutOptimizerService } from '../../../../domain/cabinet/services/sheet-cut-optimizer.service';
+import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
+import { TranslationService } from '../../../../core/services/translation.service';
+
+const HU_PANEL_NAMES: Record<string, string> = {
+  'Top Panel': 'Tető Lap',
+  'Bottom Panel': 'Fenék Lap',
+  'Left Side Panel': 'Bal Oldallap',
+  'Right Side Panel': 'Jobb Oldallap',
+  'Front Baffle Board': 'Előlap (Baffle)',
+  'Back Panel': 'Hátlap (Zárt)',
+  'Back Panel - Top Slat': 'Hátlap Felső',
+  'Back Panel - Bottom Slat': 'Hátlap Alsó',
+  'Back Panel - Center Slat': 'Hátlap Közép',
+  'Internal Corner Cleats': 'Belső Saroklécek',
+  'Baffle Perimeter Cleats': 'Előlap Lécek',
+  'Back Perimeter Cleats': 'Hátlap Lécek',
+};
 
 @Component({
   selector: 'app-sheet-cut-diagram',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslatePipe],
   templateUrl: './sheet-cut-diagram.component.html',
   styleUrls: ['./sheet-cut-diagram.component.scss'],
 })
 export class SheetCutDiagramComponent {
   private readonly sheetOptimizer = inject(SheetCutOptimizerService);
+  readonly i18n = inject(TranslationService);
 
   readonly Math = Math;
 
@@ -99,16 +117,37 @@ export class SheetCutDiagramComponent {
     this.activeSheetIndex.set(idx);
   }
 
+  localizePartName(partName: string): string {
+    if (this.i18n.isHungarian()) {
+      return HU_PANEL_NAMES[partName] || partName;
+    }
+    return partName;
+  }
+
   getShortName(partName: string, pxW: number): string {
+    if (this.i18n.isHungarian()) {
+      if (pxW < 90) {
+        if (partName.includes('Top') || partName.includes('Tető')) return 'Tető';
+        if (partName.includes('Bottom') || partName.includes('Fenék')) return 'Fenék';
+        if (partName.includes('Side') || partName.includes('Oldal')) return 'Oldal';
+        if (partName.includes('Baffle') || partName.includes('Előlap')) return 'Baffle';
+        if (partName.includes('Back') || partName.includes('Hátlap')) return 'Hátlap';
+        if (partName.includes('Cleat') || partName.includes('Léc')) return 'Léc';
+      }
+      return HU_PANEL_NAMES[partName] || partName;
+    }
+
     if (pxW < 90) {
       if (partName.includes('Top & Bottom') && partName.includes('1')) return 'Top #1';
-      if (partName.includes('Top & Bottom') && partName.includes('2')) return 'Btm #2';
+      if (partName.includes('Top & Bottom') && partName.includes('2')) return 'Bot #2';
       if (partName.includes('Side') && partName.includes('1')) return 'Side #1';
       if (partName.includes('Side') && partName.includes('2')) return 'Side #2';
       if (partName.includes('Baffle')) return 'Baffle';
-      if (partName.includes('Back')) return 'Back';
-      if (partName.includes('Slat')) return 'Slat';
-      return partName.replace(/\s*(Panels?|Board)\s*/g, '');
+      if (partName.includes('Sealed Back')) return 'Back';
+      if (partName.includes('Slat') && partName.includes('1')) return 'Slat #1';
+      if (partName.includes('Slat') && partName.includes('2')) return 'Slat #2';
+      if (partName.includes('Cleat')) return 'Cleat';
+      return partName.substring(0, 8);
     }
 
     if (pxW < 140) {

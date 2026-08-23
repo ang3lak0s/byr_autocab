@@ -9,14 +9,14 @@
       <!-- Modal Header -->
       <div class="modal-header">
         <div class="header-badge-row">
-          <span class="pro-crown-badge">👑 BYR PRO WORKSHOP</span>
+          <span class="pro-crown-badge">{{ 'MODAL.BADGE' | translate }}</span>
         </div>
 
         <h2 id="upgrade-modal-title" class="modal-title">
           @if (triggerContext(); as ctx) {
-            Unlock {{ ctx.featureName }}
+            {{ 'MODAL.UNLOCK_FEATURE' | translate:{ feature: ctx.featureName } }}
           } @else {
-            Upgrade to Pro Workshop
+            {{ 'MODAL.TITLE_DEFAULT' | translate }}
           }
         </h2>
 
@@ -24,7 +24,7 @@
           @if (triggerContext(); as ctx) {
             {{ ctx.description }}
           } @else {
-            Professional touring stacks, boutique drivers, and unbranded CAD-grade blueprints.
+            {{ 'MODAL.LEAD_DEFAULT' | translate }}
           }
         </p>
       </div>
@@ -34,29 +34,29 @@
         <!-- Free Tier Card -->
         <div class="plan-card" [class.current]="!isPro()">
           <div class="plan-head">
-            <span class="plan-tier-name">Maker Free</span>
+            <span class="plan-tier-name">{{ 'MODAL.FREE_TIER_NAME' | translate }}</span>
             <div class="plan-price">
               <span class="currency">$</span>
               <span class="amount">0</span>
-              <span class="period">/ forever</span>
+              <span class="period">/ {{ 'MODAL.FREE_PERIOD' | translate }}</span>
             </div>
-            <p class="plan-desc">Standard 1x &amp; 2x cabinets.</p>
+            <p class="plan-desc">{{ 'MODAL.FREE_DESC' | translate }}</p>
           </div>
 
           <ul class="features-list">
-            <li><span class="check text-success">✓</span> 1x &amp; 2x Enclosures</li>
-            <li><span class="check text-success">✓</span> Standard Drivers &amp; Mono Wiring</li>
-            <li><span class="check text-success">✓</span> Workshop Traveler (Watermarked)</li>
-            <li class="disabled"><span class="cross">✕</span> 4x10 &amp; 4x12 Stacks</li>
-            <li class="disabled"><span class="cross">✕</span> Boutique Drivers (EVM-12L, Alnico)</li>
+            <li><span class="check text-success">✓</span> {{ 'MODAL.FREE_FEAT_1' | translate }}</li>
+            <li><span class="check text-success">✓</span> {{ 'MODAL.FREE_FEAT_2' | translate }}</li>
+            <li><span class="check text-success">✓</span> {{ 'MODAL.FREE_FEAT_3' | translate }}</li>
+            <li class="disabled"><span class="cross">✕</span> {{ 'MODAL.FREE_FEAT_4_DIS' | translate }}</li>
+            <li class="disabled"><span class="cross">✕</span> {{ 'MODAL.FREE_FEAT_5_DIS' | translate }}</li>
           </ul>
 
           <div class="plan-action">
             @if (!isPro()) {
-              <div class="current-plan-pill">Active Plan</div>
+              <div class="current-plan-pill">{{ 'MODAL.ACTIVE_PLAN' | translate }}</div>
             } @else {
               <button type="button" class="btn-secondary-plan" (click)="downgradeToFree()">
-                Switch to Free
+                {{ 'MODAL.SWITCH_TO_FREE' | translate }}
               </button>
             }
           </div>
@@ -64,32 +64,32 @@
 
         <!-- Pro Tier Card (Highlighted) -->
         <div class="plan-card pro-card" [class.current]="isPro()">
-          <div class="popular-ribbon">👑 WORKSHOP</div>
+          <div class="popular-ribbon">{{ 'MODAL.PRO_RIBBON' | translate }}</div>
 
           <div class="plan-head">
-            <span class="plan-tier-name text-amber">Pro Workshop Pass</span>
+            <span class="plan-tier-name text-amber">{{ 'MODAL.PRO_TIER_NAME' | translate }}</span>
             <div class="plan-price text-amber">
               <span class="currency">$</span>
               <span class="amount">19</span>
-              <span class="period">/ lifetime</span>
+              <span class="period">/ {{ 'MODAL.PRO_PERIOD' | translate }}</span>
             </div>
-            <p class="plan-desc">Custom builders &amp; touring rigs.</p>
+            <p class="plan-desc">{{ 'MODAL.PRO_DESC' | translate }}</p>
           </div>
 
           <ul class="features-list">
-            <li><span class="check text-amber">👑</span> <strong>4x10 &amp; 4x12 Full &amp; Half Stacks</strong></li>
-            <li><span class="check text-amber">👑</span> <strong>Boutique Drivers (EVM-12L, Alnico Gold)</strong></li>
-            <li><span class="check text-amber">👑</span> <strong>Stereo / Mono Switchable Jackplates</strong></li>
-            <li><span class="check text-amber">👑</span> <strong>Multi-Sheet Cut Optimizer</strong></li>
-            <li><span class="check text-amber">👑</span> <strong>Unbranded High-Res Workshop PDF</strong></li>
+            <li><span class="check text-amber">👑</span> <strong>{{ 'MODAL.PRO_FEAT_1' | translate }}</strong></li>
+            <li><span class="check text-amber">👑</span> <strong>{{ 'MODAL.PRO_FEAT_2' | translate }}</strong></li>
+            <li><span class="check text-amber">👑</span> <strong>{{ 'MODAL.PRO_FEAT_3' | translate }}</strong></li>
+            <li><span class="check text-amber">👑</span> <strong>{{ 'MODAL.PRO_FEAT_4' | translate }}</strong></li>
+            <li><span class="check text-amber">👑</span> <strong>{{ 'MODAL.PRO_FEAT_5' | translate }}</strong></li>
           </ul>
 
           <div class="plan-action">
             @if (isPro()) {
               <div class="active-pro-pill">
-                <span>👑 PRO UNLOCKED</span>
+                <span>{{ 'MODAL.PRO_UNLOCKED' | translate }}</span>
                 @if (activeLicenseKey(); as key) {
-                  <span class="active-key-sub">Key: {{ key }}</span>
+                  <span class="active-key-sub">{{ 'MODAL.KEY_LABEL' | translate:{ key: key } }}</span>
                 }
               </div>
             } @else {
@@ -100,10 +100,10 @@
                   rel="noopener noreferrer"
                   class="btn-pro-activate">
                   <span class="btn-icon">⚡</span>
-                  <span>Get Pro Workshop Pass ($19)</span>
+                  <span>{{ 'MODAL.BTN_GET_PRO' | translate }}</span>
                 </a>
                 <button type="button" class="btn-demo-link" (click)="activateDemoPro()">
-                  ⚡ Instant Demo Mode (Test Free)
+                  {{ 'MODAL.BTN_DEMO' | translate }}
                 </button>
               </div>
             }
@@ -116,11 +116,11 @@
         <div class="license-redeem-section">
           @if (!showLicenseInput()) {
             <button type="button" class="btn-toggle-license" (click)="toggleLicenseInput()">
-              <span>🔑 Have a License Key or Promo Code?</span>
+              <span>{{ 'MODAL.HAVE_CODE_PROMPT' | translate }}</span>
             </button>
           } @else {
             <div class="license-input-box">
-              <label for="licenseCodeInput" class="license-label">ENTER PRO LICENSE KEY:</label>
+              <label for="licenseCodeInput" class="license-label">{{ 'MODAL.ENTER_KEY_LABEL' | translate }}</label>
               <div class="license-form-row">
                 <input
                   id="licenseCodeInput"
@@ -132,7 +132,7 @@
                   (keydown.enter)="redeemLicense()"
                 />
                 <button type="button" class="btn-redeem" (click)="redeemLicense()">
-                  Verify &amp; Unlock
+                  {{ 'MODAL.BTN_VERIFY' | translate }}
                 </button>
               </div>
               @if (licenseError(); as err) {
@@ -145,7 +145,7 @@
 
       <!-- Footer Guarantee -->
       <div class="modal-footer-info">
-        <span class="guarantee-text">🛡️ Instant Lifetime Access &bull; 100% Deterministic Accuracy</span>
+        <span class="guarantee-text">{{ 'MODAL.GUARANTEE_TEXT' | translate }}</span>
       </div>
     </div>
   </div>

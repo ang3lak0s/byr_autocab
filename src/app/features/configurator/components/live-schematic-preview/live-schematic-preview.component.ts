@@ -2,6 +2,7 @@ import { Component, Input, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CompleteBuildPlan } from '../../../../domain/cabinet/models/calculation-result.model';
 import { ConfiguratorState } from '../../../../domain/cabinet/models/configurator-state.model';
+import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
 
 export interface SvgSpeakerRenderData {
   index: number;
@@ -17,7 +18,7 @@ export interface SvgSpeakerRenderData {
 @Component({
   selector: 'app-live-schematic-preview',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, TranslatePipe],
   templateUrl: './live-schematic-preview.component.html',
   styleUrls: ['./live-schematic-preview.component.scss'],
 })

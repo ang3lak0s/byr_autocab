@@ -4,11 +4,11 @@
     <div class="section-header">
       <div class="header-badge">
         <span class="badge-icon">🪵</span>
-        <span>ENCLOSURE JOINERY &amp; TOOLING</span>
+        <span>{{ 'METHODS.BADGE' | translate }}</span>
       </div>
-      <h2 class="section-title">Construction Methods Overview</h2>
+      <h2 class="section-title">{{ 'METHODS.TITLE' | translate }}</h2>
       <p class="section-subtitle">
-        Don't force the builder to adapt to the software. Whether you have a circular saw and a drill on the back porch or a full woodworking router table, BYR AutoCab generates exact cut lists for your shop capability.
+        {{ 'METHODS.SUBTITLE' | translate }}
       </p>
     </div>
 
@@ -23,7 +23,7 @@
           <span class="tab-indicator" [class.popular]="method.isPopular"></span>
           <span class="tab-title">{{ method.name }}</span>
           @if (method.isPopular) {
-            <span class="tab-badge">POPULAR</span>
+            <span class="tab-badge">{{ 'METHODS.POPULAR_BADGE' | translate }}</span>
           }
         </button>
       }
@@ -45,7 +45,7 @@
 
           <!-- Advantages List -->
           <div class="detail-advantages">
-            <h4 class="block-title">Key Builder Advantages</h4>
+            <h4 class="block-title">{{ 'METHODS.ADVANTAGES_TITLE' | translate }}</h4>
             <ul class="advantages-list">
               @for (adv of active.advantages; track adv) {
                 <li class="advantage-item">
@@ -58,7 +58,7 @@
 
           <!-- Tooling Required -->
           <div class="detail-tooling">
-            <h4 class="block-title">Required Tools &amp; Equipment</h4>
+            <h4 class="block-title">{{ 'METHODS.TOOLING_TITLE' | translate }}</h4>
             <div class="tooling-chips">
               @for (tool of active.toolingRequired; track tool) {
                 <span class="tool-chip">
@@ -73,22 +73,22 @@
         <!-- Right Detail Metric Specs Panel -->
         <div class="detail-sidebar">
           <div class="sidebar-header">
-            <span class="sidebar-title">BUILD &amp; ACOUSTIC METRICS</span>
+            <span class="sidebar-title">{{ 'METHODS.METRICS_TITLE' | translate }}</span>
           </div>
 
           <!-- Metric 1: Joint Strength -->
           <div class="metric-block">
             <div class="metric-top">
-              <span class="metric-label">Structural Rigidity &amp; Tone</span>
+              <span class="metric-label">{{ 'METHODS.METRIC_RIGIDITY' | translate }}</span>
               <span class="metric-val text-amber">{{ active.jointStrength }}</span>
             </div>
             <div class="strength-bar-track">
               <div
                 class="strength-bar-fill"
                 [style.width]="
-                  active.jointStrength === 'Maximum Tone & Rigidity' ? '100%' :
-                  active.jointStrength === 'Airtight & Rigid' ? '90%' :
-                  active.jointStrength === 'High' ? '75%' : '60%'
+                  active.jointStrength === 'Maximum Tone & Rigidity' || active.jointStrength === 'Maximális Hangzás & Merevség' ? '100%' :
+                  active.jointStrength === 'Airtight & Rigid' || active.jointStrength === 'Légmentes & Szilárd' ? '90%' :
+                  active.jointStrength === 'High' || active.jointStrength === 'Nagy' || active.jointStrength === 'Nagy (megfelelő ékeléssel)' ? '75%' : '60%'
                 ">
               </div>
             </div>
@@ -97,7 +97,7 @@
           <!-- Metric 2: Tooling Complexity -->
           <div class="metric-block">
             <div class="metric-top">
-              <span class="metric-label">Tooling Complexity</span>
+              <span class="metric-label">{{ 'METHODS.METRIC_COMPLEXITY' | translate }}</span>
               <span class="metric-val text-cyan">{{ active.toolingComplexity }}</span>
             </div>
           </div>
@@ -105,26 +105,26 @@
           <!-- Metric 3: Assembly Speed -->
           <div class="metric-block">
             <div class="metric-top">
-              <span class="metric-label">Assembly Speed</span>
+              <span class="metric-label">{{ 'METHODS.METRIC_SPEED' | translate }}</span>
               <span class="metric-val text-success">{{ active.assemblySpeed }}</span>
             </div>
           </div>
 
           <!-- Fasteners -->
           <div class="metric-block">
-            <span class="metric-label">Fasteners &amp; Glue</span>
+            <span class="metric-label">{{ 'METHODS.METRIC_FASTENERS' | translate }}</span>
             <p class="fastener-spec">{{ active.fastenerType }}</p>
           </div>
 
           <!-- Application -->
           <div class="metric-block">
-            <span class="metric-label">Typical Cabinet Applications</span>
+            <span class="metric-label">{{ 'METHODS.METRIC_APPLICATION' | translate }}</span>
             <p class="application-spec">{{ active.typicalApplication }}</p>
           </div>
 
           <!-- Action CTA -->
           <a routerLink="/configurator" class="btn-method-cta">
-            <span>Select {{ active.name }}</span>
+            <span>{{ 'METHODS.BTN_SELECT' | translate:{ name: active.name } }}</span>
             <svg class="btn-arrow" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
             </svg>

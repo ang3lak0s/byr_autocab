@@ -2,21 +2,21 @@
   <!-- Card Header -->
   <div class="optimizer-head">
     <div class="head-left">
-      <span class="optimizer-badge">2D PLYWOOD CUT OPTIMIZER</span>
-      <h3 class="optimizer-title">Plywood Sheet Cut Layout &amp; Rip/Cross Cut Plan</h3>
+      <span class="optimizer-badge">{{ 'SHEET.BADGE' | translate }}</span>
+      <h3 class="optimizer-title">{{ 'SHEET.TITLE' | translate }}</h3>
       <p class="optimizer-sub">
-        Deterministic 2D guillotine cut optimization accounting for saw blade kerf and sheet yield.
+        {{ 'SHEET.SUBTITLE' | translate }}
       </p>
     </div>
 
     <!-- Overall Project Sheet Yield Stat Box -->
     <div class="yield-badge-box">
       <div class="yield-col">
-        <span class="yield-label">SHEETS NEEDED:</span>
-        <span class="yield-val">{{ result().totalSheetsRequired }} Sheet(s)</span>
+        <span class="yield-label">{{ 'SHEET.SHEETS_NEEDED_LABEL' | translate }}</span>
+        <span class="yield-val">{{ 'SHEET.SHEETS_NEEDED_VAL' | translate:{ count: result().totalSheetsRequired } }}</span>
       </div>
       <div class="yield-col">
-        <span class="yield-label">PROJECT YIELD:</span>
+        <span class="yield-label">{{ 'SHEET.PROJECT_YIELD_LABEL' | translate }}</span>
         <span class="yield-val highlight">{{ result().overallEfficiencyPercent }}%</span>
       </div>
     </div>
@@ -26,7 +26,7 @@
   <div class="controls-toolbar">
     <!-- Plywood Preset Selector -->
     <div class="control-group">
-      <span class="control-label">PLYWOOD SHEET PRESET:</span>
+      <span class="control-label">{{ 'SHEET.PRESET_LABEL' | translate }}</span>
       <div class="preset-pill-group">
         @for (p of presets; track p.id) {
           <button
@@ -45,45 +45,45 @@
     <div class="secondary-controls-row">
       <!-- Saw Blade Kerf -->
       <div class="kerf-selector">
-        <span class="control-label">BLADE KERF:</span>
+        <span class="control-label">{{ 'SHEET.KERF_LABEL' | translate }}</span>
         <div class="mini-btn-group">
           <button
             type="button"
             class="mini-btn"
             [class.active]="kerfMm() === 3.2"
             (click)="setKerf(3.2)"
-            title="Standard 1/8 inch table saw blade">
-            3.2mm (1/8")
+            [title]="'SHEET.KERF_STANDARD_TITLE' | translate">
+            {{ 'SHEET.KERF_STANDARD' | translate }}
           </button>
           <button
             type="button"
             class="mini-btn"
             [class.active]="kerfMm() === 2.0"
             (click)="setKerf(2.0)"
-            title="Thin kerf circular saw blade">
-            2.0mm (Thin)
+            [title]="'SHEET.KERF_THIN_TITLE' | translate">
+            {{ 'SHEET.KERF_THIN' | translate }}
           </button>
           <button
             type="button"
             class="mini-btn"
             [class.active]="kerfMm() === 0"
             (click)="setKerf(0)"
-            title="Zero kerf theoretical area">
-            0mm (Flush)
+            [title]="'SHEET.KERF_ZERO_TITLE' | translate">
+            {{ 'SHEET.KERF_ZERO' | translate }}
           </button>
         </div>
       </div>
 
       <!-- Rotation Toggle -->
       <div class="rotation-toggle">
-        <span class="control-label">GRAIN ROTATION:</span>
+        <span class="control-label">{{ 'SHEET.ROTATION_LABEL' | translate }}</span>
         <button
           type="button"
           class="toggle-btn"
           [class.active]="allowRotation()"
           (click)="toggleRotation()">
           <span class="toggle-icon">{{ allowRotation() ? '✓' : '✗' }}</span>
-          <span>{{ allowRotation() ? 'Allow 90° Panel Rotation' : 'Strict Grain (No Rotation)' }}</span>
+          <span>{{ allowRotation() ? ('SHEET.ROTATION_ALLOW' | translate) : ('SHEET.ROTATION_STRICT' | translate) }}</span>
         </button>
       </div>
     </div>
@@ -92,7 +92,7 @@
   <!-- Multi-Sheet Tab Selector (If more than 1 sheet required) -->
   @if (result().sheets.length > 1) {
     <div class="sheet-tabs-row">
-      <span class="sheet-tabs-label">SHEET SELECTOR:</span>
+      <span class="sheet-tabs-label">{{ 'SHEET.SHEET_SELECTOR_LABEL' | translate }}</span>
       <div class="sheet-tabs-list">
         @for (sheet of result().sheets; track sheet.sheetIndex) {
           <button
@@ -100,8 +100,8 @@
             class="sheet-tab-btn"
             [class.active]="activeSheetIndex() === sheet.sheetIndex"
             (click)="setSheetIndex(sheet.sheetIndex)">
-            <span>Sheet {{ sheet.sheetIndex }} of {{ result().totalSheetsRequired }}</span>
-            <span class="tab-yield-pill">{{ sheet.utilizationPercent }}% Yield</span>
+            <span>{{ 'SHEET.SHEET_TAB_NAME' | translate:{ current: sheet.sheetIndex, total: result().totalSheetsRequired } }}</span>
+            <span class="tab-yield-pill">{{ 'SHEET.TAB_YIELD' | translate:{ yield: sheet.utilizationPercent } }}</span>
           </button>
         }
       </div>
@@ -112,13 +112,13 @@
   <div class="svg-sheet-container">
     <div class="sheet-viewport-header">
       <div class="sheet-meta-left">
-        <span class="active-sheet-tag">SHEET #{{ activeSheet().sheetIndex }} OF {{ result().totalSheetsRequired }}</span>
+        <span class="active-sheet-tag">{{ 'SHEET.SHEET_ACTIVE_TAG' | translate:{ current: activeSheet().sheetIndex, total: result().totalSheetsRequired } }}</span>
         <span class="sheet-dim-tag">{{ activeSheet().sheetWidthMm }} &times; {{ activeSheet().sheetHeightMm }} mm</span>
       </div>
       <div class="sheet-meta-right">
-        <span class="meta-item">Used: <strong>{{ (activeSheet().usedAreaMm2 / 1000000).toFixed(2) }} m&sup2;</strong></span>
-        <span class="meta-item">Scrap: <strong>{{ (activeSheet().wasteAreaMm2 / 1000000).toFixed(2) }} m&sup2;</strong></span>
-        <span class="meta-item yield-pill">Efficiency: <strong>{{ activeSheet().utilizationPercent }}%</strong></span>
+        <span class="meta-item">{{ 'SHEET.META_USED' | translate }} <strong>{{ (activeSheet().usedAreaMm2 / 1000000).toFixed(2) }} m&sup2;</strong></span>
+        <span class="meta-item">{{ 'SHEET.META_SCRAP' | translate }} <strong>{{ (activeSheet().wasteAreaMm2 / 1000000).toFixed(2) }} m&sup2;</strong></span>
+        <span class="meta-item yield-pill">{{ 'SHEET.META_EFFICIENCY' | translate }} <strong>{{ activeSheet().utilizationPercent }}%</strong></span>
       </div>
     </div>
 
@@ -182,7 +182,7 @@
           font-family="'JetBrains Mono', monospace"
           font-size="11"
           font-weight="bold">
-          Sheet Width: {{ activeSheet().sheetWidthMm }} mm ({{ (activeSheet().sheetWidthMm / 25.4).toFixed(1) }}")
+          {{ 'SHEET.SHEET_WIDTH' | translate }} {{ activeSheet().sheetWidthMm }} mm ({{ (activeSheet().sheetWidthMm / 25.4).toFixed(1) }}")
         </text>
 
         <!-- Dimension Marker: Height (Left) -->
@@ -217,7 +217,7 @@
           font-family="'JetBrains Mono', monospace"
           font-size="11"
           font-weight="bold">
-          Sheet Length: {{ activeSheet().sheetHeightMm }} mm ({{ (activeSheet().sheetHeightMm / 25.4).toFixed(1) }}")
+          {{ 'SHEET.SHEET_LENGTH' | translate }} {{ activeSheet().sheetHeightMm }} mm ({{ (activeSheet().sheetHeightMm / 25.4).toFixed(1) }}")
         </text>
 
         <!-- Full Plywood Sheet Boundary (Scrap Base) -->
@@ -313,7 +313,7 @@
                     font-family="'JetBrains Mono', monospace"
                     font-size="8"
                     font-weight="700">
-                    ↺ 90° Rotated
+                    ↺ 90°
                   </text>
                 }
               </g>
@@ -327,8 +327,8 @@
   <!-- Panel Cut Schedule Legend Table -->
   <div class="sheet-legend-card">
     <div class="legend-header">
-      <span class="legend-title">PARTS ON SHEET #{{ activeSheet().sheetIndex }} ({{ activeSheet().placedPanels.length }} Panels)</span>
-      <span class="legend-sub">Saw Kerf Allowance: {{ kerfMm() }}mm (1/8") &bull; Joinery Core: Baltic Birch</span>
+      <span class="legend-title">{{ 'SHEET.PARTS_ON_SHEET' | translate:{ current: activeSheet().sheetIndex, count: activeSheet().placedPanels.length } }}</span>
+      <span class="legend-sub">{{ 'SHEET.SAW_KERF_SUB' | translate:{ kerf: kerfMm() } }}</span>
     </div>
 
     <div class="legend-grid">
@@ -337,7 +337,7 @@
         <div class="legend-item" [class.highlighted]="hoveredPanel()?.id === panel.id">
           <div class="item-color-indicator" [style.background]="colors.stroke"></div>
           <div class="item-details">
-            <span class="item-name">{{ panel.partName }}</span>
+            <span class="item-name">{{ localizePartName(panel.partName) }}</span>
             <span class="item-dims font-mono text-cyan">
               {{ panel.widthMm }} &times; {{ panel.heightMm }} mm ({{ panel.widthInches }} &times; {{ panel.heightInches }})
             </span>

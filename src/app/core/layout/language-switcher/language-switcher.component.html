@@ -1,0 +1,30 @@
+<div
+  class="lang-switcher"
+  [class.variant-drawer]="variant() === 'drawer'"
+  [class.variant-footer]="variant() === 'footer'"
+  role="group"
+  [attr.aria-label]="i18n.t('LANG.SWITCH_LABEL')">
+  <button
+    type="button"
+    class="lang-btn"
+    [class.active]="i18n.currentLanguage() === 'en'"
+    [attr.aria-pressed]="i18n.currentLanguage() === 'en'"
+    (click)="selectLanguage('en')"
+    title="Switch to English">
+    <span class="flag-icon" aria-hidden="true">🇬🇧</span>
+    <span class="lang-code">EN</span>
+  </button>
+
+  <span class="lang-divider" aria-hidden="true">|</span>
+
+  <button
+    type="button"
+    class="lang-btn"
+    [class.active]="i18n.currentLanguage() === 'hu'"
+    [attr.aria-pressed]="i18n.currentLanguage() === 'hu'"
+    (click)="selectLanguage('hu')"
+    title="Váltás magyar nyelvre">
+    <span class="flag-icon" aria-hidden="true">🇭🇺</span>
+    <span class="lang-code">HU</span>
+  </button>
+</div>

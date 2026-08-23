@@ -9,20 +9,20 @@
       <!-- Release / Status Pill -->
       <div class="hero-pill">
         <span class="pill-dot"></span>
-        <span class="pill-text">SPEAKER ENCLOSURE PLANNER</span>
-        <span class="pill-accent">AUDIO READY</span>
+        <span class="pill-text">{{ 'HERO.PILL_TITLE' | translate }}</span>
+        <span class="pill-accent">{{ 'HERO.PILL_ACCENT' | translate }}</span>
       </div>
 
       <!-- Main Headline -->
       <h1 class="hero-title">
-        Custom Speaker Cabs &amp;
-        <span class="text-gradient-cyan">Precision Cut Lists</span>
-        In Seconds.
+        {{ 'HERO.TITLE_PREFIX' | translate }}
+        <span class="text-gradient-cyan">{{ 'HERO.TITLE_GRADIENT' | translate }}</span>
+        {{ 'HERO.TITLE_SUFFIX' | translate }}
       </h1>
 
       <!-- Value Proposition -->
       <p class="hero-lead">
-        Design rock-solid guitar cabs, bass enclosures, and audio speaker boxes. Validate speaker clearances, compute internal acoustic volume, calculate exact panel cut lists, and adapt the build plan to your shop tools.
+        {{ 'HERO.LEAD' | translate }}
       </p>
 
       <!-- Primary & Secondary CTAs -->
@@ -31,34 +31,34 @@
           <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
           </svg>
-          <span>Start a Cabinet</span>
+          <span>{{ 'HERO.BTN_START' | translate }}</span>
         </a>
 
         <a routerLink="/" fragment="methods" class="btn-hero-secondary">
           <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
-          <span>Explore Joinery Specs</span>
+          <span>{{ 'HERO.BTN_JOINERY' | translate }}</span>
         </a>
       </div>
 
       <!-- Key Tech Stats Grid -->
       <div class="hero-stats-grid">
         <div class="stat-card">
-          <span class="stat-val">100% Verified</span>
-          <span class="stat-label">Driver Clearances</span>
+          <span class="stat-val">{{ 'HERO.STAT_VERIFIED_VAL' | translate }}</span>
+          <span class="stat-label">{{ 'HERO.STAT_VERIFIED_LABEL' | translate }}</span>
         </div>
         <div class="stat-card">
-          <span class="stat-val">Litres &amp; Cu Ft</span>
-          <span class="stat-label">Internal Air Volume</span>
+          <span class="stat-val">{{ 'HERO.STAT_VOLUME_VAL' | translate }}</span>
+          <span class="stat-label">{{ 'HERO.STAT_VOLUME_LABEL' | translate }}</span>
         </div>
         <div class="stat-card">
-          <span class="stat-val">5 Methods</span>
-          <span class="stat-label">Cleats, Box Joints &amp; More</span>
+          <span class="stat-val">{{ 'HERO.STAT_METHODS_VAL' | translate }}</span>
+          <span class="stat-label">{{ 'HERO.STAT_METHODS_LABEL' | translate }}</span>
         </div>
         <div class="stat-card">
-          <span class="stat-val">Full BOM</span>
-          <span class="stat-label">Tolex, Grill &amp; Hardware</span>
+          <span class="stat-val">{{ 'HERO.STAT_BOM_VAL' | translate }}</span>
+          <span class="stat-label">{{ 'HERO.STAT_BOM_LABEL' | translate }}</span>
         </div>
       </div>
     </div>
@@ -70,7 +70,7 @@
         <div class="card-toolbar">
           <div class="toolbar-title">
             <span class="blueprint-dot"></span>
-            <span class="card-caption">LIVE SPEAKER ENCLOSURE SCHEMATIC</span>
+            <span class="card-caption">{{ 'HERO.SCHEMATIC_TITLE' | translate }}</span>
           </div>
 
           <!-- Unit Selector Switch -->
@@ -99,27 +99,27 @@
             class="preset-chip"
             [class.active]="activePreset() === 'cab112'"
             (click)="selectPreset('cab112')">
-            1x12" Widebody
+            {{ 'HERO.PRESET_112' | translate }}
           </button>
           <button
             type="button"
             class="preset-chip"
             [class.active]="activePreset() === 'cab212'"
             (click)="selectPreset('cab212')">
-            2x12" Rock Cab
+            {{ 'HERO.PRESET_212' | translate }}
           </button>
           <button
             type="button"
             class="preset-chip"
             [class.active]="activePreset() === 'cab412'"
             (click)="selectPreset('cab412')">
-            4x12" Half-Stack
+            {{ 'HERO.PRESET_412' | translate }}
           </button>
         </div>
 
         <!-- SVG Parametric Wireframe Preview -->
         <div class="schematic-viewport">
-          <div class="grid-watermark">BYR ACOUSTIC CAD ENGINE</div>
+          <div class="grid-watermark">{{ 'HERO.WATERMARK' | translate }}</div>
 
           <!-- Interactive SVG Wireframe Render -->
           <svg class="carcass-svg" viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
@@ -180,7 +180,7 @@
               <circle cx="266" cy="165" r="3" fill="#38bdf8"/>
               <!-- Clearance Callout -->
               <text x="200" y="252" text-anchor="middle" fill="#34d399" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="bold">
-                &#10003; 12" Driver + 6.5" Depth Clearance OK
+                {{ 'HERO.CLEARANCE_112' | translate }}
               </text>
             } @else if (activePreset() === 'cab212') {
               <!-- Dual 12" Speaker Layout (Side by Side) -->
@@ -204,9 +204,9 @@
 
               <!-- Center Separation Distance Marker -->
               <line x1="140" y1="95" x2="260" y2="95" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="2 2"/>
-              <text x="200" y="90" text-anchor="middle" fill="#f59e0b" font-family="'JetBrains Mono', monospace" font-size="9">Dual Driver Offset (120mm)</text>
+              <text x="200" y="90" text-anchor="middle" fill="#f59e0b" font-family="'JetBrains Mono', monospace" font-size="9">{{ 'HERO.DUAL_OFFSET' | translate }}</text>
               <text x="200" y="252" text-anchor="middle" fill="#34d399" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="bold">
-                &#10003; 2 × 12" Sealed Chamber (72.8 L)
+                {{ 'HERO.CLEARANCE_212' | translate }}
               </text>
             } @else {
               <!-- Quad 4x12" Layout (4 Symmetrical Drivers) -->
@@ -225,7 +225,7 @@
               <!-- Center 2x2 Soundpost Marker -->
               <rect x="194" y="159" width="12" height="12" fill="#fbbf24" stroke="#38bdf8" stroke-width="1"/>
               <text x="200" y="254" text-anchor="middle" fill="#34d399" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="bold">
-                &#10003; 4 × 12" Quad Array + Soundpost Brace
+                {{ 'HERO.CLEARANCE_412' | translate }}
               </text>
             }
           </svg>
@@ -234,15 +234,15 @@
         <!-- Live Schematic Meta Footer -->
         <div class="schematic-footer">
           <div class="meta-item">
-            <span class="meta-label">Driver Config</span>
+            <span class="meta-label">{{ 'HERO.META_DRIVER_CONFIG' | translate }}</span>
             <span class="meta-value text-cyan">{{ activeDriverConfig() }}</span>
           </div>
           <div class="meta-item">
-            <span class="meta-label">Internal Volume</span>
+            <span class="meta-label">{{ 'HERO.META_INTERNAL_VOL' | translate }}</span>
             <span class="meta-value text-amber">{{ activeVolume() }}</span>
           </div>
           <div class="meta-item">
-            <span class="meta-label">Enclosure Style</span>
+            <span class="meta-label">{{ 'HERO.META_ENCLOSURE_STYLE' | translate }}</span>
             <span class="meta-value">{{ activeEnclosure() }}</span>
           </div>
         </div>

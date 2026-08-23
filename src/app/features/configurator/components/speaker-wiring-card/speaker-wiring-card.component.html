@@ -2,21 +2,21 @@
   <!-- Header -->
   <div class="wiring-head">
     <div class="head-left">
-      <span class="wiring-badge">SPEAKER IMPEDANCE &amp; WIRING CALCULATOR</span>
-      <h3 class="wiring-title">Internal Enclosure Wiring Schematic</h3>
+      <span class="wiring-badge">{{ 'WIRING.BADGE' | translate }}</span>
+      <h3 class="wiring-title">{{ 'WIRING.TITLE' | translate }}</h3>
       <p class="wiring-sub">
-        Deterministic network topology, total cabinet load calculation, and amplifier safety matching.
+        {{ 'WIRING.SUBTITLE' | translate }}
       </p>
     </div>
 
     <!-- Total Load Impedance Glowing Badge -->
     <div class="load-badge-box">
       <div class="load-col">
-        <span class="load-label">TOTAL CABINET IMPEDANCE:</span>
+        <span class="load-label">{{ 'WIRING.TOTAL_IMPEDANCE_LABEL' | translate }}</span>
         <span class="load-val highlight">{{ wiringResult().activeOption.totalImpedanceOhms }} &Omega; {{ wiringResult().activeOption.monoOrStereo | uppercase }}</span>
       </div>
       <div class="load-col">
-        <span class="load-label">TOTAL POWER:</span>
+        <span class="load-label">{{ 'WIRING.TOTAL_POWER_LABEL' | translate }}</span>
         <span class="load-val text-green">{{ wiringResult().totalPowerHandlingWatts }}W RMS</span>
       </div>
     </div>
@@ -26,7 +26,7 @@
   <div class="wiring-controls-bar">
     <!-- Driver Impedance Selector -->
     <div class="control-group">
-      <span class="control-label">EACH DRIVER IMPEDANCE:</span>
+      <span class="control-label">{{ 'WIRING.EACH_DRIVER_Z_LABEL' | translate }}</span>
       <div class="mini-btn-group">
         <button
           type="button"
@@ -55,7 +55,7 @@
     <!-- Wiring Topology Mode Options (For 2x and 4x cabs) -->
     @if (wiringResult().availableOptions.length > 1) {
       <div class="control-group">
-        <span class="control-label">WIRING TOPOLOGY:</span>
+        <span class="control-label">{{ 'WIRING.TOPOLOGY_LABEL' | translate }}</span>
         <div class="topology-pills">
           @for (opt of wiringResult().availableOptions; track opt.mode) {
             <button
@@ -66,9 +66,9 @@
               (click)="setWiringMode(opt.mode)">
               <span class="pill-mode-title">{{ opt.shortLabel }} ({{ opt.totalImpedanceOhms }}&Omega;)</span>
               @if (opt.mode === 'stereo-split' && !subService.isPro()) {
-                <span class="pill-pro-badge">👑 PRO</span>
+                <span class="pill-pro-badge">{{ 'WIRING.PRO_TAG' | translate }}</span>
               } @else if (opt.isStandardForCount) {
-                <span class="pill-std-badge">STANDARD</span>
+                <span class="pill-std-badge">{{ 'WIRING.STANDARD_TAG' | translate }}</span>
               }
             </button>
           }
@@ -260,15 +260,15 @@
   <div class="wiring-info-card">
     <div class="info-row">
       <div class="info-cell">
-        <span class="info-lbl">SELECTED TOPOLOGY:</span>
+        <span class="info-lbl">{{ 'WIRING.SELECTED_TOPOLOGY_LABEL' | translate }}</span>
         <span class="info-val font-mono text-cyan">{{ wiringResult().activeOption.name }}</span>
       </div>
       <div class="info-cell">
-        <span class="info-lbl">RECOMMENDED WIRE GAUGE:</span>
+        <span class="info-lbl">{{ 'WIRING.WIRE_GAUGE_LABEL' | translate }}</span>
         <span class="info-val font-mono text-amber">{{ wiringResult().suggestedWireGauge }}</span>
       </div>
       <div class="info-cell">
-        <span class="info-lbl">RECOMMENDED JACK PLATE:</span>
+        <span class="info-lbl">{{ 'WIRING.JACK_PLATE_LABEL' | translate }}</span>
         <span class="info-val font-mono">{{ wiringResult().jackPlate | titlecase }} 1/4"</span>
       </div>
     </div>
@@ -276,7 +276,7 @@
     <div class="amp-guide-box">
       <span class="guide-icon">💡</span>
       <div class="guide-text">
-        <span class="guide-title">Amplifier Matching Guidance:</span>
+        <span class="guide-title">{{ 'WIRING.AMP_GUIDE_TITLE' | translate }}</span>
         <p class="guide-msg">{{ wiringResult().activeOption.ampCompatibilityTip }}</p>
       </div>
     </div>

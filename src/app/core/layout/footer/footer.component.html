@@ -15,12 +15,12 @@
           <span class="brand-name">BYR <span class="accent">AutoCab</span></span>
         </div>
         <p class="brand-desc">
-          Dedicated parametric planning, driver clearance validation, acoustic volume estimation, and cut-list calculation tool for DIY guitar, bass, and audio speaker cabinets.
+          {{ 'FOOTER.BRAND_DESC' | translate }}
         </p>
         <div class="system-pills">
-          <span class="system-pill">🔊 1x10, 1x12, 2x12, 4x12, 1x15 Cabs</span>
-          <span class="system-pill">📐 Internal Litres &amp; Cu Ft</span>
-          <span class="system-pill">⚡ Adapts Plan to Your Tools</span>
+          <span class="system-pill">{{ 'FOOTER.PILL_CABS' | translate }}</span>
+          <span class="system-pill">{{ 'FOOTER.PILL_VOLUME' | translate }}</span>
+          <span class="system-pill">{{ 'FOOTER.PILL_TOOLS' | translate }}</span>
         </div>
       </div>
 
@@ -28,7 +28,7 @@
       <div class="footer-columns">
         <!-- Speaker Enclosures -->
         <div class="footer-col">
-          <h4 class="col-title">Enclosure Types</h4>
+          <h4 class="col-title">{{ 'FOOTER.COL_ENCLOSURES' | translate }}</h4>
           <ul class="footer-links">
             <li><a routerLink="/" fragment="configurations">Classic 1x12" Widebody</a></li>
             <li><a routerLink="/" fragment="configurations">British 2x12" Rock Cab</a></li>
@@ -41,10 +41,10 @@
 
         <!-- Joinery Standards -->
         <div class="footer-col">
-          <h4 class="col-title">Enclosure Joinery</h4>
+          <h4 class="col-title">{{ 'FOOTER.COL_JOINERY' | translate }}</h4>
           <ul class="footer-links">
-            <li><a routerLink="/" fragment="methods">Cleated Butt Joints (Hand Tools)</a></li>
-            <li><a routerLink="/" fragment="methods">Finger &amp; Box Joints (Vintage Tone)</a></li>
+            <li><a routerLink="/" fragment="methods">Cleated Butt Joints</a></li>
+            <li><a routerLink="/" fragment="methods">Finger &amp; Box Joints</a></li>
             <li><a routerLink="/" fragment="methods">Rabbeted Corner Joints</a></li>
             <li><a routerLink="/" fragment="methods">Mitered Corners with Splines</a></li>
             <li><a routerLink="/" fragment="methods">Floating Baffle &amp; T-Nut Cleats</a></li>
@@ -53,13 +53,13 @@
 
         <!-- Resources & Output -->
         <div class="footer-col">
-          <h4 class="col-title">Builder Tools</h4>
+          <h4 class="col-title">{{ 'FOOTER.COL_TOOLS' | translate }}</h4>
           <ul class="footer-links">
-            <li><a routerLink="/configurator">Open Cab Configurator</a></li>
-            <li><a routerLink="/" fragment="how-it-works">Driver Clearance Check</a></li>
-            <li><a routerLink="/" fragment="how-it-works">Internal Volume Calculator</a></li>
-            <li><a routerLink="/" fragment="how-it-works">Tolex &amp; Grill Yardage Estimator</a></li>
-            <li><a routerLink="/" fragment="how-it-works">Panel Cut Sheets &amp; BOM</a></li>
+            <li><a routerLink="/configurator">{{ 'FOOTER.TOOL_OPEN_CONFIG' | translate }}</a></li>
+            <li><a routerLink="/" fragment="how-it-works">{{ 'FOOTER.TOOL_CLEARANCE' | translate }}</a></li>
+            <li><a routerLink="/" fragment="how-it-works">{{ 'FOOTER.TOOL_VOLUME' | translate }}</a></li>
+            <li><a routerLink="/" fragment="how-it-works">{{ 'FOOTER.TOOL_TOLEX' | translate }}</a></li>
+            <li><a routerLink="/" fragment="how-it-works">{{ 'FOOTER.TOOL_CUT_SHEETS' | translate }}</a></li>
           </ul>
         </div>
       </div>
@@ -68,12 +68,14 @@
     <!-- Footer Bottom Bar -->
     <div class="footer-bottom">
       <div class="footer-copy">
-        &copy; {{ currentYear }} BYR AutoCab. Made for DIY builders, tone chasers, and custom speaker craftspeople.
+        &copy; {{ currentYear }} BYR AutoCab. {{ 'FOOTER.COPYRIGHT' | translate }}
       </div>
       <div class="footer-meta">
-        <span class="meta-tag">Angular Standalone Core</span>
+        <app-language-switcher variant="footer"></app-language-switcher>
         <span class="meta-separator">&bull;</span>
-        <span class="meta-tag">Don't adapt to software — adapt the build to the builder</span>
+        <span class="meta-tag">{{ 'FOOTER.META_CORE' | translate }}</span>
+        <span class="meta-separator">&bull;</span>
+        <span class="meta-tag">{{ 'FOOTER.META_MOTTO' | translate }}</span>
       </div>
     </div>
   </div>

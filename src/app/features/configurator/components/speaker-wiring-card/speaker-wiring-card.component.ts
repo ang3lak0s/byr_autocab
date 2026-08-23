@@ -8,17 +8,20 @@ import {
 } from '../../../../domain/cabinet/models/speaker-wiring.model';
 import { SpeakerWiringService } from '../../../../domain/cabinet/services/speaker-wiring.service';
 import { SubscriptionService } from '../../../../domain/cabinet/services/subscription.service';
+import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
+import { TranslationService } from '../../../../core/services/translation.service';
 
 @Component({
   selector: 'app-speaker-wiring-card',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslatePipe],
   templateUrl: './speaker-wiring-card.component.html',
   styleUrls: ['./speaker-wiring-card.component.scss'],
 })
 export class SpeakerWiringCardComponent {
   private readonly wiringService = inject(SpeakerWiringService);
   readonly subService = inject(SubscriptionService);
+  readonly i18n = inject(TranslationService);
 
   readonly driverCount = input.required<number>();
   readonly driverModelName = input<string>('Speaker Driver');

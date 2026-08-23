@@ -27,6 +27,9 @@ import { SubscriptionService } from '../../domain/cabinet/services/subscription.
 
 import { ViewportService } from '../../core/services/viewport.service';
 
+import { TranslatePipe } from '../../core/pipes/translate.pipe';
+import { TranslationService } from '../../core/services/translation.service';
+
 export type ConfigStep = 'speakers' | 'dimensions' | 'drivers-wiring' | 'summary';
 
 @Component({
@@ -36,6 +39,7 @@ export type ConfigStep = 'speakers' | 'dimensions' | 'drivers-wiring' | 'summary
     CommonModule,
     FormsModule,
     RouterLink,
+    TranslatePipe,
     LiveSchematicPreviewComponent,
     CutListTableComponent,
     CostSummaryCardComponent,
@@ -50,6 +54,7 @@ export class ConfiguratorComponent implements OnInit {
   private readonly exportService = inject(BuildExportService);
   readonly subService = inject(SubscriptionService);
   readonly viewport = inject(ViewportService);
+  readonly i18n = inject(TranslationService);
   private readonly route = inject(ActivatedRoute);
 
   readonly activeStep = signal<ConfigStep>('speakers');
@@ -117,10 +122,10 @@ export class ConfiguratorComponent implements OnInit {
 
   readonly activeStepTitle = computed<string>(() => {
     switch (this.activeStep()) {
-      case 'speakers': return 'Speaker Layout';
-      case 'dimensions': return 'Dimensions & Materials';
-      case 'drivers-wiring': return 'Drivers & Wiring';
-      case 'summary': return 'Build Plan & Cut List';
+      case 'speakers': return this.i18n.t('CONFIG.STEP_1_NAME');
+      case 'dimensions': return this.i18n.t('CONFIG.STEP_2_NAME');
+      case 'drivers-wiring': return this.i18n.t('CONFIG.STEP_3_NAME');
+      case 'summary': return this.i18n.t('CONFIG.STEP_4_NAME');
     }
   });
 

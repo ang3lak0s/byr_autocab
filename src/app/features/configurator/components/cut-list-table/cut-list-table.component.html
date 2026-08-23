@@ -1,22 +1,22 @@
 <div class="cutlist-card">
   <div class="cutlist-header">
     <div class="header-left">
-      <span class="cutlist-badge">WORKSHOP TRAVELER</span>
-      <h3 class="cutlist-title">Panel Cut List &amp; Dimensions</h3>
+      <span class="cutlist-badge">{{ 'CUTLIST.BADGE' | translate }}</span>
+      <h3 class="cutlist-title">{{ 'CUTLIST.TITLE' | translate }}</h3>
     </div>
     <div class="header-actions">
-      <button type="button" class="btn-tool" (click)="copyCutList()" title="Copy cut list text">
+      <button type="button" class="btn-tool" (click)="copyCutList()" [title]="'CUTLIST.BTN_COPY_TITLE' | translate">
         <svg class="tool-icon" viewBox="0 0 20 20" fill="currentColor">
           <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" />
           <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z" />
         </svg>
-        <span>{{ copied() ? 'Copied!' : 'Copy Cut List' }}</span>
+        <span>{{ copied() ? ('CUTLIST.COPIED' | translate) : ('CUTLIST.BTN_COPY' | translate) }}</span>
       </button>
-      <button type="button" class="btn-tool" (click)="printPlan()" title="Print build sheet">
+      <button type="button" class="btn-tool" (click)="printPlan()" [title]="'CUTLIST.BTN_PRINT_TITLE' | translate">
         <svg class="tool-icon" viewBox="0 0 20 20" fill="currentColor">
           <path fill-rule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z" clip-rule="evenodd" />
         </svg>
-        <span>Print Build Sheet</span>
+        <span>{{ 'CUTLIST.BTN_PRINT' | translate }}</span>
       </button>
     </div>
   </div>
@@ -26,13 +26,13 @@
     <table class="cutlist-table">
       <thead>
         <tr>
-          <th class="print-checkbox-col print-only">Done</th>
-          <th class="col-part">Part Name</th>
-          <th class="col-qty text-center">Qty</th>
-          <th class="col-metric">Metric (mm)</th>
-          <th class="col-imperial">Imperial (Fractional)</th>
-          <th class="col-thickness">Thickness</th>
-          <th class="col-notes">Machining / Assembly Notes</th>
+          <th class="print-checkbox-col print-only">{{ 'CUTLIST.TH_DONE' | translate }}</th>
+          <th class="col-part">{{ 'CUTLIST.TH_PART' | translate }}</th>
+          <th class="col-qty text-center">{{ 'CUTLIST.TH_QTY' | translate }}</th>
+          <th class="col-metric">{{ 'CUTLIST.TH_METRIC' | translate }}</th>
+          <th class="col-imperial">{{ 'CUTLIST.TH_IMPERIAL' | translate }}</th>
+          <th class="col-thickness">{{ 'CUTLIST.TH_THICKNESS' | translate }}</th>
+          <th class="col-notes">{{ 'CUTLIST.TH_NOTES' | translate }}</th>
         </tr>
       </thead>
       <tbody>
@@ -42,7 +42,7 @@
             <td class="col-part">
               <span class="part-name-wrap">
                 <span class="part-bullet">&#9656;</span>
-                <strong>{{ item.partName }}</strong>
+                <strong>{{ localizePartName(item.partName) }}</strong>
               </span>
             </td>
             <td class="text-center font-mono qty-cell col-qty">{{ item.quantity }}</td>
@@ -63,22 +63,22 @@
         <div class="cut-card-top">
           <div class="cut-part-title-group">
             <span class="cut-bullet">&#9656;</span>
-            <strong class="cut-part-title">{{ item.partName }}</strong>
+            <strong class="cut-part-title">{{ localizePartName(item.partName) }}</strong>
           </div>
-          <span class="cut-qty-badge">{{ item.quantity }} &times; QTY</span>
+          <span class="cut-qty-badge">{{ 'CUTLIST.MOBILE_QTY' | translate:{ qty: item.quantity } }}</span>
         </div>
 
         <div class="cut-card-dims font-mono">
           <div class="dim-row">
-            <span class="dim-label">METRIC:</span>
+            <span class="dim-label">{{ 'CUTLIST.CARD_METRIC' | translate }}</span>
             <span class="dim-val text-cyan">{{ item.widthMm }} &times; {{ item.heightOrDepthMm }} mm</span>
           </div>
           <div class="dim-row">
-            <span class="dim-label">IMPERIAL:</span>
+            <span class="dim-label">{{ 'CUTLIST.CARD_IMPERIAL' | translate }}</span>
             <span class="dim-val text-amber">{{ item.widthInches }} &times; {{ item.heightOrDepthInches }}</span>
           </div>
           <div class="dim-row">
-            <span class="dim-label">THICKNESS:</span>
+            <span class="dim-label">{{ 'CUTLIST.CARD_THICKNESS' | translate }}</span>
             <span class="dim-val">{{ item.thicknessMm }}mm ({{ item.thicknessInches }})</span>
           </div>
         </div>

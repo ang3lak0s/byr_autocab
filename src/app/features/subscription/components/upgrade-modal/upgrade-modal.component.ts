@@ -2,16 +2,19 @@ import { Component, inject, HostListener, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SubscriptionService } from '../../../../domain/cabinet/services/subscription.service';
+import { TranslatePipe } from '../../../../core/pipes/translate.pipe';
+import { TranslationService } from '../../../../core/services/translation.service';
 
 @Component({
   selector: 'app-upgrade-modal',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TranslatePipe],
   templateUrl: './upgrade-modal.component.html',
   styleUrls: ['./upgrade-modal.component.scss'],
 })
 export class UpgradeModalComponent {
   readonly subService = inject(SubscriptionService);
+  readonly i18n = inject(TranslationService);
 
   readonly isOpen = this.subService.upgradeModalOpen;
   readonly triggerContext = this.subService.activeTriggerFeature;

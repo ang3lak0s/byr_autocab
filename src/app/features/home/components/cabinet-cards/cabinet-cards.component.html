@@ -4,11 +4,11 @@
     <div class="section-header">
       <div class="header-badge">
         <span class="badge-icon">🔊</span>
-        <span>SPEAKER ENCLOSURE ARCHETYPES</span>
+        <span>{{ 'CABINETS.BADGE' | translate }}</span>
       </div>
-      <h2 class="section-title">Example Speaker Cabinets</h2>
+      <h2 class="section-title">{{ 'CABINETS.TITLE' | translate }}</h2>
       <p class="section-subtitle">
-        Field-tested guitar, bass, and audio speaker cabs with validated driver clearances, acoustic volume calculations, and complete panel cut lists.
+        {{ 'CABINETS.SUBTITLE' | translate }}
       </p>
 
       <!-- Category Filter Pills & Unit Toggle -->
@@ -19,60 +19,60 @@
             class="filter-pill"
             [class.active]="selectedCategory() === 'all'"
             (click)="setCategory('all')">
-            All Enclosures ({{ cabinets().length }})
+            {{ 'CABINETS.FILTER_ALL' | translate:{ count: rawCabinets().length } }}
           </button>
           <button
             type="button"
             class="filter-pill"
             [class.active]="selectedCategory() === '1x12'"
             (click)="setCategory('1x12')">
-            1x12" Cabs
+            {{ 'CABINETS.FILTER_1X12' | translate }}
           </button>
           <button
             type="button"
             class="filter-pill"
             [class.active]="selectedCategory() === '2x12'"
             (click)="setCategory('2x12')">
-            2x12" Rock Cabs
+            {{ 'CABINETS.FILTER_2X12' | translate }}
           </button>
           <button
             type="button"
             class="filter-pill"
             [class.active]="selectedCategory() === '4x12'"
             (click)="setCategory('4x12')">
-            4x12" Half-Stacks
+            {{ 'CABINETS.FILTER_4X12' | translate }}
           </button>
           <button
             type="button"
             class="filter-pill"
             [class.active]="selectedCategory() === 'bass'"
             (click)="setCategory('bass')">
-            Bass Enclosures
+            {{ 'CABINETS.FILTER_BASS' | translate }}
           </button>
           <button
             type="button"
             class="filter-pill"
             [class.active]="selectedCategory() === 'vintage'"
             (click)="setCategory('vintage')">
-            Vintage Tweed Pine
+            {{ 'CABINETS.FILTER_VINTAGE' | translate }}
           </button>
         </div>
 
         <div class="unit-switch">
-          <span class="unit-switch-label">Units:</span>
+          <span class="unit-switch-label">{{ 'CABINETS.UNITS_LABEL' | translate }}</span>
           <button
             type="button"
             class="unit-switch-btn"
             [class.active]="dimensionUnit() === 'in'"
             (click)="setUnit('in')">
-            Inches (")
+            {{ 'CABINETS.UNIT_INCH' | translate }}
           </button>
           <button
             type="button"
             class="unit-switch-btn"
             [class.active]="dimensionUnit() === 'mm'"
             (click)="setUnit('mm')">
-            Metric (mm)
+            {{ 'CABINETS.UNIT_METRIC' | translate }}
           </button>
         </div>
       </div>
@@ -98,17 +98,17 @@
           <!-- Dimensional Specification Box -->
           <div class="dimensions-box">
             <div class="dim-col">
-              <span class="dim-title">WIDTH (W)</span>
+              <span class="dim-title">{{ 'CABINETS.DIM_WIDTH' | translate }}</span>
               <span class="dim-value">{{ formatDimension(cabinet.defaultDimensions.width) }}</span>
             </div>
             <div class="dim-divider">&times;</div>
             <div class="dim-col">
-              <span class="dim-title">HEIGHT (H)</span>
+              <span class="dim-title">{{ 'CABINETS.DIM_HEIGHT' | translate }}</span>
               <span class="dim-value">{{ formatDimension(cabinet.defaultDimensions.height) }}</span>
             </div>
             <div class="dim-divider">&times;</div>
             <div class="dim-col">
-              <span class="dim-title">DEPTH (D)</span>
+              <span class="dim-title">{{ 'CABINETS.DIM_DEPTH' | translate }}</span>
               <span class="dim-value">{{ formatDimension(cabinet.defaultDimensions.depth) }}</span>
             </div>
           </div>
@@ -119,30 +119,30 @@
           <!-- Technical Specs Highlights -->
           <div class="specs-list">
             <div class="spec-row">
-              <span class="spec-name">Speaker Driver:</span>
-              <span class="spec-val font-mono">{{ cabinet.speakerSpec.driverCount }} &times; {{ cabinet.speakerSpec.driverSize }}" ({{ cabinet.speakerSpec.cutoutDiameter }}" Cutout)</span>
+              <span class="spec-name">{{ 'CABINETS.SPEC_SPEAKER' | translate }}</span>
+              <span class="spec-val font-mono">{{ cabinet.speakerSpec.driverCount }} &times; {{ cabinet.speakerSpec.driverSize }}" ({{ formatCutout(cabinet.speakerSpec.cutoutDiameter) }})</span>
             </div>
             <div class="spec-row">
-              <span class="spec-name">Internal Volume:</span>
+              <span class="spec-name">{{ 'CABINETS.SPEC_VOLUME' | translate }}</span>
               <span class="spec-val text-amber font-mono">{{ cabinet.acousticSpec.internalVolumeLiters }} L ({{ cabinet.acousticSpec.internalVolumeCuFt }} cu ft)</span>
             </div>
             <div class="spec-row">
-              <span class="spec-name">Enclosure Style:</span>
-              <span class="spec-val">{{ cabinet.acousticSpec.enclosureStyle | titlecase }}</span>
+              <span class="spec-name">{{ 'CABINETS.SPEC_ENCLOSURE' | translate }}</span>
+              <span class="spec-val">{{ formatEnclosureStyle(cabinet.acousticSpec.enclosureStyle) }}</span>
             </div>
             <div class="spec-row">
-              <span class="spec-name">Wood Type:</span>
+              <span class="spec-name">{{ 'CABINETS.SPEC_WOOD' | translate }}</span>
               <span class="spec-val">{{ cabinet.materials.materialType }}</span>
             </div>
             <div class="spec-row">
-              <span class="spec-name">Hardware:</span>
-              <span class="spec-val font-mono">{{ cabinet.hardware.tNutCount }} T-Nuts &bull; {{ cabinet.hardware.tolexYardage }} Tolex</span>
+              <span class="spec-name">{{ 'CABINETS.SPEC_HARDWARE' | translate }}</span>
+              <span class="spec-val font-mono">{{ formatHardware(cabinet) }}</span>
             </div>
           </div>
 
           <!-- Engineered Feature Bullets -->
           <div class="features-block">
-            <span class="features-label">ACOUSTIC &amp; BUILD HIGHLIGHTS</span>
+            <span class="features-label">{{ 'CABINETS.HIGHLIGHTS_LABEL' | translate }}</span>
             <ul class="features-list">
               @for (feature of cabinet.features; track feature) {
                 <li class="feature-item">
@@ -156,12 +156,12 @@
           <!-- Card Action Footer -->
           <div class="card-footer">
             <div class="parts-counter">
-              <span class="parts-num">{{ cabinet.estimatedPanelsCount }} Panels</span>
-              <span class="parts-text">Cut List Items</span>
+              <span class="parts-num">{{ 'CABINETS.PANELS_COUNT' | translate:{ count: cabinet.estimatedPanelsCount } }}</span>
+              <span class="parts-text">{{ 'CABINETS.CUT_LIST_ITEMS' | translate }}</span>
             </div>
 
             <a [routerLink]="['/configurator']" [queryParams]="{ preset: cabinet.id }" class="btn-configure">
-              <span>Configure Cab</span>
+              <span>{{ 'CABINETS.BTN_CONFIGURE' | translate }}</span>
               <svg class="arrow-icon" viewBox="0 0 20 20" fill="currentColor">
                 <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
               </svg>

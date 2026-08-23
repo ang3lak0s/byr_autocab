@@ -2,29 +2,29 @@
   <div class="container">
     <!-- Print-Only Header (Rendered strictly during PDF export & print) -->
     <div class="print-only-header">
-      <div class="print-title">BYR-AutoCab &bull; Workshop Traveler &amp; Build Plan</div>
+      <div class="print-title">{{ 'PRINT.HEADER_TITLE' | translate }}</div>
       <div class="print-meta">
-        <span>Cabinet: {{ state().speaker.count }}x{{ state().speaker.diameterPreset }}" ({{ selectedDriver()?.modelName || 'Custom Driver' }})</span>
-        <span>Dimensions: {{ buildPlan().externalWidthMm }} &times; {{ buildPlan().externalHeightMm }} &times; {{ buildPlan().externalDepthMm }} mm</span>
-        <span>Joinery: {{ state().constructionMethod | titlecase }} &bull; Material: {{ state().material.thicknessMm }}mm</span>
+        <span>{{ 'PRINT.CABINET' | translate }} {{ state().speaker.count }}x{{ state().speaker.diameterPreset }}" ({{ selectedDriver()?.modelName || 'Custom Driver' }})</span>
+        <span>{{ 'PRINT.DIMENSIONS' | translate }} {{ buildPlan().externalWidthMm }} &times; {{ buildPlan().externalHeightMm }} &times; {{ buildPlan().externalDepthMm }} mm</span>
+        <span>{{ 'PRINT.JOINERY' | translate }} {{ state().constructionMethod | titlecase }} &bull; {{ 'PRINT.MATERIAL' | translate }} {{ state().material.thicknessMm }}mm</span>
       </div>
     </div>
 
     <!-- Top Header & Breadcrumb -->
     <div class="config-header">
       <div class="header-left">
-        <a routerLink="/" class="back-link">&larr; Return to Overview</a>
-        <h1 class="page-title">Speaker Cabinet Configurator</h1>
+        <a routerLink="/" class="back-link">{{ 'CONFIG.BACK_LINK' | translate }}</a>
+        <h1 class="page-title">{{ 'CONFIG.PAGE_TITLE' | translate }}</h1>
         <p class="page-subtitle">
-          Parametric enclosure planning, driver clearance checks, and deterministic cut lists.
+          {{ 'CONFIG.PAGE_SUBTITLE' | translate }}
         </p>
       </div>
 
       <!-- Quick Preset Selector -->
       <div class="preset-selector-box">
-        <label for="presetSelect" class="preset-label">LOAD PRESET ARCHETYPE:</label>
+        <label for="presetSelect" class="preset-label">{{ 'CONFIG.PRESET_LABEL' | translate }}</label>
         <select id="presetSelect" class="preset-select" (change)="loadPresetById($any($event.target).value)">
-          <option value="" disabled selected>-- Select a Preset --</option>
+          <option value="" disabled selected>{{ 'CONFIG.PRESET_PLACEHOLDER' | translate }}</option>
           @for (preset of presets(); track preset.id) {
             <option [value]="preset.id">{{ preset.name }} ({{ preset.speakerSpec.driverCount }}x{{ preset.speakerSpec.driverSize }}")</option>
           }
@@ -35,7 +35,7 @@
     <!-- Mobile Wizard Header / Progress Track (Visible on < 1024px) -->
     <div class="mobile-wizard-bar">
       <div class="mobile-wizard-info">
-        <span class="mobile-step-num">Step {{ activeStepIndex() }} of 4</span>
+        <span class="mobile-step-num">{{ 'CONFIG.MOBILE_STEP_INFO' | translate:{ step: activeStepIndex() } }}</span>
         <span class="mobile-step-title">{{ activeStepTitle() }}</span>
       </div>
       <div class="mobile-wizard-dots" role="tablist">
@@ -75,7 +75,7 @@
         (click)="setStep('speakers')">
         <span class="step-circle">1</span>
         <div class="step-info">
-          <span class="step-name">Speaker Layout</span>
+          <span class="step-name">{{ 'CONFIG.STEP_1_NAME' | translate }}</span>
           <span class="step-desc">{{ state().speaker.count }} &times; {{ state().speaker.diameterPreset }}" ({{ state().speaker.layout }})</span>
         </div>
       </button>
@@ -87,7 +87,7 @@
         (click)="setStep('dimensions')">
         <span class="step-circle">2</span>
         <div class="step-info">
-          <span class="step-name">Dimensions &amp; Materials</span>
+          <span class="step-name">{{ 'CONFIG.STEP_2_NAME' | translate }}</span>
           <span class="step-desc">{{ state().dimensions.width }} &times; {{ state().dimensions.height }} &times; {{ state().dimensions.depth }} {{ state().dimensions.unit }}</span>
         </div>
       </button>
@@ -99,8 +99,8 @@
         (click)="setStep('drivers-wiring')">
         <span class="step-circle">3</span>
         <div class="step-info">
-          <span class="step-name">Drivers &amp; Wiring</span>
-          <span class="step-desc">{{ selectedDriver()?.modelName || 'Driver DB & Wiring' }}</span>
+          <span class="step-name">{{ 'CONFIG.STEP_3_NAME' | translate }}</span>
+          <span class="step-desc">{{ selectedDriver()?.modelName || ('CONFIG.STEP_3_NAME' | translate) }}</span>
         </div>
       </button>
 
@@ -111,8 +111,8 @@
         (click)="setStep('summary')">
         <span class="step-circle">4</span>
         <div class="step-info">
-          <span class="step-name">Build Plan &amp; Cut List</span>
-          <span class="step-desc">Complete Traveler</span>
+          <span class="step-name">{{ 'CONFIG.STEP_4_NAME' | translate }}</span>
+          <span class="step-desc">{{ 'CONFIG.STEP_4_DESC' | translate }}</span>
         </div>
       </button>
     </div>
@@ -126,7 +126,7 @@
           [class.active]="mobileViewMode() === 'controls'"
           (click)="toggleMobileView('controls')">
           <span class="btn-icon">⚙️</span>
-          <span>Edit Controls</span>
+          <span>{{ 'CONFIG.MOBILE_TOGGLE_CONTROLS' | translate }}</span>
         </button>
         <button
           type="button"
@@ -134,9 +134,9 @@
           [class.active]="mobileViewMode() === 'preview'"
           (click)="toggleMobileView('preview')">
           <span class="btn-icon">📐</span>
-          <span>Live Blueprint</span>
+          <span>{{ 'CONFIG.MOBILE_TOGGLE_PREVIEW' | translate }}</span>
           <span class="mobile-clearance-pill" [class.danger]="clearanceToBackMm < 20">
-            {{ Math.round(clearanceToBackMm) }}mm gap
+            {{ 'CONFIG.MOBILE_GAP_LABEL' | translate:{ gap: Math.round(clearanceToBackMm) } }}
           </span>
         </button>
       </div>
@@ -153,30 +153,30 @@
         @if (activeStep() === 'speakers') {
           <div class="step-card">
             <div class="step-heading">
-              <span class="step-num-pill">STEP 1</span>
-              <h2 class="step-title">Speaker Driver Setup &amp; Arrangement</h2>
-              <p class="step-lead">Select driver count, nominal diameter, and physical arrangement on the front baffle.</p>
+              <span class="step-num-pill">{{ 'CONFIG.STEP1_BADGE' | translate }}</span>
+              <h2 class="step-title">{{ 'CONFIG.STEP1_TITLE' | translate }}</h2>
+              <p class="step-lead">{{ 'CONFIG.STEP1_LEAD' | translate }}</p>
             </div>
 
             <!-- Speaker Count Selector -->
             <div class="form-group">
-              <label class="form-label">NUMBER OF DRIVERS:</label>
+              <label class="form-label">{{ 'CONFIG.NUM_DRIVERS' | translate }}</label>
               <div class="option-grid option-grid-3">
                 <button
                   type="button"
                   class="option-card"
                   [class.selected]="state().speaker.count === 1"
                   (click)="setSpeakerCount(1)">
-                  <span class="option-title">1 Driver</span>
-                  <span class="option-sub">1x12 / 1x15 Solo Cab</span>
+                  <span class="option-title">{{ 'CONFIG.1_DRIVER' | translate }}</span>
+                  <span class="option-sub">{{ 'CONFIG.1_DRIVER_SUB' | translate }}</span>
                 </button>
                 <button
                   type="button"
                   class="option-card"
                   [class.selected]="state().speaker.count === 2"
                   (click)="setSpeakerCount(2)">
-                  <span class="option-title">2 Drivers</span>
-                  <span class="option-sub">2x12 / 2x10 Dual Cab</span>
+                  <span class="option-title">{{ 'CONFIG.2_DRIVERS' | translate }}</span>
+                  <span class="option-sub">{{ 'CONFIG.2_DRIVERS_SUB' | translate }}</span>
                 </button>
                 <button
                   type="button"
@@ -185,19 +185,19 @@
                   [class.pro-feature-card]="!subService.isPro()"
                   (click)="setSpeakerCount(4)">
                   <div class="card-title-row">
-                    <span class="option-title">4 Drivers</span>
+                    <span class="option-title">{{ 'CONFIG.4_DRIVERS' | translate }}</span>
                     @if (!subService.isPro()) {
-                      <span class="pro-tag-badge">👑 PRO</span>
+                      <span class="pro-tag-badge">{{ 'CONFIG.PRO_TAG' | translate }}</span>
                     }
                   </div>
-                  <span class="option-sub">4x12 Quad Half-Stack</span>
+                  <span class="option-sub">{{ 'CONFIG.4_DRIVERS_SUB' | translate }}</span>
                 </button>
               </div>
             </div>
 
             <!-- Speaker Diameter Presets -->
             <div class="form-group">
-              <label class="form-label">SPEAKER NOMINAL DIAMETER:</label>
+              <label class="form-label">{{ 'CONFIG.SPEAKER_DIAMETER' | translate }}</label>
               <div class="option-grid option-grid-4">
                 <button
                   type="button"
@@ -205,7 +205,7 @@
                   [class.selected]="state().speaker.diameterPreset === '8'"
                   (click)="setSpeakerDiameter('8')">
                   <span class="option-title">8" (203mm)</span>
-                  <span class="option-sub">Cutout: 183mm</span>
+                  <span class="option-sub">{{ 'CONFIG.CUTOUT_LABEL' | translate:{ mm: 183 } }}</span>
                 </button>
                 <button
                   type="button"
@@ -213,7 +213,7 @@
                   [class.selected]="state().speaker.diameterPreset === '10'"
                   (click)="setSpeakerDiameter('10')">
                   <span class="option-title">10" (254mm)</span>
-                  <span class="option-sub">Cutout: 232mm</span>
+                  <span class="option-sub">{{ 'CONFIG.CUTOUT_LABEL' | translate:{ mm: 232 } }}</span>
                 </button>
                 <button
                   type="button"
@@ -221,7 +221,7 @@
                   [class.selected]="state().speaker.diameterPreset === '12'"
                   (click)="setSpeakerDiameter('12')">
                   <span class="option-title">12" (305mm)</span>
-                  <span class="option-sub">Cutout: 283mm</span>
+                  <span class="option-sub">{{ 'CONFIG.CUTOUT_LABEL' | translate:{ mm: 283 } }}</span>
                 </button>
                 <button
                   type="button"
@@ -229,7 +229,7 @@
                   [class.selected]="state().speaker.diameterPreset === '15'"
                   (click)="setSpeakerDiameter('15')">
                   <span class="option-title">15" (381mm)</span>
-                  <span class="option-sub">Cutout: 356mm</span>
+                  <span class="option-sub">{{ 'CONFIG.CUTOUT_LABEL' | translate:{ mm: 356 } }}</span>
                 </button>
               </div>
             </div>
@@ -237,23 +237,23 @@
             <!-- Speaker Layout Options (For 2x speakers) -->
             @if (state().speaker.count === 2) {
               <div class="form-group">
-                <label class="form-label">2X DRIVER ORIENTATION / LAYOUT:</label>
+                <label class="form-label">{{ 'CONFIG.2X_ORIENTATION' | translate }}</label>
                 <div class="option-grid option-grid-2">
                   <button
                     type="button"
                     class="option-card"
                     [class.selected]="state().speaker.layout === 'horizontal-2x'"
                     (click)="setLayout('horizontal-2x')">
-                    <span class="option-title">Horizontal [ O ][ O ]</span>
-                    <span class="option-sub">Traditional wide 2x12 cab</span>
+                    <span class="option-title">{{ 'CONFIG.LAYOUT_HORIZ' | translate }}</span>
+                    <span class="option-sub">{{ 'CONFIG.LAYOUT_HORIZ_SUB' | translate }}</span>
                   </button>
                   <button
                     type="button"
                     class="option-card"
                     [class.selected]="state().speaker.layout === 'vertical-2x'"
                     (click)="setLayout('vertical-2x')">
-                    <span class="option-title">Vertical [ O ] / [ O ]</span>
-                    <span class="option-sub">Compact vertical slant cab</span>
+                    <span class="option-title">{{ 'CONFIG.LAYOUT_VERT' | translate }}</span>
+                    <span class="option-sub">{{ 'CONFIG.LAYOUT_VERT_SUB' | translate }}</span>
                   </button>
                 </div>
               </div>
@@ -261,38 +261,38 @@
 
             <!-- Cabinet Form Factor / Aspect Ratio -->
             <div class="form-group">
-              <label class="form-label">CABINET ORIENTATION:</label>
+              <label class="form-label">{{ 'CONFIG.CAB_ORIENTATION' | translate }}</label>
               <div class="option-grid option-grid-3">
                 <button
                   type="button"
                   class="option-card"
                   [class.selected]="state().formFactor === 'horizontal'"
                   (click)="setFormFactor('horizontal')">
-                  <span class="option-title">Horizontal</span>
-                  <span class="option-sub">Wide stance</span>
+                  <span class="option-title">{{ 'CONFIG.ORIENT_HORIZ' | translate }}</span>
+                  <span class="option-sub">{{ 'CONFIG.ORIENT_HORIZ_SUB' | translate }}</span>
                 </button>
                 <button
                   type="button"
                   class="option-card"
                   [class.selected]="state().formFactor === 'square'"
                   (click)="setFormFactor('square')">
-                  <span class="option-title">Square</span>
-                  <span class="option-sub">1:1 Proportion</span>
+                  <span class="option-title">{{ 'CONFIG.ORIENT_SQUARE' | translate }}</span>
+                  <span class="option-sub">{{ 'CONFIG.ORIENT_SQUARE_SUB' | translate }}</span>
                 </button>
                 <button
                   type="button"
                   class="option-card"
                   [class.selected]="state().formFactor === 'vertical'"
                   (click)="setFormFactor('vertical')">
-                  <span class="option-title">Vertical</span>
-                  <span class="option-sub">Tall stack</span>
+                  <span class="option-title">{{ 'CONFIG.ORIENT_VERT' | translate }}</span>
+                  <span class="option-sub">{{ 'CONFIG.ORIENT_VERT_SUB' | translate }}</span>
                 </button>
               </div>
             </div>
 
             <div class="step-footer">
               <button type="button" class="btn-step-next" (click)="setStep('dimensions')">
-                <span>Continue to Dimensions &amp; Materials</span>
+                <span>{{ 'CONFIG.BTN_TO_STEP2' | translate }}</span>
                 <span class="btn-arrow">&rarr;</span>
               </button>
             </div>
@@ -303,28 +303,28 @@
         @if (activeStep() === 'dimensions') {
           <div class="step-card">
             <div class="step-heading">
-              <span class="step-num-pill">STEP 2</span>
-              <h2 class="step-title">Dimensions, Materials &amp; Joinery</h2>
-              <p class="step-lead">Specify external envelope bounding box dimensions, joinery method, and enclosure specs.</p>
+              <span class="step-num-pill">{{ 'CONFIG.STEP2_BADGE' | translate }}</span>
+              <h2 class="step-title">{{ 'CONFIG.STEP2_TITLE' | translate }}</h2>
+              <p class="step-lead">{{ 'CONFIG.STEP2_LEAD' | translate }}</p>
             </div>
 
             <!-- Unit Switcher -->
             <div class="unit-toggle-row">
-              <span class="unit-toggle-label">INPUT DIMENSION UNITS:</span>
+              <span class="unit-toggle-label">{{ 'CONFIG.INPUT_UNITS' | translate }}</span>
               <div class="unit-btn-group">
                 <button
                   type="button"
                   class="unit-btn"
                   [class.active]="state().dimensions.unit === 'mm'"
                   (click)="setDimensionUnit('mm')">
-                  Millimetres (mm)
+                  {{ 'CONFIG.UNIT_MM' | translate }}
                 </button>
                 <button
                   type="button"
                   class="unit-btn"
                   [class.active]="state().dimensions.unit === 'inch'"
                   (click)="setDimensionUnit('inch')">
-                  Inches (")
+                  {{ 'CONFIG.UNIT_INCH' | translate }}
                 </button>
               </div>
             </div>
@@ -332,7 +332,7 @@
             <!-- Dimension Inputs Grid -->
             <div class="dimensions-form-grid">
               <div class="input-field">
-                <label for="widthInput" class="field-label">EXTERNAL WIDTH (W):</label>
+                <label for="widthInput" class="field-label">{{ 'CONFIG.EXT_WIDTH' | translate }}</label>
                 <div class="input-with-unit">
                   <input
                     id="widthInput"
@@ -347,7 +347,7 @@
               </div>
 
               <div class="input-field">
-                <label for="heightInput" class="field-label">EXTERNAL HEIGHT (H):</label>
+                <label for="heightInput" class="field-label">{{ 'CONFIG.EXT_HEIGHT' | translate }}</label>
                 <div class="input-with-unit">
                   <input
                     id="heightInput"
@@ -362,7 +362,7 @@
               </div>
 
               <div class="input-field">
-                <label for="depthInput" class="field-label">EXTERNAL DEPTH (D):</label>
+                <label for="depthInput" class="field-label">{{ 'CONFIG.EXT_DEPTH' | translate }}</label>
                 <div class="input-with-unit">
                   <input
                     id="depthInput"
@@ -379,111 +379,111 @@
 
             <!-- Material Core Thickness -->
             <div class="form-group">
-              <label class="form-label">PLYWOOD / WOOD THICKNESS:</label>
+              <label class="form-label">{{ 'CONFIG.WOOD_THICKNESS' | translate }}</label>
               <div class="option-grid option-grid-4">
                 <button
                   type="button"
                   class="option-card"
                   [class.selected]="state().material.thicknessMm === 12"
                   (click)="setThickness(12)">
-                  <span class="option-title">12mm (1/2")</span>
-                  <span class="option-sub">Ultralight baffle/cabs</span>
+                  <span class="option-title">{{ 'CONFIG.THICK_12' | translate }}</span>
+                  <span class="option-sub">{{ 'CONFIG.THICK_12_SUB' | translate }}</span>
                 </button>
                 <button
                   type="button"
                   class="option-card"
                   [class.selected]="state().material.thicknessMm === 15"
                   (click)="setThickness(15)">
-                  <span class="option-title">15mm (5/8")</span>
-                  <span class="option-sub">Medium weight cabs</span>
+                  <span class="option-title">{{ 'CONFIG.THICK_15' | translate }}</span>
+                  <span class="option-sub">{{ 'CONFIG.THICK_15_SUB' | translate }}</span>
                 </button>
                 <button
                   type="button"
                   class="option-card"
                   [class.selected]="state().material.thicknessMm === 18"
                   (click)="setThickness(18)">
-                  <span class="option-title">18mm (3/4")</span>
-                  <span class="option-sub">Pro standard birch</span>
+                  <span class="option-title">{{ 'CONFIG.THICK_18' | translate }}</span>
+                  <span class="option-sub">{{ 'CONFIG.THICK_18_SUB' | translate }}</span>
                 </button>
                 <button
                   type="button"
                   class="option-card"
                   [class.selected]="state().material.thicknessMm === 19"
                   (click)="setThickness(19)">
-                  <span class="option-title">19mm (3/4" Pine)</span>
-                  <span class="option-sub">Solid pine lumber</span>
+                  <span class="option-title">{{ 'CONFIG.THICK_19' | translate }}</span>
+                  <span class="option-sub">{{ 'CONFIG.THICK_19_SUB' | translate }}</span>
                 </button>
               </div>
             </div>
 
             <!-- Back Configuration -->
             <div class="form-group">
-              <label class="form-label">REAR ENCLOSURE STYLE:</label>
+              <label class="form-label">{{ 'CONFIG.REAR_STYLE' | translate }}</label>
               <div class="option-grid option-grid-3">
                 <button
                   type="button"
                   class="option-card"
                   [class.selected]="state().backConfig === 'closed-back'"
                   (click)="setBackConfig('closed-back')">
-                  <span class="option-title">Closed Back</span>
-                  <span class="option-sub">Tight low-end punch &amp; high SPL</span>
+                  <span class="option-title">{{ 'CONFIG.BACK_CLOSED' | translate }}</span>
+                  <span class="option-sub">{{ 'CONFIG.BACK_CLOSED_SUB' | translate }}</span>
                 </button>
                 <button
                   type="button"
                   class="option-card"
                   [class.selected]="state().backConfig === 'half-open'"
                   (click)="setBackConfig('half-open')">
-                  <span class="option-title">Half Open</span>
-                  <span class="option-sub">Upper/lower slats with 35% vent</span>
+                  <span class="option-title">{{ 'CONFIG.BACK_HALF' | translate }}</span>
+                  <span class="option-sub">{{ 'CONFIG.BACK_HALF_SUB' | translate }}</span>
                 </button>
                 <button
                   type="button"
                   class="option-card"
                   [class.selected]="state().backConfig === 'mostly-open'"
                   (click)="setBackConfig('mostly-open')">
-                  <span class="option-title">Mostly Open</span>
-                  <span class="option-sub">Vintage 60% open 360&deg; dispersion</span>
+                  <span class="option-title">{{ 'CONFIG.BACK_MOSTLY' | translate }}</span>
+                  <span class="option-sub">{{ 'CONFIG.BACK_MOSTLY_SUB' | translate }}</span>
                 </button>
               </div>
             </div>
 
             <!-- Construction Method -->
             <div class="form-group">
-              <label class="form-label">CONSTRUCTION / JOINERY METHOD:</label>
+              <label class="form-label">{{ 'CONFIG.JOINERY_METHOD' | translate }}</label>
               <div class="option-grid option-grid-3">
                 <button
                   type="button"
                   class="option-card"
                   [class.selected]="state().constructionMethod === 'basic-screw-nail'"
                   (click)="setConstructionMethod('basic-screw-nail')">
-                  <span class="option-title">Basic Screw/Nail</span>
-                  <span class="option-sub">🟢 Beginner &bull; Hand saw &amp; drill</span>
+                  <span class="option-title">{{ 'CONFIG.METHOD_BASIC' | translate }}</span>
+                  <span class="option-sub">{{ 'CONFIG.METHOD_BASIC_SUB' | translate }}</span>
                 </button>
                 <button
                   type="button"
                   class="option-card"
                   [class.selected]="state().constructionMethod === 'glue-screw-nail'"
                   (click)="setConstructionMethod('glue-screw-nail')">
-                  <span class="option-title">Glue + Screw (Cleated)</span>
-                  <span class="option-sub">🟡 Intermediate &bull; Internal battens</span>
+                  <span class="option-title">{{ 'CONFIG.METHOD_GLUE_SCREW' | translate }}</span>
+                  <span class="option-sub">{{ 'CONFIG.METHOD_GLUE_SCREW_SUB' | translate }}</span>
                 </button>
                 <button
                   type="button"
                   class="option-card"
                   [class.selected]="state().constructionMethod === 'rabbet-glue'"
                   (click)="setConstructionMethod('rabbet-glue')">
-                  <span class="option-title">Rabbet + Glue</span>
-                  <span class="option-sub">🔴 Advanced &bull; Router / Dado stack</span>
+                  <span class="option-title">{{ 'CONFIG.METHOD_RABBET' | translate }}</span>
+                  <span class="option-sub">{{ 'CONFIG.METHOD_RABBET_SUB' | translate }}</span>
                 </button>
               </div>
             </div>
 
             <!-- Cost Estimates Inputs Grid -->
             <div class="form-group">
-              <label class="form-label">ESTIMATED COMPONENT &amp; MATERIAL COSTS ({{ state().costs.currencySymbol }}):</label>
+              <label class="form-label">{{ 'CONFIG.EST_COSTS_LABEL' | translate:{ symbol: state().costs.currencySymbol } }}</label>
               <div class="costs-form-grid">
                 <div class="input-field">
-                  <label for="woodCostInput" class="field-label">Wood / Sheet Stock:</label>
+                  <label for="woodCostInput" class="field-label">{{ 'CONFIG.COST_WOOD' | translate }}</label>
                   <input
                     id="woodCostInput"
                     type="number"
@@ -492,7 +492,7 @@
                     (input)="updateCost('woodCost', $any($event.target).value)" />
                 </div>
                 <div class="input-field">
-                  <label for="speakersCostInput" class="field-label">Speaker Drivers:</label>
+                  <label for="speakersCostInput" class="field-label">{{ 'CONFIG.COST_SPEAKERS' | translate }}</label>
                   <input
                     id="speakersCostInput"
                     type="number"
@@ -501,7 +501,7 @@
                     (input)="updateCost('speakersCost', $any($event.target).value)" />
                 </div>
                 <div class="input-field">
-                  <label for="tolexCostInput" class="field-label">Tolex / Covering:</label>
+                  <label for="tolexCostInput" class="field-label">{{ 'CONFIG.COST_TOLEX' | translate }}</label>
                   <input
                     id="tolexCostInput"
                     type="number"
@@ -510,7 +510,7 @@
                     (input)="updateCost('tolexCost', $any($event.target).value)" />
                 </div>
                 <div class="input-field">
-                  <label for="grillCostInput" class="field-label">Grill Cloth:</label>
+                  <label for="grillCostInput" class="field-label">{{ 'CONFIG.COST_GRILL' | translate }}</label>
                   <input
                     id="grillCostInput"
                     type="number"
@@ -519,7 +519,7 @@
                     (input)="updateCost('grillClothCost', $any($event.target).value)" />
                 </div>
                 <div class="input-field">
-                  <label for="hardwareCostInput" class="field-label">Hardware (Corners, Handles, T-Nuts):</label>
+                  <label for="hardwareCostInput" class="field-label">{{ 'CONFIG.COST_HARDWARE' | translate }}</label>
                   <input
                     id="hardwareCostInput"
                     type="number"
@@ -528,7 +528,7 @@
                     (input)="updateCost('hardwareCost', $any($event.target).value)" />
                 </div>
                 <div class="input-field">
-                  <label for="wiringCostInput" class="field-label">Wiring &amp; Jack Plate:</label>
+                  <label for="wiringCostInput" class="field-label">{{ 'CONFIG.COST_WIRING' | translate }}</label>
                   <input
                     id="wiringCostInput"
                     type="number"
@@ -542,10 +542,10 @@
             <div class="step-footer">
               <button type="button" class="btn-step-prev" (click)="setStep('speakers')">
                 <span class="btn-arrow">&larr;</span>
-                <span>Back to Speaker Layout</span>
+                <span>{{ 'CONFIG.BTN_BACK_STEP1' | translate }}</span>
               </button>
               <button type="button" class="btn-step-next" (click)="setStep('drivers-wiring')">
-                <span>Continue to Drivers &amp; Wiring</span>
+                <span>{{ 'CONFIG.BTN_TO_STEP3' | translate }}</span>
                 <span class="btn-arrow">&rarr;</span>
               </button>
             </div>
@@ -556,22 +556,22 @@
         @if (activeStep() === 'drivers-wiring') {
           <div class="step-card">
             <div class="step-heading">
-              <span class="step-num-pill">STEP 3</span>
-              <h2 class="step-title">Speaker Driver Database &amp; Wiring Schematics</h2>
-              <p class="step-lead">Select specific driver models from iconic manufacturers, verify 3D depth clearance, and configure series/parallel impedance wiring.</p>
+              <span class="step-num-pill">{{ 'CONFIG.STEP3_BADGE' | translate }}</span>
+              <h2 class="step-title">{{ 'CONFIG.STEP3_TITLE' | translate }}</h2>
+              <p class="step-lead">{{ 'CONFIG.STEP3_LEAD' | translate }}</p>
             </div>
 
             <!-- Real Speaker Model Database Selector -->
             <div class="form-group driver-db-section">
               <div class="db-section-header">
-                <label class="form-label">SPEAKER DRIVER MODEL DATABASE:</label>
+                <label class="form-label">{{ 'CONFIG.DRIVER_DB_LABEL' | translate }}</label>
                 <div class="brand-filter-pills">
                   <button
                     type="button"
                     class="brand-pill"
                     [class.active]="selectedBrandFilter() === 'all'"
                     (click)="setBrandFilter('all')">
-                    All
+                    {{ 'CONFIG.BRAND_ALL' | translate }}
                   </button>
                   <button
                     type="button"
@@ -616,7 +616,7 @@
                     <div class="driver-card-top">
                       <span class="driver-brand">{{ d.brand }}</span>
                       @if (d.isProOnly && !subService.isPro()) {
-                        <span class="pro-driver-badge">👑 PRO</span>
+                        <span class="pro-driver-badge">{{ 'CONFIG.PRO_TAG' | translate }}</span>
                       } @else {
                         <span class="driver-wattage font-mono">{{ d.powerRatingWatts }}W</span>
                       }
@@ -649,19 +649,19 @@
 
                   <div class="driver-tech-grid">
                     <div class="tech-cell">
-                      <span class="cell-lbl">FACTORY CUTOUT:</span>
+                      <span class="cell-lbl">{{ 'CONFIG.FACTORY_CUTOUT' | translate }}</span>
                       <span class="cell-val font-mono text-cyan">{{ drv.cutoutDiameterMm }} mm ({{ (drv.cutoutDiameterMm / 25.4).toFixed(2) }}")</span>
                     </div>
                     <div class="tech-cell">
-                      <span class="cell-lbl">MOUNTING DEPTH:</span>
+                      <span class="cell-lbl">{{ 'CONFIG.MOUNTING_DEPTH' | translate }}</span>
                       <span class="cell-val font-mono text-amber">{{ drv.mountingDepthMm }} mm ({{ (drv.mountingDepthMm / 25.4).toFixed(2) }}")</span>
                     </div>
                     <div class="tech-cell">
-                      <span class="cell-lbl">MAGNET DIAMETER:</span>
+                      <span class="cell-lbl">{{ 'CONFIG.MAGNET_DIAMETER' | translate }}</span>
                       <span class="cell-val font-mono">{{ drv.magnetDiameterMm }} mm ({{ (drv.magnetDiameterMm / 25.4).toFixed(2) }}")</span>
                     </div>
                     <div class="tech-cell">
-                      <span class="cell-lbl">ICONIC RIGS / AMPS:</span>
+                      <span class="cell-lbl">{{ 'CONFIG.ICONIC_RIGS' | translate }}</span>
                       <span class="cell-val truncate" [title]="drv.iconicUserOrAmp">{{ drv.iconicUserOrAmp }}</span>
                     </div>
                   </div>
@@ -672,7 +672,7 @@
             <!-- Speaker Physical Dimensions Precision Inputs -->
             <div class="form-row-2">
               <div class="form-group">
-                <label for="cutoutInput" class="form-label">BAFFLE CUTOUT HOLE (MM):</label>
+                <label for="cutoutInput" class="form-label">{{ 'CONFIG.BAFFLE_HOLE_INPUT' | translate }}</label>
                 <div class="input-with-unit">
                   <input
                     id="cutoutInput"
@@ -687,7 +687,7 @@
               </div>
 
               <div class="form-group">
-                <label for="depthInput" class="form-label">DRIVER MOUNTING DEPTH (MM):</label>
+                <label for="depthInput" class="form-label">{{ 'CONFIG.DRIVER_DEPTH_INPUT' | translate }}</label>
                 <div class="input-with-unit">
                   <input
                     id="depthInput"
@@ -713,10 +713,10 @@
             <div class="step-footer">
               <button type="button" class="btn-step-prev" (click)="setStep('dimensions')">
                 <span class="btn-arrow">&larr;</span>
-                <span>Back to Dimensions</span>
+                <span>{{ 'CONFIG.BTN_BACK_STEP2' | translate }}</span>
               </button>
               <button type="button" class="btn-step-next" (click)="setStep('summary')">
-                <span>Compile Complete Build Plan</span>
+                <span>{{ 'CONFIG.BTN_TO_STEP4' | translate }}</span>
                 <span class="btn-arrow">&rarr;</span>
               </button>
             </div>
@@ -728,32 +728,32 @@
           <div class="step-card summary-view-card">
             <div class="step-heading summary-heading-with-actions">
               <div>
-                <span class="step-num-pill success-pill">STEP 4</span>
-                <h2 class="step-title">Complete Build Plan &amp; Workshop Traveler</h2>
-                <p class="step-lead">All geometric calculations, cut lists, material yields, tool requirements, and elevation schematics compiled.</p>
+                <span class="step-num-pill success-pill">{{ 'CONFIG.STEP4_BADGE' | translate }}</span>
+                <h2 class="step-title">{{ 'CONFIG.STEP4_TITLE' | translate }}</h2>
+                <p class="step-lead">{{ 'CONFIG.STEP4_LEAD' | translate }}</p>
               </div>
 
               <!-- Workshop Export & Sharing Action Toolbar -->
               <div class="export-actions-bar no-print">
-                <button type="button" class="btn-action-primary" (click)="printTraveler()" title="Print or save as PDF">
+                <button type="button" class="btn-action-primary" (click)="printTraveler()" [title]="'CONFIG.BTN_PRINT' | translate">
                   <span class="action-icon">🖨️</span>
-                  <span>Print / PDF Traveler</span>
+                  <span>{{ 'CONFIG.BTN_PRINT' | translate }}</span>
                 </button>
-                <button type="button" class="btn-action-secondary" (click)="exportCsv()" title="Export panel dimensions to CSV">
+                <button type="button" class="btn-action-secondary" (click)="exportCsv()" [title]="'CONFIG.BTN_EXPORT_CSV' | translate">
                   <span class="action-icon">📊</span>
-                  <span>Export Cut List (.CSV)</span>
+                  <span>{{ 'CONFIG.BTN_EXPORT_CSV' | translate }}</span>
                 </button>
-                <button type="button" class="btn-action-secondary" (click)="exportJson()" title="Save project config to JSON file">
+                <button type="button" class="btn-action-secondary" (click)="exportJson()" [title]="'CONFIG.BTN_SAVE_JSON' | translate">
                   <span class="action-icon">💾</span>
-                  <span>Save Project (.JSON)</span>
+                  <span>{{ 'CONFIG.BTN_SAVE_JSON' | translate }}</span>
                 </button>
-                <button type="button" class="btn-action-secondary" (click)="triggerProjectUpload(fileUploadInput)" title="Load a saved JSON project">
+                <button type="button" class="btn-action-secondary" (click)="triggerProjectUpload(fileUploadInput)" [title]="'CONFIG.BTN_LOAD_JSON' | translate">
                   <span class="action-icon">📂</span>
-                  <span>Load Project</span>
+                  <span>{{ 'CONFIG.BTN_LOAD_JSON' | translate }}</span>
                 </button>
-                <button type="button" class="btn-action-secondary" (click)="copyShareLink()" title="Copy shareable link with current configuration">
+                <button type="button" class="btn-action-secondary" (click)="copyShareLink()" [title]="'CONFIG.BTN_SHARE' | translate">
                   <span class="action-icon">🔗</span>
-                  <span>Copy Share Link</span>
+                  <span>{{ 'CONFIG.BTN_SHARE' | translate }}</span>
                 </button>
 
                 <!-- Hidden file input for loading JSON project -->
@@ -805,10 +805,10 @@
             <div class="step-footer">
               <button type="button" class="btn-step-prev" (click)="setStep('drivers-wiring')">
                 <span class="btn-arrow">&larr;</span>
-                <span>Modify Drivers &amp; Wiring</span>
+                <span>{{ 'CONFIG.BTN_BACK_STEP3' | translate }}</span>
               </button>
               <a routerLink="/" class="btn-return-home">
-                <span>Return to Home</span>
+                <span>{{ 'CONFIG.BTN_RETURN_HOME' | translate }}</span>
               </a>
             </div>
           </div>

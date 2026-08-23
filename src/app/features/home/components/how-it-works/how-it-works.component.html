@@ -4,11 +4,11 @@
     <div class="section-header">
       <div class="header-badge">
         <span class="badge-icon">⚡</span>
-        <span>DIY CAB BUILD PIPELINE</span>
+        <span>{{ 'HOW.BADGE' | translate }}</span>
       </div>
-      <h2 class="section-title">How BYR AutoCab Works</h2>
+      <h2 class="section-title">{{ 'HOW.TITLE' | translate }}</h2>
       <p class="section-subtitle">
-        From speaker driver selection to shop-ready cut sheets and hardware bills of materials in four clear steps.
+        {{ 'HOW.SUBTITLE' | translate }}
       </p>
     </div>
 
@@ -31,7 +31,7 @@
 
           <!-- Technical Bullets -->
           <div class="step-tech">
-            <span class="tech-label">BUILD SPECIFICATIONS</span>
+            <span class="tech-label">{{ 'HOW.TECH_SPECS_LABEL' | translate }}</span>
             <ul class="tech-list">
               @for (detail of step.technicalDetails; track detail) {
                 <li class="tech-item">
@@ -44,7 +44,7 @@
 
           <!-- Output Sample Box -->
           <div class="sample-box">
-            <span class="sample-label">LIVE ENGINE OUTPUT:</span>
+            <span class="sample-label">{{ 'HOW.OUTPUT_SAMPLE_LABEL' | translate }}</span>
             <code class="sample-code">{{ step.outputSample }}</code>
           </div>
         </div>
@@ -56,10 +56,10 @@
       <div class="banner-glow" aria-hidden="true"></div>
       <div class="banner-content">
         <div class="banner-copy">
-          <span class="banner-pill">READY TO BUILD?</span>
-          <h3 class="banner-title">Build Your Custom Speaker Cab in Seconds</h3>
+          <span class="banner-pill">{{ 'HOW.CTA_PILL' | translate }}</span>
+          <h3 class="banner-title">{{ 'HOW.CTA_TITLE' | translate }}</h3>
           <p class="banner-desc">
-            Choose any speaker configuration, customize dimensions, validate driver clearances, and generate instant cut lists tailored to your tools.
+            {{ 'HOW.CTA_DESC' | translate }}
           </p>
         </div>
         <div class="banner-actions">
@@ -67,7 +67,7 @@
             <svg class="btn-icon" viewBox="0 0 20 20" fill="currentColor">
               <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
             </svg>
-            <span>Start a Cabinet Now</span>
+            <span>{{ 'HOW.CTA_BTN' | translate }}</span>
           </a>
         </div>
       </div>

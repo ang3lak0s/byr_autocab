@@ -1,6 +1,6 @@
-export type JointStrengthRating = 'Moderate' | 'High' | 'Airtight & Rigid' | 'Maximum Tone & Rigidity';
-export type AssemblySpeedRating = 'Ultra Fast' | 'Fast' | 'Standard' | 'Precision Alignment';
-export type ToolingComplexityRating = 'Basic Tools (Hand/Drill)' | 'Intermediate (Table Saw/Router)' | 'Advanced Woodshop';
+export type JointStrengthRating = 'Moderate' | 'High' | 'Airtight & Rigid' | 'Maximum Tone & Rigidity' | string;
+export type AssemblySpeedRating = 'Ultra Fast' | 'Fast' | 'Standard' | 'Precision Alignment' | string;
+export type ToolingComplexityRating = 'Basic Tools (Hand/Drill)' | 'Intermediate (Table Saw/Router)' | 'Advanced Woodshop' | string;
 
 export interface ConstructionMethod {
   id: string;

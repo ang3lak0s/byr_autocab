@@ -4,7 +4,7 @@
       <div class="title-group">
         <span class="live-dot" [class.warning-dot]="!buildPlan.clearanceValidation.isValid"></span>
         <span class="schematic-title">
-          {{ viewMode() === 'front' ? 'FRONT 2D BAFFLE ELEVATION' : 'SIDE PROFILE DEPTH CROSS-SECTION' }}
+          {{ viewMode() === 'front' ? ('SCHEMATIC.TITLE_FRONT' | translate) : ('SCHEMATIC.TITLE_SIDE' | translate) }}
         </span>
       </div>
 
@@ -15,22 +15,22 @@
           class="switch-btn"
           [class.active]="viewMode() === 'front'"
           (click)="setViewMode('front')"
-          title="Front Elevation (Baffle Cutouts & Carcass)">
-          Front Baffle
+          [title]="'SCHEMATIC.SWITCH_FRONT_TITLE' | translate">
+          {{ 'SCHEMATIC.SWITCH_FRONT' | translate }}
         </button>
         <button
           type="button"
           class="switch-btn"
           [class.active]="viewMode() === 'side'"
           (click)="setViewMode('side')"
-          title="Side Profile (Depth & Magnet Clearance)">
-          Side Depth
+          [title]="'SCHEMATIC.SWITCH_SIDE_TITLE' | translate">
+          {{ 'SCHEMATIC.SWITCH_SIDE' | translate }}
         </button>
       </div>
     </div>
 
     <div class="volume-badge">
-      <span class="vol-label">EST. VOLUME:</span>
+      <span class="vol-label">{{ 'SCHEMATIC.EST_VOLUME_LABEL' | translate }}</span>
       <span class="vol-val">{{ buildPlan.acousticVolume.volumeLiters }} L</span>
       <span class="vol-sub">({{ buildPlan.acousticVolume.volumeCuFt }} cu ft)</span>
     </div>
@@ -62,7 +62,7 @@
   <div class="print-dual-schematic-grid print-only-block">
     <!-- View 1: Front Baffle Elevation -->
     <div class="print-schematic-box">
-      <div class="print-box-title">1. FRONT BAFFLE ELEVATION &amp; CUTOUTS</div>
+      <div class="print-box-title">1. {{ 'SCHEMATIC.PRINT_FRONT' | translate }}</div>
       <svg class="preview-svg" viewBox="0 0 460 360" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <pattern id="printGrid1" width="20" height="20" patternUnits="userSpaceOnUse">
@@ -76,7 +76,7 @@
 
     <!-- View 2: Side Profile Depth Cross-Section -->
     <div class="print-schematic-box">
-      <div class="print-box-title">2. SIDE PROFILE DEPTH CROSS-SECTION</div>
+      <div class="print-box-title">2. {{ 'SCHEMATIC.PRINT_SIDE' | translate }}</div>
       <svg class="preview-svg" viewBox="0 0 460 360" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <pattern id="printGrid2" width="20" height="20" patternUnits="userSpaceOnUse">
@@ -288,7 +288,7 @@
         font-family="'JetBrains Mono', monospace"
         font-size="11"
         font-weight="bold">
-        Total Depth: {{ buildPlan.externalDepthMm }} mm ({{ (buildPlan.externalDepthMm / 25.4).toFixed(1) }}")
+        {{ 'SCHEMATIC.TOTAL_DEPTH' | translate }} {{ buildPlan.externalDepthMm }} mm ({{ (buildPlan.externalDepthMm / 25.4).toFixed(1) }}")
       </text>
 
       <!-- External Height Dimension (Left) -->
@@ -429,7 +429,7 @@
           font-family="'JetBrains Mono', monospace"
           font-size="10.5"
           font-weight="bold">
-          🚨 MAGNET CLASH: {{ Math.abs(Math.round(sideClearanceMm)) }}mm OVERFLOW!
+          🚨 {{ 'SCHEMATIC.MAGNET_CLASH' | translate:{ mm: Math.abs(Math.round(sideClearanceMm)) } }}
         </text>
       } @else {
         <!-- Center Subtle Guide Line -->
@@ -477,7 +477,7 @@
           font-size="7.5"
           font-weight="bold"
           class="gap-dim-text">
-          Gap: {{ Math.round(sideClearanceMm) }} mm
+          {{ 'SCHEMATIC.GAP_LABEL' | translate:{ mm: Math.round(sideClearanceMm) } }}
         </text>
         <text
           [attr.x]="canvasCenterX"
@@ -487,7 +487,7 @@
           font-family="'JetBrains Mono', monospace"
           font-size="10"
           font-weight="bold">
-          Mounting Depth: {{ buildPlan.clearanceValidation.depthValidation.speakerMountingDepthMm }} mm &bull; Rear Gap: {{ Math.round(sideClearanceMm) }} mm
+          {{ 'SCHEMATIC.MOUNTING_DEPTH_LABEL' | translate }} {{ buildPlan.clearanceValidation.depthValidation.speakerMountingDepthMm }} mm &bull; {{ 'SCHEMATIC.REAR_GAP_LABEL' | translate }} {{ Math.round(sideClearanceMm) }} mm
         </text>
       }
     </svg:g>
@@ -499,7 +499,7 @@
       <div class="alert-box alert-error">
         <span class="alert-icon">⚠</span>
         <div class="alert-content">
-          <span class="alert-title">Clearance Constraint Conflict</span>
+          <span class="alert-title">{{ 'SCHEMATIC.ALERT_ERROR_TITLE' | translate }}</span>
           @for (w of buildPlan.clearanceValidation.warnings; track w) {
             <p class="alert-msg">{{ w }}</p>
           }
@@ -509,9 +509,9 @@
       <div class="alert-box alert-success">
         <span class="alert-icon">✓</span>
         <div class="alert-content">
-          <span class="alert-title">Full 3D Clearance Verified</span>
+          <span class="alert-title">{{ 'SCHEMATIC.ALERT_SUCCESS_TITLE' | translate }}</span>
           <p class="alert-msg">
-            All {{ state.speaker.count }} driver cutout(s) fit on baffle with &ge; 25mm margin, and driver magnet has {{ Math.round(buildPlan.clearanceValidation.depthValidation.clearanceToBackPanelMm) }} mm rear breathing clearance.
+            {{ 'SCHEMATIC.ALERT_SUCCESS_MSG' | translate:{ count: state.speaker.count, gap: Math.round(buildPlan.clearanceValidation.depthValidation.clearanceToBackPanelMm) } }}
           </p>
         </div>
       </div>
@@ -520,19 +520,19 @@
     <!-- Quick Spec Chips -->
     <div class="specs-bar">
       <div class="spec-chip">
-        <span class="chip-label">Driver Config:</span>
+        <span class="chip-label">{{ 'SCHEMATIC.CHIP_CONFIG' | translate }}</span>
         <span class="chip-val">{{ state.speaker.count }} &times; {{ state.speaker.diameterPreset === 'custom' ? state.speaker.customDiameterInches + '"' : state.speaker.diameterPreset + '"' }} ({{ state.speaker.layout }})</span>
       </div>
       <div class="spec-chip">
-        <span class="chip-label">Power Handling:</span>
+        <span class="chip-label">{{ 'SCHEMATIC.CHIP_POWER' | translate }}</span>
         <span class="chip-val highlight-cyan">{{ buildPlan.clearanceValidation.totalPowerHandlingWatts }}W RMS</span>
       </div>
       <div class="spec-chip">
-        <span class="chip-label">Driver Weight:</span>
+        <span class="chip-label">{{ 'SCHEMATIC.CHIP_WEIGHT' | translate }}</span>
         <span class="chip-val">{{ buildPlan.clearanceValidation.totalDriverWeightKg }} kg ({{ (buildPlan.clearanceValidation.totalDriverWeightKg * 2.20462).toFixed(1) }} lbs)</span>
       </div>
       <div class="spec-chip">
-        <span class="chip-label">Back Style:</span>
+        <span class="chip-label">{{ 'SCHEMATIC.CHIP_BACK' | translate }}</span>
         <span class="chip-val">{{ state.backConfig | titlecase }}</span>
       </div>
     </div>
