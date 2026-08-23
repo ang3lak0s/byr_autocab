@@ -2,8 +2,12 @@
 @use 'mixins' as *;
 
 .how-section {
-  padding: 5rem 0;
+  padding: 2.75rem 0;
   position: relative;
+
+  @include md {
+    padding: 5rem 0;
+  }
 }
 
 .section-header {
@@ -11,7 +15,11 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  margin-bottom: 3.5rem;
+  margin-bottom: 1.75rem;
+
+  @include md {
+    margin-bottom: 3.5rem;
+  }
 }
 
 .header-badge {
@@ -19,7 +27,13 @@
   background: rgba(16, 185, 129, 0.12);
   border: 1px solid rgba(16, 185, 129, 0.35);
   color: #34d399;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
+  font-size: 0.7rem;
+
+  @include sm {
+    margin-bottom: 1rem;
+    font-size: 0.75rem;
+  }
 }
 
 .badge-icon {
@@ -27,33 +41,31 @@
 }
 
 .section-title {
-  font-size: 2.25rem;
+  font-size: clamp(1.65rem, 5.2vw, 2.75rem);
   font-weight: 800;
   color: $color-text-bright;
   letter-spacing: -0.02em;
-  margin-bottom: 0.75rem;
-
-  @include md {
-    font-size: 2.75rem;
-  }
+  margin-bottom: 0.5rem;
 }
 
 .section-subtitle {
-  font-size: 1.05rem;
+  font-size: clamp(0.9rem, 2.5vw, 1.05rem);
   color: $color-text-muted;
   max-width: 680px;
-  line-height: 1.6;
+  line-height: 1.55;
 }
 
 // 4-Step Cards Grid
 .steps-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 1.5rem;
-  margin-bottom: 4.5rem;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
 
   @include md {
     grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 4.5rem;
   }
 
   @include xl {
@@ -63,11 +75,17 @@
 
 .step-card {
   @include glass-card;
-  padding: 1.75rem;
+  padding: 1.15rem 1.25rem;
   display: flex;
   flex-direction: column;
   cursor: pointer;
   position: relative;
+  border-radius: $radius-lg;
+
+  @include sm {
+    padding: 1.75rem;
+    border-radius: $radius-xl;
+  }
 
   &:hover {
     transform: translateY(-4px);
@@ -85,15 +103,23 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1.25rem;
+  margin-bottom: 0.85rem;
+
+  @include sm {
+    margin-bottom: 1.25rem;
+  }
 }
 
 .step-num {
   font-family: $font-mono;
-  font-size: 2rem;
+  font-size: 1.75rem;
   font-weight: 800;
   color: $color-primary-light;
   line-height: 1;
+
+  @include sm {
+    font-size: 2rem;
+  }
 }
 
 .step-badge {
@@ -101,42 +127,66 @@
   background: rgba(22, 34, 59, 0.9);
   border: 1px solid $color-border-default;
   color: $color-text-muted;
-  font-size: 0.7rem;
+  font-size: 0.65rem;
+
+  @include sm {
+    font-size: 0.7rem;
+  }
 }
 
 .step-title {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: $color-text-bright;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.2rem;
+
+  @include sm {
+    font-size: 1.2rem;
+    margin-bottom: 0.25rem;
+  }
 }
 
 .step-subtitle {
-  font-size: 0.825rem;
+  font-size: 0.775rem;
   color: $color-amber-light;
   font-weight: 600;
-  margin-bottom: 0.85rem;
+  margin-bottom: 0.65rem;
+
+  @include sm {
+    font-size: 0.825rem;
+    margin-bottom: 0.85rem;
+  }
 }
 
 .step-desc {
-  font-size: 0.85rem;
+  font-size: 0.825rem;
   color: $color-text-secondary;
-  line-height: 1.55;
-  margin-bottom: 1.25rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+
+  @include sm {
+    font-size: 0.85rem;
+    line-height: 1.55;
+    margin-bottom: 1.25rem;
+  }
 }
 
 .step-tech {
-  margin-bottom: 1.25rem;
+  margin-bottom: 1rem;
   flex-grow: 1;
+
+  @include sm {
+    margin-bottom: 1.25rem;
+  }
 }
 
 .tech-label {
   font-family: $font-mono;
-  font-size: 0.65rem;
+  font-size: 0.625rem;
   font-weight: 700;
   color: $color-text-dim;
-  letter-spacing: 0.06em;
-  margin-bottom: 0.4rem;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.35rem;
   display: block;
 }
 
@@ -144,16 +194,16 @@
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  gap: 0.25rem;
 }
 
 .tech-item {
   display: flex;
   align-items: flex-start;
   gap: 0.4rem;
-  font-size: 0.775rem;
+  font-size: 0.75rem;
   color: $color-text-muted;
-  line-height: 1.4;
+  line-height: 1.35;
 }
 
 .tech-bullet {
@@ -165,24 +215,32 @@
   background: #070b14;
   border: 1px solid $color-border-subtle;
   border-radius: $radius-sm;
-  padding: 0.65rem 0.75rem;
+  padding: 0.5rem 0.65rem;
   margin-top: auto;
+
+  @include sm {
+    padding: 0.65rem 0.75rem;
+  }
 }
 
 .sample-label {
   display: block;
   font-family: $font-mono;
-  font-size: 0.625rem;
+  font-size: 0.6rem;
   color: $color-text-dim;
-  margin-bottom: 0.2rem;
+  margin-bottom: 0.15rem;
 }
 
 .sample-code {
   font-family: $font-mono;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   color: #38bdf8;
   word-break: break-all;
   display: block;
+
+  @include sm {
+    font-size: 0.75rem;
+  }
 }
 
 // CTA Banner
@@ -190,14 +248,15 @@
   @include glass-card;
   position: relative;
   overflow: hidden;
-  padding: 3rem 2rem;
+  padding: 1.75rem 1.25rem;
   border: 1px solid rgba(56, 189, 248, 0.4);
   background: linear-gradient(135deg, rgba(14, 165, 233, 0.15) 0%, rgba(12, 18, 32, 0.95) 70%);
   box-shadow: $shadow-xl, 0 0 35px rgba(56, 189, 248, 0.2);
-  border-radius: $radius-xl;
+  border-radius: $radius-lg;
 
   @include md {
     padding: 3.5rem;
+    border-radius: $radius-xl;
   }
 }
 
@@ -218,21 +277,26 @@
   z-index: 1;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.25rem;
   align-items: flex-start;
   justify-content: space-between;
 
   @include lg {
     flex-direction: row;
     align-items: center;
+    gap: 2rem;
   }
 }
 
 .banner-copy {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.5rem;
   max-width: 620px;
+
+  @include sm {
+    gap: 0.75rem;
+  }
 }
 
 .banner-pill {
@@ -241,34 +305,47 @@
   color: $color-amber-light;
   border: 1px solid rgba(245, 158, 11, 0.4);
   align-self: flex-start;
+  font-size: 0.7rem;
 }
 
 .banner-title {
-  font-size: 2rem;
+  font-size: clamp(1.4rem, 4.5vw, 2.25rem);
   font-weight: 800;
   color: $color-text-bright;
   letter-spacing: -0.02em;
-
-  @include md {
-    font-size: 2.25rem;
-  }
 }
 
 .banner-desc {
-  font-size: 1rem;
+  font-size: clamp(0.85rem, 2.3vw, 1rem);
   color: $color-text-secondary;
-  line-height: 1.6;
+  line-height: 1.55;
+}
+
+.banner-actions {
+  width: 100%;
+
+  @include sm {
+    width: auto;
+  }
 }
 
 .btn-banner-primary {
   @include btn-amber;
-  padding: 1rem 2rem;
-  font-size: 1.05rem;
+  padding: 0.85rem 1.6rem;
+  font-size: 0.975rem;
   font-weight: 700;
   border-radius: $radius-lg;
+  width: 100%;
+  justify-content: center;
+
+  @include sm {
+    width: auto;
+    padding: 1rem 2rem;
+    font-size: 1.05rem;
+  }
 
   .btn-icon {
-    width: 1.25rem;
-    height: 1.25rem;
+    width: 1.2rem;
+    height: 1.2rem;
   }
 }
