@@ -62,9 +62,12 @@
               type="button"
               class="topology-pill-btn"
               [class.active]="wiringResult().activeOption.mode === opt.mode"
+              [class.pro-topology-btn]="opt.mode === 'stereo-split' && !subService.isPro()"
               (click)="setWiringMode(opt.mode)">
               <span class="pill-mode-title">{{ opt.shortLabel }} ({{ opt.totalImpedanceOhms }}&Omega;)</span>
-              @if (opt.isStandardForCount) {
+              @if (opt.mode === 'stereo-split' && !subService.isPro()) {
+                <span class="pill-pro-badge">👑 PRO</span>
+              } @else if (opt.isStandardForCount) {
                 <span class="pill-std-badge">STANDARD</span>
               }
             </button>

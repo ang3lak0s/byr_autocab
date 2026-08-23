@@ -193,6 +193,24 @@
   border-radius: $radius-sm;
 }
 
+.pill-pro-badge {
+  font-size: 0.55rem;
+  background: rgba(245, 158, 11, 0.25);
+  color: #fbbf24;
+  padding: 0.1rem 0.35rem;
+  border-radius: $radius-sm;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+}
+
+.pro-topology-btn {
+  border-color: rgba(245, 158, 11, 0.3);
+
+  &:hover {
+    border-color: $color-amber-light;
+    box-shadow: 0 0 10px rgba(245, 158, 11, 0.2);
+  }
+}
+
 // Schematic Viewport
 .schematic-viewport {
   background: #060a14;

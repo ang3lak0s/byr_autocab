@@ -23,7 +23,7 @@ import { CostSummaryCardComponent } from './components/cost-summary-card/cost-su
 import { SheetCutDiagramComponent } from './components/sheet-cut-diagram/sheet-cut-diagram.component';
 import { SpeakerWiringCardComponent } from './components/speaker-wiring-card/speaker-wiring-card.component';
 import { BuildExportService } from '../../domain/cabinet/services/build-export.service';
-import { from } from 'rxjs';
+import { SubscriptionService } from '../../domain/cabinet/services/subscription.service';
 
 export type ConfigStep = 'speakers' | 'dimensions' | 'drivers-wiring' | 'summary';
 
@@ -46,6 +46,7 @@ export type ConfigStep = 'speakers' | 'dimensions' | 'drivers-wiring' | 'summary
 export class ConfiguratorComponent implements OnInit {
   private readonly calculator = inject(CabinetCalculatorService);
   private readonly exportService = inject(BuildExportService);
+  readonly subService = inject(SubscriptionService);
   private readonly route = inject(ActivatedRoute);
 
   readonly activeStep = signal<ConfigStep>('speakers');
@@ -225,6 +226,14 @@ export class ConfiguratorComponent implements OnInit {
 
   // Speaker Configuration Handlers
   setSpeakerCount(count: SpeakerCount): void {
+    if (count === 4 && !this.subService.isPro()) {
+      this.subService.openUpgradeModal(
+        '4x10 & 4x12 Stacks',
+        'Build heavy 4x10 & 4x12 full and half-stack speaker cabinets with the BYR Pro Workshop Pass.'
+      );
+      return;
+    }
+
     let layout: SpeakerLayoutType = 'single';
     if (count === 2) layout = 'horizontal-2x';
     if (count === 4) layout = 'grid-2x2';
@@ -270,10 +279,11 @@ export class ConfiguratorComponent implements OnInit {
       weight = 6.8;
     }
 
-    // Auto-select first matching driver in database if available
-    const match = this.speakerDatabase().find(
-      (d) => d.nominalSizeInches.toString() === preset
-    );
+    // Auto-select first non-pro (or active) matching driver in database if available
+    const match = this.speakerDatabase().find((d) => {
+      const matchSize = d.nominalSizeInches.toString() === preset;
+      return this.subService.isPro() ? matchSize : matchSize && !d.isProOnly;
+    });
 
     this.state.update((s) => ({
       ...s,
@@ -293,6 +303,14 @@ export class ConfiguratorComponent implements OnInit {
   selectDriver(driverId: string): void {
     const driver = this.speakerDatabase().find((d) => d.id === driverId);
     if (!driver) return;
+
+    if (driver.isProOnly && !this.subService.isPro()) {
+      this.subService.openUpgradeModal(
+        driver.modelName,
+        `Unlock ${driver.modelName} and all boutique/cast-frame pro drivers with the BYR Pro Workshop Pass.`
+      );
+      return;
+    }
 
     this.state.update((s) => ({
       ...s,

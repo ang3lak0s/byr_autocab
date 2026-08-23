@@ -106,6 +106,7 @@ export const SPEAKER_DATABASE: SpeakerDriverModel[] = [
     genreSuitability: ['Boutique Clean', 'Indie', 'Jazz/Fusion', 'Edge-of-Breakup'],
     recommendedEnclosure: 'open-back',
     iconicUserOrAmp: 'Matchless DC-30, Bad Cat, Morgan, Vox Handwired AC30',
+    isProOnly: true,
   },
   {
     id: 'celestion-k100',
@@ -150,6 +151,7 @@ export const SPEAKER_DATABASE: SpeakerDriverModel[] = [
     genreSuitability: ['Southern Rock', 'Sludge/Doom', 'Drop Tunings', 'Heavy Blues'],
     recommendedEnclosure: 'both',
     iconicUserOrAmp: 'Custom 2x12/4x12 Doom/Stoner Cabs, High-Wattage Heads',
+    isProOnly: true,
   },
   {
     id: 'eminence-cannabis-rex',
@@ -215,6 +217,7 @@ export const SPEAKER_DATABASE: SpeakerDriverModel[] = [
     genreSuitability: ['Vintage Blues', 'Tweed Tone', 'Country', 'Rockabilly'],
     recommendedEnclosure: 'open-back',
     iconicUserOrAmp: 'Fender 1950s 5E3 Deluxe, Tweed Twin, Harvard',
+    isProOnly: true,
   },
   {
     id: 'jensen-c12n',
@@ -257,6 +260,7 @@ export const SPEAKER_DATABASE: SpeakerDriverModel[] = [
     genreSuitability: ['High-Gain Lead', 'Clean Headroom', 'Dumble Overdrive', 'Bass & Synth'],
     recommendedEnclosure: 'both',
     iconicUserOrAmp: 'Mesa/Boogie Mark Series (SRV, Santana, Zakk Wylde, Bonamassa), Dumble ODS',
+    isProOnly: true,
   },
 
   // --- 10" & 8" & 15" SPECIALTY DRIVERS ---

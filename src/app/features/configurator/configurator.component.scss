@@ -864,4 +864,47 @@
   }
 }
 
+// Pro Feature Badges & Visual Gating
+.card-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.pro-tag-badge {
+  background: rgba(245, 158, 11, 0.18);
+  border: 1px solid rgba(245, 158, 11, 0.5);
+  color: #fbbf24;
+  font-family: $font-mono;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 0.15rem 0.45rem;
+  border-radius: $radius-full;
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.2);
+}
+
+.pro-driver-badge {
+  background: rgba(245, 158, 11, 0.18);
+  border: 1px solid rgba(245, 158, 11, 0.5);
+  color: #fbbf24;
+  font-family: $font-mono;
+  font-size: 0.625rem;
+  font-weight: 800;
+  padding: 0.1rem 0.4rem;
+  border-radius: $radius-full;
+}
+
+.pro-feature-card,
+.pro-driver-card {
+  position: relative;
+  border-color: rgba(245, 158, 11, 0.25);
+
+  &:hover {
+    border-color: #f59e0b;
+    box-shadow: 0 0 15px rgba(245, 158, 11, 0.25);
+  }
+}
+
+
 

@@ -120,8 +120,14 @@
                   type="button"
                   class="option-card"
                   [class.selected]="state().speaker.count === 4"
+                  [class.pro-feature-card]="!subService.isPro()"
                   (click)="setSpeakerCount(4)">
-                  <span class="option-title">4 Drivers</span>
+                  <div class="card-title-row">
+                    <span class="option-title">4 Drivers</span>
+                    @if (!subService.isPro()) {
+                      <span class="pro-tag-badge">👑 PRO</span>
+                    }
+                  </div>
                   <span class="option-sub">4x12 Quad Half-Stack</span>
                 </button>
               </div>
@@ -540,10 +546,15 @@
                     type="button"
                     class="driver-card"
                     [class.selected]="state().speaker.modelId === d.id"
+                    [class.pro-driver-card]="d.isProOnly && !subService.isPro()"
                     (click)="selectDriver(d.id)">
                     <div class="driver-card-top">
                       <span class="driver-brand">{{ d.brand }}</span>
-                      <span class="driver-wattage font-mono">{{ d.powerRatingWatts }}W</span>
+                      @if (d.isProOnly && !subService.isPro()) {
+                        <span class="pro-driver-badge">👑 PRO</span>
+                      } @else {
+                        <span class="driver-wattage font-mono">{{ d.powerRatingWatts }}W</span>
+                      }
                     </div>
                     <span class="driver-name">{{ d.modelName }}</span>
                     <div class="driver-card-bottom font-mono">

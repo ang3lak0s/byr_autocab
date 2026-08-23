@@ -26,6 +26,7 @@ export interface SpeakerDriverModel {
   genreSuitability: string[];
   recommendedEnclosure: 'closed-back' | 'open-back' | 'both';
   iconicUserOrAmp: string;
+  isProOnly?: boolean;
 }
 
 export interface DepthClearanceValidation {

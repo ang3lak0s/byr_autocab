@@ -7,6 +7,7 @@ import {
   SpeakerWiringResult,
 } from '../../../../domain/cabinet/models/speaker-wiring.model';
 import { SpeakerWiringService } from '../../../../domain/cabinet/services/speaker-wiring.service';
+import { SubscriptionService } from '../../../../domain/cabinet/services/subscription.service';
 
 @Component({
   selector: 'app-speaker-wiring-card',
@@ -17,6 +18,7 @@ import { SpeakerWiringService } from '../../../../domain/cabinet/services/speake
 })
 export class SpeakerWiringCardComponent {
   private readonly wiringService = inject(SpeakerWiringService);
+  readonly subService = inject(SubscriptionService);
 
   readonly driverCount = input.required<number>();
   readonly driverModelName = input<string>('Speaker Driver');
@@ -56,6 +58,13 @@ export class SpeakerWiringCardComponent {
   }
 
   setWiringMode(mode: WiringMode): void {
+    if (mode === 'stereo-split' && !this.subService.isPro()) {
+      this.subService.openUpgradeModal(
+        'Stereo / Mono Switchable Jackplate',
+        'Unlock stereo split and multi-tap impedance switching matrix with the BYR Pro Workshop Pass.'
+      );
+      return;
+    }
     this.selectedWiringMode.set(mode);
   }
 }

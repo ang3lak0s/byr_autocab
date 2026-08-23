@@ -131,48 +131,52 @@
   gap: 1rem;
 }
 
-.status-badge {
-  display: none;
+.tier-pill {
+  display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  padding: 0.25rem 0.65rem;
-  background: rgba(16, 185, 129, 0.1);
-  border: 1px solid rgba(16, 185, 129, 0.3);
+  gap: 0.35rem;
+  padding: 0.3rem 0.75rem;
   border-radius: $radius-full;
-
-  @include md {
-    display: flex;
-  }
-}
-
-.status-dot {
-  width: 6px;
-  height: 6px;
-  background: $color-success;
-  border-radius: 50%;
-  box-shadow: 0 0 8px $color-success;
-  animation: pulse-dot 2s infinite ease-in-out;
-}
-
-@keyframes pulse-dot {
-  0%, 100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.5;
-    transform: scale(0.85);
-  }
-}
-
-.status-text {
   font-family: $font-mono;
-  font-size: 0.7rem;
-  font-weight: 600;
-  color: #34d399;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  font-size: 0.725rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all $transition-normal;
+  border: 1px solid transparent;
+
+  .pill-icon {
+    font-size: 0.85rem;
+  }
+
+  &.free-tier-pill {
+    background: rgba(14, 165, 233, 0.12);
+    border-color: rgba(56, 189, 248, 0.35);
+    color: $color-primary-light;
+
+    &:hover {
+      background: rgba(14, 165, 233, 0.22);
+      border-color: $color-primary-light;
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.3);
+      transform: translateY(-1px);
+    }
+  }
+
+  &.pro-tier-pill {
+    background: rgba(245, 158, 11, 0.15);
+    border-color: rgba(245, 158, 11, 0.45);
+    color: #fbbf24;
+    box-shadow: 0 0 12px rgba(245, 158, 11, 0.2);
+
+    &:hover {
+      background: rgba(245, 158, 11, 0.25);
+      border-color: #fbbf24;
+      box-shadow: 0 0 18px rgba(245, 158, 11, 0.4);
+      transform: translateY(-1px);
+    }
+  }
 }
+
 
 .btn-cta {
   @include btn-primary;

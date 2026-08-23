@@ -1,0 +1,109 @@
+@if (isOpen()) {
+  <div class="modal-backdrop" (click)="close()" role="dialog" aria-modal="true" aria-labelledby="upgrade-modal-title">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      <!-- Close Button -->
+      <button type="button" class="btn-close" (click)="close()" aria-label="Close modal">
+        &times;
+      </button>
+
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <div class="pro-crown-badge">
+          <span class="crown-icon">👑</span>
+          <span class="badge-text">BYR PRO WORKSHOP</span>
+        </div>
+
+        <h2 id="upgrade-modal-title" class="modal-title">
+          @if (triggerContext(); as ctx) {
+            Unlock {{ ctx.featureName }}
+          } @else {
+            Upgrade to Pro Workshop
+          }
+        </h2>
+
+        <p class="modal-lead">
+          @if (triggerContext(); as ctx) {
+            {{ ctx.description }}
+          } @else {
+            Take your cabinet builds from standard hobby enclosures to professional touring stacks and boutique custom builds.
+          }
+        </p>
+      </div>
+
+      <!-- Pricing Plans Comparison Grid -->
+      <div class="plans-grid">
+        <!-- Free Tier Card -->
+        <div class="plan-card" [class.current]="!isPro()">
+          <div class="plan-head">
+            <span class="plan-tier-name">Maker Free</span>
+            <div class="plan-price">
+              <span class="currency">$</span>
+              <span class="amount">0</span>
+              <span class="period">/ forever</span>
+            </div>
+            <p class="plan-desc">Essential tools for standard 1x &amp; 2x cabs.</p>
+          </div>
+
+          <ul class="features-list">
+            <li><span class="check text-success">✓</span> 1x &amp; 2x Enclosures (1x12, 2x12, 1x15)</li>
+            <li><span class="check text-success">✓</span> Standard Workhorse Drivers</li>
+            <li><span class="check text-success">✓</span> Direct Mono Wiring Topologies</li>
+            <li><span class="check text-success">✓</span> Workshop Traveler with BYR footer</li>
+            <li class="disabled"><span class="cross">✕</span> 4x10 / 4x12 Stacks (Pro Only)</li>
+            <li class="disabled"><span class="cross">✕</span> Boutique Drivers (EVM-12L, Alnico)</li>
+          </ul>
+
+          <div class="plan-action">
+            @if (!isPro()) {
+              <div class="current-plan-pill">Active Plan</div>
+            } @else {
+              <button type="button" class="btn-secondary-plan" (click)="downgradeToFree()">
+                Switch to Free (Demo)
+              </button>
+            }
+          </div>
+        </div>
+
+        <!-- Pro Tier Card (Highlighted) -->
+        <div class="plan-card pro-card" [class.current]="isPro()">
+          <div class="popular-ribbon">👑 WORKSHOP</div>
+
+          <div class="plan-head">
+            <span class="plan-tier-name text-amber">Pro Pass</span>
+            <div class="plan-price text-amber">
+              <span class="currency">$</span>
+              <span class="amount">19</span>
+              <span class="period">/ lifetime</span>
+            </div>
+            <p class="plan-desc">For custom builders, tone chasers &amp; touring rigs.</p>
+          </div>
+
+          <ul class="features-list">
+            <li><span class="check text-amber">👑</span> <strong>4x10 &amp; 4x12 Full &amp; Half Stacks</strong></li>
+            <li><span class="check text-amber">👑</span> <strong>Boutique Drivers (EVM-12L, Alnico Gold)</strong></li>
+            <li><span class="check text-amber">👑</span> <strong>Stereo / Mono Switchable Jackplates</strong></li>
+            <li><span class="check text-amber">👑</span> <strong>Multi-Sheet Plywood Cut Optimizer</strong></li>
+            <li><span class="check text-amber">👑</span> <strong>Unbranded High-Res Workshop PDF</strong></li>
+            <li><span class="check text-amber">👑</span> <strong>Lifetime Access &amp; Updates</strong></li>
+          </ul>
+
+          <div class="plan-action">
+            @if (isPro()) {
+              <div class="active-pro-pill">👑 PRO UNLOCKED</div>
+            } @else {
+              <button type="button" class="btn-pro-activate" (click)="activatePro()">
+                <span class="btn-icon">⚡</span>
+                <span>Activate Pro (Demo)</span>
+              </button>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Guarantee -->
+      <div class="modal-footer-info">
+        <span class="guarantee-text">🛡️ Instant Lifetime Access &bull; 100% Deterministic Workshop Accuracy</span>
+      </div>
+    </div>
+  </div>
+}

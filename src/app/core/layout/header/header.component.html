@@ -35,10 +35,18 @@
 
     <!-- Header Actions -->
     <div class="header-actions">
-      <div class="status-badge" title="Engine Status">
-        <span class="status-dot"></span>
-        <span class="status-text">Audio Ready</span>
-      </div>
+      <!-- Subscription Tier Pill -->
+      @if (subService.isPro()) {
+        <button type="button" class="tier-pill pro-tier-pill" (click)="openUpgradeModal()" title="BYR Pro Active (Click to manage)">
+          <span class="pill-icon">👑</span>
+          <span class="pill-text">PRO WORKSHOP</span>
+        </button>
+      } @else {
+        <button type="button" class="tier-pill free-tier-pill" (click)="openUpgradeModal()" title="Free Maker Tier (Click to Upgrade)">
+          <span class="pill-icon">⚡</span>
+          <span class="pill-text">GET PRO</span>
+        </button>
+      }
 
       <a routerLink="/configurator" class="btn-cta">
         <svg class="cta-icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
