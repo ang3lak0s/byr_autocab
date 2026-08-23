@@ -10,7 +10,7 @@ const STORAGE_TIER_KEY = 'byr_autocab_tier';
 const STORAGE_LICENSE_KEY = 'byr_autocab_license_key';
 
 // Replace this with your live Lemon Squeezy or Stripe Payment Link URL
-export const DEFAULT_CHECKOUT_URL = 'https://byrautocab.lemonsqueezy.com/buy/pro-workshop';
+export const DEFAULT_CHECKOUT_URL = 'https://byrautocab.lemonsqueezy.com/checkout/buy/9ebbd960-4ca7-4ca2-afa2-bf74ef328b12';
 
 @Injectable({
   providedIn: 'root',
