@@ -21,6 +21,13 @@ describe('TranslationService', () => {
     expect(service.isHungarian()).toBe(false);
   });
 
+  it('should restore stored Hungarian preference from localStorage', () => {
+    localStorage.setItem('byr_autocab_lang', 'hu');
+    const newService = new TranslationService();
+    expect(newService.currentLanguage()).toBe('hu');
+    expect(newService.isHungarian()).toBe(true);
+  });
+
   it('should switch to Hungarian when setLanguage is called', () => {
     service.setLanguage('hu');
     expect(service.currentLanguage()).toBe('hu');

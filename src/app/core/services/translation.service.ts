@@ -91,7 +91,7 @@ export class TranslationService {
   }
 
   /**
-   * Detects initial language from localStorage or browser navigator
+   * Detects initial language from localStorage, strictly defaulting to English ('en')
    */
   private detectInitialLanguage(): SupportedLanguage {
     if (typeof window !== 'undefined') {
@@ -99,11 +99,6 @@ export class TranslationService {
         const stored = localStorage.getItem(STORAGE_KEY);
         if (stored === 'en' || stored === 'hu') {
           return stored;
-        }
-
-        const navLang = navigator.language?.toLowerCase() || '';
-        if (navLang.startsWith('hu')) {
-          return 'hu';
         }
       } catch {
         // Fallback to 'en'
