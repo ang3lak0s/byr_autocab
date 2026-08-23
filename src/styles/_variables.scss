@@ -1,0 +1,87 @@
+// BYR AutoCab Design Tokens & Color Palette
+
+// Theme Colors - Dark Technical Blueprint & Precision Woodworking
+$color-bg-deep: #070b14;
+$color-bg-main: #0c1220;
+$color-bg-surface: #111a2e;
+$color-bg-surface-elevated: #16223b;
+$color-bg-surface-hover: #1c2b4a;
+$color-bg-glass: rgba(17, 26, 46, 0.75);
+$color-bg-glass-card: rgba(22, 34, 59, 0.65);
+
+// Primary Accent - Blueprint Precision Cyan
+$color-primary: #0284c7;
+$color-primary-light: #38bdf8;
+$color-primary-dark: #0369a1;
+$color-primary-glow: rgba(56, 189, 248, 0.25);
+$color-primary-subtle: rgba(14, 165, 233, 0.12);
+
+// Secondary Accent - Warm Wood Amber / Workshop Gold
+$color-amber: #f59e0b;
+$color-amber-light: #fbbf24;
+$color-amber-dark: #d97706;
+$color-amber-glow: rgba(245, 158, 11, 0.25);
+$color-amber-subtle: rgba(245, 158, 11, 0.12);
+
+// Functional / State Colors
+$color-success: #10b981;
+$color-success-subtle: rgba(16, 185, 129, 0.12);
+$color-warning: #f59e0b;
+$color-danger: #ef4444;
+$color-info: #0ea5e9;
+
+// Neutral Colors & Text
+$color-text-bright: #ffffff;
+$color-text-primary: #f1f5f9;
+$color-text-secondary: #cbd5e1;
+$color-text-muted: #94a3b8;
+$color-text-dim: #64748b;
+
+// Borders & Dividers
+$color-border-subtle: #1e293b;
+$color-border-default: #283750;
+$color-border-highlight: #3b5072;
+$color-border-primary: rgba(56, 189, 248, 0.35);
+$color-border-amber: rgba(245, 158, 11, 0.35);
+
+// Typography
+$font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+$font-mono: 'JetBrains Mono', 'SF Mono', Consolas, Menlo, Monaco, monospace;
+
+// Elevation & Shadows
+$shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+$shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+$shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
+$shadow-xl: 0 16px 36px rgba(0, 0, 0, 0.6);
+$shadow-cyan-glow: 0 0 25px rgba(56, 189, 248, 0.3);
+$shadow-amber-glow: 0 0 25px rgba(245, 158, 11, 0.3);
+
+// Radii
+$radius-xs: 4px;
+$radius-sm: 6px;
+$radius-md: 10px;
+$radius-lg: 14px;
+$radius-xl: 20px;
+$radius-full: 9999px;
+
+// Transitions
+$transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+$transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+$transition-slow: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+
+// Breakpoints
+$bp-sm: 640px;
+$bp-md: 768px;
+$bp-lg: 1024px;
+$bp-xl: 1280px;
+$bp-2xl: 1536px;
+
+// Z-Index Layers
+$z-dropdown: 100;
+$z-sticky: 200;
+$z-fixed: 300;
+$z-modal-backdrop: 400;
+$z-modal: 500;
+$z-popover: 600;
+$z-toast: 700;
+

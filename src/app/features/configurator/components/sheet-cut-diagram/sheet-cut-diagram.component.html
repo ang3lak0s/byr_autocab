@@ -1,0 +1,352 @@
+<div class="optimizer-card">
+  <!-- Card Header -->
+  <div class="optimizer-head">
+    <div class="head-left">
+      <span class="optimizer-badge">2D PLYWOOD CUT OPTIMIZER</span>
+      <h3 class="optimizer-title">Plywood Sheet Cut Layout &amp; Rip/Cross Cut Plan</h3>
+      <p class="optimizer-sub">
+        Deterministic 2D guillotine cut optimization accounting for saw blade kerf and sheet yield.
+      </p>
+    </div>
+
+    <!-- Overall Project Sheet Yield Stat Box -->
+    <div class="yield-badge-box">
+      <div class="yield-col">
+        <span class="yield-label">SHEETS NEEDED:</span>
+        <span class="yield-val">{{ result().totalSheetsRequired }} Sheet(s)</span>
+      </div>
+      <div class="yield-col">
+        <span class="yield-label">PROJECT YIELD:</span>
+        <span class="yield-val highlight">{{ result().overallEfficiencyPercent }}%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Controls Toolbar -->
+  <div class="controls-toolbar">
+    <!-- Plywood Preset Selector -->
+    <div class="control-group">
+      <span class="control-label">PLYWOOD SHEET PRESET:</span>
+      <div class="preset-pill-group">
+        @for (p of presets; track p.id) {
+          <button
+            type="button"
+            class="preset-pill-btn"
+            [class.active]="selectedPreset() === p.id"
+            (click)="selectPreset(p.id)">
+            <span class="pill-name">{{ p.name }}</span>
+            <span class="pill-dim">{{ p.widthMm }}&times;{{ p.heightMm }}mm ({{ p.widthInches }}&times;{{ p.heightInches }})</span>
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- Secondary Controls (Kerf & Rotation) -->
+    <div class="secondary-controls-row">
+      <!-- Saw Blade Kerf -->
+      <div class="kerf-selector">
+        <span class="control-label">BLADE KERF:</span>
+        <div class="mini-btn-group">
+          <button
+            type="button"
+            class="mini-btn"
+            [class.active]="kerfMm() === 3.2"
+            (click)="setKerf(3.2)"
+            title="Standard 1/8 inch table saw blade">
+            3.2mm (1/8")
+          </button>
+          <button
+            type="button"
+            class="mini-btn"
+            [class.active]="kerfMm() === 2.0"
+            (click)="setKerf(2.0)"
+            title="Thin kerf circular saw blade">
+            2.0mm (Thin)
+          </button>
+          <button
+            type="button"
+            class="mini-btn"
+            [class.active]="kerfMm() === 0"
+            (click)="setKerf(0)"
+            title="Zero kerf theoretical area">
+            0mm (Flush)
+          </button>
+        </div>
+      </div>
+
+      <!-- Rotation Toggle -->
+      <div class="rotation-toggle">
+        <span class="control-label">GRAIN ROTATION:</span>
+        <button
+          type="button"
+          class="toggle-btn"
+          [class.active]="allowRotation()"
+          (click)="toggleRotation()">
+          <span class="toggle-icon">{{ allowRotation() ? '✓' : '✗' }}</span>
+          <span>{{ allowRotation() ? 'Allow 90° Panel Rotation' : 'Strict Grain (No Rotation)' }}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Multi-Sheet Tab Selector (If more than 1 sheet required) -->
+  @if (result().sheets.length > 1) {
+    <div class="sheet-tabs-row">
+      <span class="sheet-tabs-label">SHEET SELECTOR:</span>
+      <div class="sheet-tabs-list">
+        @for (sheet of result().sheets; track sheet.sheetIndex) {
+          <button
+            type="button"
+            class="sheet-tab-btn"
+            [class.active]="activeSheetIndex() === sheet.sheetIndex"
+            (click)="setSheetIndex(sheet.sheetIndex)">
+            <span>Sheet {{ sheet.sheetIndex }} of {{ result().totalSheetsRequired }}</span>
+            <span class="tab-yield-pill">{{ sheet.utilizationPercent }}% Yield</span>
+          </button>
+        }
+      </div>
+    </div>
+  }
+
+  <!-- SVG Viewport Card -->
+  <div class="svg-sheet-container">
+    <div class="sheet-viewport-header">
+      <div class="sheet-meta-left">
+        <span class="active-sheet-tag">SHEET #{{ activeSheet().sheetIndex }} OF {{ result().totalSheetsRequired }}</span>
+        <span class="sheet-dim-tag">{{ activeSheet().sheetWidthMm }} &times; {{ activeSheet().sheetHeightMm }} mm</span>
+      </div>
+      <div class="sheet-meta-right">
+        <span class="meta-item">Used: <strong>{{ (activeSheet().usedAreaMm2 / 1000000).toFixed(2) }} m&sup2;</strong></span>
+        <span class="meta-item">Scrap: <strong>{{ (activeSheet().wasteAreaMm2 / 1000000).toFixed(2) }} m&sup2;</strong></span>
+        <span class="meta-item yield-pill">Efficiency: <strong>{{ activeSheet().utilizationPercent }}%</strong></span>
+      </div>
+    </div>
+
+    <div class="svg-scroll-wrapper">
+      <svg class="sheet-svg" viewBox="0 0 840 520" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="cutGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(56, 189, 248, 0.05)" stroke-width="1"/>
+          </pattern>
+          <pattern id="scrapHatch" width="12" height="12" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
+            <line x1="0" y1="0" x2="0" y2="12" stroke="rgba(239, 68, 68, 0.12)" stroke-width="2" />
+          </pattern>
+
+          <!-- Per-panel SVG text clip paths -->
+          @for (panel of activeSheet().placedPanels; track panel.id) {
+            @let pxX = sheetX() + panel.xMm * scale();
+            @let pxY = sheetY() + panel.yMm * scale();
+            @let pxW = panel.widthMm * scale();
+            @let pxH = panel.heightMm * scale();
+            <clipPath [id]="'clip-' + panel.id">
+              <rect
+                [attr.x]="pxX + 4"
+                [attr.y]="pxY + 3"
+                [attr.width]="Math.max(1, pxW - 8)"
+                [attr.height]="Math.max(1, pxH - 6)" />
+            </clipPath>
+          }
+        </defs>
+
+        <!-- Canvas Background -->
+        <rect width="840" height="520" fill="url(#cutGrid)" />
+
+        <!-- Dimension Marker: Width (Top) -->
+        <line
+          [attr.x1]="sheetX()"
+          [attr.y1]="sheetY() - 14"
+          [attr.x2]="sheetX() + sheetW()"
+          [attr.y2]="sheetY() - 14"
+          stroke="#38bdf8"
+          stroke-width="1.5"
+          stroke-dasharray="3 3"/>
+        <line
+          [attr.x1]="sheetX()"
+          [attr.y1]="sheetY() - 20"
+          [attr.x2]="sheetX()"
+          [attr.y2]="sheetY() - 8"
+          stroke="#38bdf8"
+          stroke-width="1.5"/>
+        <line
+          [attr.x1]="sheetX() + sheetW()"
+          [attr.y1]="sheetY() - 20"
+          [attr.x2]="sheetX() + sheetW()"
+          [attr.y2]="sheetY() - 8"
+          stroke="#38bdf8"
+          stroke-width="1.5"/>
+        <text
+          [attr.x]="sheetX() + sheetW() / 2"
+          [attr.y]="sheetY() - 20"
+          text-anchor="middle"
+          fill="#38bdf8"
+          font-family="'JetBrains Mono', monospace"
+          font-size="11"
+          font-weight="bold">
+          Sheet Width: {{ activeSheet().sheetWidthMm }} mm ({{ (activeSheet().sheetWidthMm / 25.4).toFixed(1) }}")
+        </text>
+
+        <!-- Dimension Marker: Height (Left) -->
+        <line
+          [attr.x1]="sheetX() - 14"
+          [attr.y1]="sheetY()"
+          [attr.x2]="sheetX() - 14"
+          [attr.y2]="sheetY() + sheetH()"
+          stroke="#f59e0b"
+          stroke-width="1.5"
+          stroke-dasharray="3 3"/>
+        <line
+          [attr.x1]="sheetX() - 20"
+          [attr.y1]="sheetY()"
+          [attr.x2]="sheetX() - 8"
+          [attr.y2]="sheetY()"
+          stroke="#f59e0b"
+          stroke-width="1.5"/>
+        <line
+          [attr.x1]="sheetX() - 20"
+          [attr.y1]="sheetY() + sheetH()"
+          [attr.x2]="sheetX() - 8"
+          [attr.y2]="sheetY() + sheetH()"
+          stroke="#f59e0b"
+          stroke-width="1.5"/>
+        <text
+          [attr.x]="sheetX() - 20"
+          [attr.y]="sheetY() + sheetH() / 2"
+          text-anchor="middle"
+          [attr.transform]="'rotate(-90 ' + (sheetX() - 20) + ' ' + (sheetY() + sheetH() / 2) + ')'"
+          fill="#f59e0b"
+          font-family="'JetBrains Mono', monospace"
+          font-size="11"
+          font-weight="bold">
+          Sheet Length: {{ activeSheet().sheetHeightMm }} mm ({{ (activeSheet().sheetHeightMm / 25.4).toFixed(1) }}")
+        </text>
+
+        <!-- Full Plywood Sheet Boundary (Scrap Base) -->
+        <rect
+          [attr.x]="sheetX()"
+          [attr.y]="sheetY()"
+          [attr.width]="sheetW()"
+          [attr.height]="sheetH()"
+          rx="4"
+          fill="#0a101f"
+          stroke="rgba(56, 189, 248, 0.4)"
+          stroke-width="2"/>
+        <rect
+          [attr.x]="sheetX()"
+          [attr.y]="sheetY()"
+          [attr.width]="sheetW()"
+          [attr.height]="sheetH()"
+          fill="url(#scrapHatch)" />
+
+        <!-- Placed Panels on Sheet -->
+        @for (panel of activeSheet().placedPanels; track panel.id) {
+          @let pxX = sheetX() + panel.xMm * scale();
+          @let pxY = sheetY() + panel.yMm * scale();
+          @let pxW = panel.widthMm * scale();
+          @let pxH = panel.heightMm * scale();
+          @let colors = getPanelColor(panel.colorIndex);
+          @let shortTitle = getShortName(panel.partName, pxW);
+          @let dimText = getDimensionText(panel, pxW);
+          @let titleSize = getTitleFontSize(pxW);
+          @let dimSize = getDimFontSize(pxW);
+
+          <g
+            class="panel-svg-group"
+            (mouseenter)="hoveredPanel.set(panel)"
+            (mouseleave)="hoveredPanel.set(null)">
+            <!-- Panel Box -->
+            <rect
+              [attr.x]="pxX"
+              [attr.y]="pxY"
+              [attr.width]="pxW"
+              [attr.height]="pxH"
+              rx="3"
+              [attr.fill]="colors.fill"
+              [attr.stroke]="colors.stroke"
+              stroke-width="1.75"/>
+
+            <!-- Kerf Cut Border Line (White inner highlight) -->
+            <rect
+              [attr.x]="pxX + 1"
+              [attr.y]="pxY + 1"
+              [attr.width]="Math.max(1, pxW - 2)"
+              [attr.height]="Math.max(1, pxH - 2)"
+              fill="none"
+              stroke="rgba(255, 255, 255, 0.08)"
+              stroke-width="1"/>
+
+            <!-- Panel Label Group (Safely clipped within panel bounds) -->
+            @if (pxW > 45 && pxH > 26) {
+              <g [attr.clip-path]="'url(#clip-' + panel.id + ')'">
+                <!-- Part Name -->
+                <text
+                  [attr.x]="pxX + pxW / 2"
+                  [attr.y]="pxH > 60 ? pxY + pxH / 2 - 8 : (pxH > 40 ? pxY + pxH / 2 - 4 : pxY + pxH / 2 + 3)"
+                  text-anchor="middle"
+                  [attr.fill]="colors.text"
+                  font-family="'Plus Jakarta Sans', sans-serif"
+                  [attr.font-size]="titleSize"
+                  font-weight="700">
+                  {{ shortTitle }}
+                </text>
+
+                <!-- Dimensions -->
+                @if (pxH > 40) {
+                  <text
+                    [attr.x]="pxX + pxW / 2"
+                    [attr.y]="pxH > 60 ? pxY + pxH / 2 + 8 : pxY + pxH / 2 + 9"
+                    text-anchor="middle"
+                    fill="rgba(255, 255, 255, 0.75)"
+                    font-family="'JetBrains Mono', monospace"
+                    [attr.font-size]="dimSize"
+                    font-weight="600">
+                    {{ dimText }}
+                  </text>
+                }
+
+                <!-- Rotated Grain Indicator -->
+                @if (panel.rotated && pxH > 75 && pxW > 70) {
+                  <text
+                    [attr.x]="pxX + pxW / 2"
+                    [attr.y]="pxY + pxH / 2 + 22"
+                    text-anchor="middle"
+                    fill="#f59e0b"
+                    font-family="'JetBrains Mono', monospace"
+                    font-size="8"
+                    font-weight="700">
+                    ↺ 90° Rotated
+                  </text>
+                }
+              </g>
+            }
+          </g>
+        }
+      </svg>
+    </div>
+  </div>
+
+  <!-- Panel Cut Schedule Legend Table -->
+  <div class="sheet-legend-card">
+    <div class="legend-header">
+      <span class="legend-title">PARTS ON SHEET #{{ activeSheet().sheetIndex }} ({{ activeSheet().placedPanels.length }} Panels)</span>
+      <span class="legend-sub">Saw Kerf Allowance: {{ kerfMm() }}mm (1/8") &bull; Joinery Core: Baltic Birch</span>
+    </div>
+
+    <div class="legend-grid">
+      @for (panel of activeSheet().placedPanels; track panel.id) {
+        @let colors = getPanelColor(panel.colorIndex);
+        <div class="legend-item" [class.highlighted]="hoveredPanel()?.id === panel.id">
+          <div class="item-color-indicator" [style.background]="colors.stroke"></div>
+          <div class="item-details">
+            <span class="item-name">{{ panel.partName }}</span>
+            <span class="item-dims font-mono text-cyan">
+              {{ panel.widthMm }} &times; {{ panel.heightMm }} mm ({{ panel.widthInches }} &times; {{ panel.heightInches }})
+            </span>
+          </div>
+          @if (panel.rotated) {
+            <span class="rotation-pill">↺ 90°</span>
+          }
+        </div>
+      }
+    </div>
+  </div>
+</div>

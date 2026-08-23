@@ -1,0 +1,55 @@
+<div class="cutlist-card">
+  <div class="cutlist-header">
+    <div class="header-left">
+      <span class="cutlist-badge">WORKSHOP TRAVELER</span>
+      <h3 class="cutlist-title">Panel Cut List &amp; Dimensions</h3>
+    </div>
+    <div class="header-actions">
+      <button type="button" class="btn-tool" (click)="copyCutList()" title="Copy cut list text">
+        <svg class="tool-icon" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" />
+          <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2V5a2 2 0 00-2-2 3 3 0 01-3 3H9a3 3 0 01-3-3z" />
+        </svg>
+        <span>{{ copied() ? 'Copied!' : 'Copy Cut List' }}</span>
+      </button>
+      <button type="button" class="btn-tool" (click)="printPlan()" title="Print build sheet">
+        <svg class="tool-icon" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z" clip-rule="evenodd" />
+        </svg>
+        <span>Print Build Sheet</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="cutlist-table">
+      <thead>
+        <tr>
+          <th class="print-checkbox-col print-only">Done</th>
+          <th>Part Name</th>
+          <th class="text-center">Qty</th>
+          <th>Metric (mm)</th>
+          <th>Imperial (Fractional)</th>
+          <th>Thickness</th>
+          <th>Machining / Assembly Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of cutList; track item.partName) {
+          <tr>
+            <td class="print-checkbox-col print-only text-center font-mono">[ &nbsp; ]</td>
+            <td class="part-name">
+              <span class="part-bullet">&#9656;</span>
+              <strong>{{ item.partName }}</strong>
+            </td>
+            <td class="text-center font-mono qty-cell">{{ item.quantity }}</td>
+            <td class="font-mono text-cyan">{{ item.widthMm }} &times; {{ item.heightOrDepthMm }} mm</td>
+            <td class="font-mono text-amber">{{ item.widthInches }} &times; {{ item.heightOrDepthInches }}</td>
+            <td class="font-mono">{{ item.thicknessMm }}mm ({{ item.thicknessInches }})</td>
+            <td class="part-notes">{{ item.notes }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

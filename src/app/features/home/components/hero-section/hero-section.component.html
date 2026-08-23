@@ -1,0 +1,252 @@
+<section class="hero-section">
+  <!-- Glowing Background Orbs -->
+  <div class="hero-glow hero-glow-cyan" aria-hidden="true"></div>
+  <div class="hero-glow hero-glow-amber" aria-hidden="true"></div>
+
+  <div class="container hero-container">
+    <!-- Left Column: Copy & CTAs -->
+    <div class="hero-content">
+      <!-- Release / Status Pill -->
+      <div class="hero-pill">
+        <span class="pill-dot"></span>
+        <span class="pill-text">BYR AUTOCAB 1.0 &bull; SPEAKER ENCLOSURE PLANNER</span>
+        <span class="pill-accent">AUDIO READY</span>
+      </div>
+
+      <!-- Main Headline -->
+      <h1 class="hero-title">
+        Custom Speaker Cabs & <br/>
+        <span class="text-gradient-cyan">Precision Cut Lists</span> <br/>
+        In Seconds.
+      </h1>
+
+      <!-- Value Proposition -->
+      <p class="hero-lead">
+        Design rock-solid guitar cabs, bass enclosures, and audio speaker boxes. Validate speaker clearances, compute internal acoustic volume, calculate exact panel cut lists, and adapt the build plan to your shop tools.
+      </p>
+
+      <!-- Primary & Secondary CTAs -->
+      <div class="hero-actions">
+        <a routerLink="/configurator" class="btn-hero-primary">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+          </svg>
+          <span>Start a Cabinet</span>
+        </a>
+
+        <a routerLink="/" fragment="methods" class="btn-hero-secondary">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          <span>Explore Joinery Specs</span>
+        </a>
+      </div>
+
+      <!-- Key Tech Stats Grid -->
+      <div class="hero-stats-grid">
+        <div class="stat-card">
+          <span class="stat-val">100% Verified</span>
+          <span class="stat-label">Driver Clearances</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-val">Litres &amp; Cu Ft</span>
+          <span class="stat-label">Internal Air Volume</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-val">5 Methods</span>
+          <span class="stat-label">Cleats, Box Joints &amp; More</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-val">Full BOM</span>
+          <span class="stat-label">Tolex, Grill &amp; Hardware</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Interactive Blueprint Schematic Card -->
+    <div class="hero-preview-wrapper">
+      <div class="blueprint-card">
+        <!-- Card Top Toolbar -->
+        <div class="card-toolbar">
+          <div class="toolbar-title">
+            <span class="blueprint-dot"></span>
+            <span class="card-caption">LIVE SPEAKER ENCLOSURE SCHEMATIC</span>
+          </div>
+
+          <!-- Unit Selector Switch -->
+          <div class="unit-toggle" role="group" aria-label="Dimension Unit">
+            <button
+              type="button"
+              class="unit-btn"
+              [class.active]="activeUnit() === 'in'"
+              (click)="toggleUnit('in')">
+              IN (")
+            </button>
+            <button
+              type="button"
+              class="unit-btn"
+              [class.active]="activeUnit() === 'mm'"
+              (click)="toggleUnit('mm')">
+              MM
+            </button>
+          </div>
+        </div>
+
+        <!-- Preset Switcher Chips -->
+        <div class="preset-chips">
+          <button
+            type="button"
+            class="preset-chip"
+            [class.active]="activePreset() === 'cab112'"
+            (click)="selectPreset('cab112')">
+            1x12" Widebody
+          </button>
+          <button
+            type="button"
+            class="preset-chip"
+            [class.active]="activePreset() === 'cab212'"
+            (click)="selectPreset('cab212')">
+            2x12" Rock Cab
+          </button>
+          <button
+            type="button"
+            class="preset-chip"
+            [class.active]="activePreset() === 'cab412'"
+            (click)="selectPreset('cab412')">
+            4x12" Half-Stack
+          </button>
+        </div>
+
+        <!-- SVG Parametric Wireframe Preview -->
+        <div class="schematic-viewport">
+          <div class="grid-watermark">BYR ACOUSTIC CAD ENGINE</div>
+
+          <!-- Interactive SVG Wireframe Render -->
+          <svg class="carcass-svg" viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <pattern id="cadGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(56, 189, 248, 0.08)" stroke-width="1"/>
+              </pattern>
+            </defs>
+
+            <rect width="400" height="320" fill="url(#cadGrid)" />
+
+            <!-- Dimension Annotations -->
+            <!-- Width Dimension (Top) -->
+            <line x1="60" y1="35" x2="340" y2="35" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="3 3"/>
+            <line x1="60" y1="28" x2="60" y2="42" stroke="#38bdf8" stroke-width="1.5"/>
+            <line x1="340" y1="28" x2="340" y2="42" stroke="#38bdf8" stroke-width="1.5"/>
+            <text x="200" y="30" text-anchor="middle" fill="#38bdf8" font-family="'JetBrains Mono', monospace" font-size="12" font-weight="bold">
+              W: {{ activeWidth() }}{{ activeUnit() === 'in' ? '"' : ' mm' }}
+            </text>
+
+            <!-- Height Dimension (Left) -->
+            <line x1="40" y1="55" x2="40" y2="275" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="3 3"/>
+            <line x1="33" y1="55" x2="47" y2="55" stroke="#f59e0b" stroke-width="1.5"/>
+            <line x1="33" y1="275" x2="47" y2="275" stroke="#f59e0b" stroke-width="1.5"/>
+            <text x="27" y="165" text-anchor="middle" transform="rotate(-90 27 165)" fill="#f59e0b" font-family="'JetBrains Mono', monospace" font-size="12" font-weight="bold">
+              H: {{ activeHeight() }}{{ activeUnit() === 'in' ? '"' : ' mm' }}
+            </text>
+
+            <!-- Speaker Cabinet Carcass Outer Shell -->
+            <rect x="60" y="55" width="280" height="220" rx="8" fill="#080e1a" stroke="#38bdf8" stroke-width="2"/>
+
+            <!-- Top Handle -->
+            <rect x="160" y="48" width="80" height="8" rx="3" fill="#1e293b" stroke="#38bdf8" stroke-width="1.5"/>
+
+            <!-- Corner Protectors -->
+            <path d="M60 70V55H75" stroke="#f59e0b" stroke-width="2.5" fill="none"/>
+            <path d="M340 70V55H325" stroke="#f59e0b" stroke-width="2.5" fill="none"/>
+            <path d="M60 260V275H75" stroke="#f59e0b" stroke-width="2.5" fill="none"/>
+            <path d="M340 260V275H325" stroke="#f59e0b" stroke-width="2.5" fill="none"/>
+
+            <!-- Recessed Baffle Perimeter Cleats Frame -->
+            <rect x="74" y="69" width="252" height="192" rx="4" fill="#0d172a" stroke="#334155" stroke-width="1.5"/>
+
+            @if (activePreset() === 'cab112') {
+              <!-- Single 12" Speaker Layout -->
+              <!-- Speaker Basket Rim -->
+              <circle cx="200" cy="165" r="70" stroke="#38bdf8" stroke-width="2" fill="#091122"/>
+              <!-- Baffle Cutout Radius (11.1") -->
+              <circle cx="200" cy="165" r="62" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="4 2" fill="#0f1f38"/>
+              <!-- Speaker Cone -->
+              <circle cx="200" cy="165" r="45" fill="#142647" stroke="#38bdf8" stroke-width="1"/>
+              <!-- Center Dust Cap -->
+              <circle cx="200" cy="165" r="18" fill="#f59e0b" stroke="#fbbf24" stroke-width="1.5"/>
+              <!-- 4-Bolt T-Nut Mounting Circle -->
+              <circle cx="200" cy="99" r="3" fill="#38bdf8"/>
+              <circle cx="200" cy="231" r="3" fill="#38bdf8"/>
+              <circle cx="134" cy="165" r="3" fill="#38bdf8"/>
+              <circle cx="266" cy="165" r="3" fill="#38bdf8"/>
+              <!-- Clearance Callout -->
+              <text x="200" y="252" text-anchor="middle" fill="#34d399" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="bold">
+                &#10003; 12" Driver + 6.5" Depth Clearance OK
+              </text>
+            } @else if (activePreset() === 'cab212') {
+              <!-- Dual 12" Speaker Layout (Side by Side) -->
+              <!-- Left Driver -->
+              <circle cx="140" cy="165" r="50" stroke="#38bdf8" stroke-width="2" fill="#091122"/>
+              <circle cx="140" cy="165" r="44" stroke="#38bdf8" stroke-width="1" stroke-dasharray="3 2" fill="#0f1f38"/>
+              <circle cx="140" cy="165" r="14" fill="#f59e0b"/>
+              <circle cx="140" cy="118" r="2.5" fill="#38bdf8"/>
+              <circle cx="140" cy="212" r="2.5" fill="#38bdf8"/>
+              <circle cx="93" cy="165" r="2.5" fill="#38bdf8"/>
+              <circle cx="187" cy="165" r="2.5" fill="#38bdf8"/>
+
+              <!-- Right Driver -->
+              <circle cx="260" cy="165" r="50" stroke="#38bdf8" stroke-width="2" fill="#091122"/>
+              <circle cx="260" cy="165" r="44" stroke="#38bdf8" stroke-width="1" stroke-dasharray="3 2" fill="#0f1f38"/>
+              <circle cx="260" cy="165" r="14" fill="#f59e0b"/>
+              <circle cx="260" cy="118" r="2.5" fill="#38bdf8"/>
+              <circle cx="260" cy="212" r="2.5" fill="#38bdf8"/>
+              <circle cx="213" cy="165" r="2.5" fill="#38bdf8"/>
+              <circle cx="307" cy="165" r="2.5" fill="#38bdf8"/>
+
+              <!-- Center Separation Distance Marker -->
+              <line x1="140" y1="95" x2="260" y2="95" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="2 2"/>
+              <text x="200" y="90" text-anchor="middle" fill="#f59e0b" font-family="'JetBrains Mono', monospace" font-size="9">Dual Driver Offset (120mm)</text>
+              <text x="200" y="252" text-anchor="middle" fill="#34d399" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="bold">
+                &#10003; 2 × 12" Sealed Chamber (72.8 L)
+              </text>
+            } @else {
+              <!-- Quad 4x12" Layout (4 Symmetrical Drivers) -->
+              <!-- Top Left -->
+              <circle cx="145" cy="125" r="38" stroke="#38bdf8" stroke-width="1.5" fill="#091122"/>
+              <circle cx="145" cy="125" r="10" fill="#f59e0b"/>
+              <!-- Top Right -->
+              <circle cx="255" cy="125" r="38" stroke="#38bdf8" stroke-width="1.5" fill="#091122"/>
+              <circle cx="255" cy="125" r="10" fill="#f59e0b"/>
+              <!-- Bottom Left -->
+              <circle cx="145" cy="205" r="38" stroke="#38bdf8" stroke-width="1.5" fill="#091122"/>
+              <circle cx="145" cy="205" r="10" fill="#f59e0b"/>
+              <!-- Bottom Right -->
+              <circle cx="255" cy="205" r="38" stroke="#38bdf8" stroke-width="1.5" fill="#091122"/>
+              <circle cx="255" cy="205" r="10" fill="#f59e0b"/>
+              <!-- Center 2x2 Soundpost Marker -->
+              <rect x="194" y="159" width="12" height="12" fill="#fbbf24" stroke="#38bdf8" stroke-width="1"/>
+              <text x="200" y="254" text-anchor="middle" fill="#34d399" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="bold">
+                &#10003; 4 × 12" Quad Array + Soundpost Brace
+              </text>
+            }
+          </svg>
+        </div>
+
+        <!-- Live Schematic Meta Footer -->
+        <div class="schematic-footer">
+          <div class="meta-item">
+            <span class="meta-label">Driver Config</span>
+            <span class="meta-value text-cyan">{{ activeDriverConfig() }}</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Internal Volume</span>
+            <span class="meta-value text-amber">{{ activeVolume() }}</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Enclosure Style</span>
+            <span class="meta-value">{{ activeEnclosure() }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

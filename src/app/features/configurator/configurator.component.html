@@ -1,0 +1,762 @@
+<div class="configurator-page">
+  <div class="container">
+    <!-- Print-Only Header (Rendered strictly during PDF export & print) -->
+    <div class="print-only-header">
+      <div class="print-title">BYR-AutoCab &bull; Workshop Traveler &amp; Build Plan</div>
+      <div class="print-meta">
+        <span>Cabinet: {{ state().speaker.count }}x{{ state().speaker.diameterPreset }}" ({{ selectedDriver()?.modelName || 'Custom Driver' }})</span>
+        <span>Dimensions: {{ buildPlan().externalWidthMm }} &times; {{ buildPlan().externalHeightMm }} &times; {{ buildPlan().externalDepthMm }} mm</span>
+        <span>Joinery: {{ state().constructionMethod | titlecase }} &bull; Material: {{ state().material.thicknessMm }}mm</span>
+      </div>
+    </div>
+
+    <!-- Top Header & Breadcrumb -->
+    <div class="config-header">
+      <div class="header-left">
+        <a routerLink="/" class="back-link">&larr; Return to Overview</a>
+        <h1 class="page-title">Speaker Cabinet Configurator</h1>
+        <p class="page-subtitle">
+          Parametric enclosure planning, driver clearance checks, and deterministic cut lists.
+        </p>
+      </div>
+
+      <!-- Quick Preset Selector -->
+      <div class="preset-selector-box">
+        <label for="presetSelect" class="preset-label">LOAD PRESET ARCHETYPE:</label>
+        <select id="presetSelect" class="preset-select" (change)="loadPresetById($any($event.target).value)">
+          <option value="" disabled selected>-- Select a Preset --</option>
+          @for (preset of presets(); track preset.id) {
+            <option [value]="preset.id">{{ preset.name }} ({{ preset.speakerSpec.driverCount }}x{{ preset.speakerSpec.driverSize }}")</option>
+          }
+        </select>
+      </div>
+    </div>
+
+    <!-- Wizard Step Tabs -->
+    <div class="wizard-stepper" role="tablist" aria-label="Configurator Steps">
+      <button
+        type="button"
+        class="step-tab"
+        [class.active]="activeStep() === 'speakers'"
+        (click)="setStep('speakers')">
+        <span class="step-circle">1</span>
+        <div class="step-info">
+          <span class="step-name">Speaker Layout</span>
+          <span class="step-desc">{{ state().speaker.count }} &times; {{ state().speaker.diameterPreset }}" ({{ state().speaker.layout }})</span>
+        </div>
+      </button>
+
+      <button
+        type="button"
+        class="step-tab"
+        [class.active]="activeStep() === 'dimensions'"
+        (click)="setStep('dimensions')">
+        <span class="step-circle">2</span>
+        <div class="step-info">
+          <span class="step-name">Dimensions &amp; Materials</span>
+          <span class="step-desc">{{ state().dimensions.width }} &times; {{ state().dimensions.height }} &times; {{ state().dimensions.depth }} {{ state().dimensions.unit }}</span>
+        </div>
+      </button>
+
+      <button
+        type="button"
+        class="step-tab"
+        [class.active]="activeStep() === 'drivers-wiring'"
+        (click)="setStep('drivers-wiring')">
+        <span class="step-circle">3</span>
+        <div class="step-info">
+          <span class="step-name">Drivers &amp; Wiring</span>
+          <span class="step-desc">{{ selectedDriver()?.modelName || 'Driver DB & Wiring' }}</span>
+        </div>
+      </button>
+
+      <button
+        type="button"
+        class="step-tab"
+        [class.active]="activeStep() === 'summary'"
+        (click)="setStep('summary')">
+        <span class="step-circle">4</span>
+        <div class="step-info">
+          <span class="step-name">Build Plan &amp; Cut List</span>
+          <span class="step-desc">Complete Traveler</span>
+        </div>
+      </button>
+    </div>
+
+    <!-- Main Workspace Split Grid -->
+    <div class="workspace-grid" [class.full-width-layout]="activeStep() === 'summary'">
+      <!-- Form / Content Column -->
+      <div class="form-column" [class.full-width-column]="activeStep() === 'summary'">
+        <!-- STEP 1: SPEAKERS & LAYOUT -->
+        @if (activeStep() === 'speakers') {
+          <div class="step-card">
+            <div class="step-heading">
+              <span class="step-num-pill">STEP 1</span>
+              <h2 class="step-title">Speaker Driver Setup &amp; Arrangement</h2>
+              <p class="step-lead">Select driver count, nominal diameter, and physical arrangement on the front baffle.</p>
+            </div>
+
+            <!-- Speaker Count Selector -->
+            <div class="form-group">
+              <label class="form-label">NUMBER OF DRIVERS:</label>
+              <div class="option-grid option-grid-3">
+                <button
+                  type="button"
+                  class="option-card"
+                  [class.selected]="state().speaker.count === 1"
+                  (click)="setSpeakerCount(1)">
+                  <span class="option-title">1 Driver</span>
+                  <span class="option-sub">1x12 / 1x15 Solo Cab</span>
+                </button>
+                <button
+                  type="button"
+                  class="option-card"
+                  [class.selected]="state().speaker.count === 2"
+                  (click)="setSpeakerCount(2)">
+                  <span class="option-title">2 Drivers</span>
+                  <span class="option-sub">2x12 / 2x10 Dual Cab</span>
+                </button>
+                <button
+                  type="button"
+                  class="option-card"
+                  [class.selected]="state().speaker.count === 4"
+                  (click)="setSpeakerCount(4)">
+                  <span class="option-title">4 Drivers</span>
+                  <span class="option-sub">4x12 Quad Half-Stack</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Speaker Diameter Presets -->
+            <div class="form-group">
+              <label class="form-label">SPEAKER NOMINAL DIAMETER:</label>
+              <div class="option-grid option-grid-4">
+                <button
+                  type="button"
+                  class="option-card"
+                  [class.selected]="state().speaker.diameterPreset === '8'"
+                  (click)="setSpeakerDiameter('8')">
+                  <span class="option-title">8" (203mm)</span>
+                  <span class="option-sub">Cutout: 183mm</span>
+                </button>
+                <button
+                  type="button"
+                  class="option-card"
+                  [class.selected]="state().speaker.diameterPreset === '10'"
+                  (click)="setSpeakerDiameter('10')">
+                  <span class="option-title">10" (254mm)</span>
+                  <span class="option-sub">Cutout: 232mm</span>
+                </button>
+                <button
+                  type="button"
+                  class="option-card"
+                  [class.selected]="state().speaker.diameterPreset === '12'"
+                  (click)="setSpeakerDiameter('12')">
+                  <span class="option-title">12" (305mm)</span>
+                  <span class="option-sub">Cutout: 283mm</span>
+                </button>
+                <button
+                  type="button"
+                  class="option-card"
+                  [class.selected]="state().speaker.diameterPreset === '15'"
+                  (click)="setSpeakerDiameter('15')">
+                  <span class="option-title">15" (381mm)</span>
+                  <span class="option-sub">Cutout: 356mm</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Speaker Layout Options (For 2x speakers) -->
+            @if (state().speaker.count === 2) {
+              <div class="form-group">
+                <label class="form-label">2X DRIVER ORIENTATION / LAYOUT:</label>
+                <div class="option-grid option-grid-2">
+                  <button
+                    type="button"
+                    class="option-card"
+                    [class.selected]="state().speaker.layout === 'horizontal-2x'"
+                    (click)="setLayout('horizontal-2x')">
+                    <span class="option-title">Horizontal [ O ][ O ]</span>
+                    <span class="option-sub">Traditional wide 2x12 cab</span>
+                  </button>
+                  <button
+                    type="button"
+                    class="option-card"
+                    [class.selected]="state().speaker.layout === 'vertical-2x'"
+                    (click)="setLayout('vertical-2x')">
+                    <span class="option-title">Vertical [ O ] / [ O ]</span>
+                    <span class="option-sub">Compact vertical slant cab</span>
+                  </button>
+                </div>
+              </div>
+            }
+
+            <!-- Cabinet Form Factor / Aspect Ratio -->
+            <div class="form-group">
+              <label class="form-label">CABINET ORIENTATION:</label>
+              <div class="option-grid option-grid-3">
+                <button
+                  type="button"
+                  class="option-card"
+                  [class.selected]="state().formFactor === 'horizontal'"
+                  (click)="setFormFactor('horizontal')">
+                  <span class="option-title">Horizontal</span>
+                  <span class="option-sub">Wide stance</span>
+                </button>
+                <button
+                  type="button"
+                  class="option-card"
+                  [class.selected]="state().formFactor === 'square'"
+                  (click)="setFormFactor('square')">
+                  <span class="option-title">Square</span>
+                  <span class="option-sub">1:1 Proportion</span>
+                </button>
+                <button
+                  type="button"
+                  class="option-card"
+                  [class.selected]="state().formFactor === 'vertical'"
+                  (click)="setFormFactor('vertical')">
+                  <span class="option-title">Vertical</span>
+                  <span class="option-sub">Tall stack</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="step-footer">
+              <button type="button" class="btn-step-next" (click)="setStep('dimensions')">
+                <span>Continue to Dimensions &amp; Materials</span>
+                <span class="btn-arrow">&rarr;</span>
+              </button>
+            </div>
+          </div>
+        }
+
+        <!-- STEP 2: DIMENSIONS, MATERIALS & JOINERY -->
+        @if (activeStep() === 'dimensions') {
+          <div class="step-card">
+            <div class="step-heading">
+              <span class="step-num-pill">STEP 2</span>
+              <h2 class="step-title">Dimensions, Materials &amp; Joinery</h2>
+              <p class="step-lead">Specify external envelope bounding box dimensions, joinery method, and enclosure specs.</p>
+            </div>
+
+            <!-- Unit Switcher -->
+            <div class="unit-toggle-row">
+              <span class="unit-toggle-label">INPUT DIMENSION UNITS:</span>
+              <div class="unit-btn-group">
+                <button
+                  type="button"
+                  class="unit-btn"
+                  [class.active]="state().dimensions.unit === 'mm'"
+                  (click)="setDimensionUnit('mm')">
+                  Millimetres (mm)
+                </button>
+                <button
+                  type="button"
+                  class="unit-btn"
+                  [class.active]="state().dimensions.unit === 'inch'"
+                  (click)="setDimensionUnit('inch')">
+                  Inches (")
+                </button>
+              </div>
+            </div>
+
+            <!-- Dimension Inputs Grid -->
+            <div class="dimensions-form-grid">
+              <div class="input-field">
+                <label for="widthInput" class="field-label">EXTERNAL WIDTH (W):</label>
+                <div class="input-with-unit">
+                  <input
+                    id="widthInput"
+                    type="number"
+                    class="text-input"
+                    [value]="state().dimensions.width"
+                    (input)="updateWidth($any($event.target).value)"
+                    min="200" />
+                  <span class="input-unit-tag">{{ state().dimensions.unit }}</span>
+                </div>
+              </div>
+
+              <div class="input-field">
+                <label for="heightInput" class="field-label">EXTERNAL HEIGHT (H):</label>
+                <div class="input-with-unit">
+                  <input
+                    id="heightInput"
+                    type="number"
+                    class="text-input"
+                    [value]="state().dimensions.height"
+                    (input)="updateHeight($any($event.target).value)"
+                    min="200" />
+                  <span class="input-unit-tag">{{ state().dimensions.unit }}</span>
+                </div>
+              </div>
+
+              <div class="input-field">
+                <label for="depthInput" class="field-label">EXTERNAL DEPTH (D):</label>
+                <div class="input-with-unit">
+                  <input
+                    id="depthInput"
+                    type="number"
+                    class="text-input"
+                    [value]="state().dimensions.depth"
+                    (input)="updateDepth($any($event.target).value)"
+                    min="150" />
+                  <span class="input-unit-tag">{{ state().dimensions.unit }}</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Material Core Thickness -->
+            <div class="form-group">
+              <label class="form-label">PLYWOOD / WOOD THICKNESS:</label>
+              <div class="option-grid option-grid-4">
+                <button
+                  type="button"
+                  class="option-card"
+                  [class.selected]="state().material.thicknessMm === 12"
+                  (click)="setThickness(12)">
+                  <span class="option-title">12mm (1/2")</span>
+                  <span class="option-sub">Ultralight baffle/cabs</span>
+                </button>
+                <button
+                  type="button"
+                  class="option-card"
+                  [class.selected]="state().material.thicknessMm === 15"
+                  (click)="setThickness(15)">
+                  <span class="option-title">15mm (5/8")</span>
+                  <span class="option-sub">Medium weight cabs</span>
+                </button>
+                <button
+                  type="button"
+                  class="option-card"
+                  [class.selected]="state().material.thicknessMm === 18"
+                  (click)="setThickness(18)">
+                  <span class="option-title">18mm (3/4")</span>
+                  <span class="option-sub">Pro standard birch</span>
+                </button>
+                <button
+                  type="button"
+                  class="option-card"
+                  [class.selected]="state().material.thicknessMm === 19"
+                  (click)="setThickness(19)">
+                  <span class="option-title">19mm (3/4" Pine)</span>
+                  <span class="option-sub">Solid pine lumber</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Back Configuration -->
+            <div class="form-group">
+              <label class="form-label">REAR ENCLOSURE STYLE:</label>
+              <div class="option-grid option-grid-3">
+                <button
+                  type="button"
+                  class="option-card"
+                  [class.selected]="state().backConfig === 'closed-back'"
+                  (click)="setBackConfig('closed-back')">
+                  <span class="option-title">Closed Back</span>
+                  <span class="option-sub">Tight low-end punch &amp; high SPL</span>
+                </button>
+                <button
+                  type="button"
+                  class="option-card"
+                  [class.selected]="state().backConfig === 'half-open'"
+                  (click)="setBackConfig('half-open')">
+                  <span class="option-title">Half Open</span>
+                  <span class="option-sub">Upper/lower slats with 35% vent</span>
+                </button>
+                <button
+                  type="button"
+                  class="option-card"
+                  [class.selected]="state().backConfig === 'mostly-open'"
+                  (click)="setBackConfig('mostly-open')">
+                  <span class="option-title">Mostly Open</span>
+                  <span class="option-sub">Vintage 60% open 360&deg; dispersion</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Construction Method -->
+            <div class="form-group">
+              <label class="form-label">CONSTRUCTION / JOINERY METHOD:</label>
+              <div class="option-grid option-grid-3">
+                <button
+                  type="button"
+                  class="option-card"
+                  [class.selected]="state().constructionMethod === 'basic-screw-nail'"
+                  (click)="setConstructionMethod('basic-screw-nail')">
+                  <span class="option-title">Basic Screw/Nail</span>
+                  <span class="option-sub">🟢 Beginner &bull; Hand saw &amp; drill</span>
+                </button>
+                <button
+                  type="button"
+                  class="option-card"
+                  [class.selected]="state().constructionMethod === 'glue-screw-nail'"
+                  (click)="setConstructionMethod('glue-screw-nail')">
+                  <span class="option-title">Glue + Screw (Cleated)</span>
+                  <span class="option-sub">🟡 Intermediate &bull; Internal battens</span>
+                </button>
+                <button
+                  type="button"
+                  class="option-card"
+                  [class.selected]="state().constructionMethod === 'rabbet-glue'"
+                  (click)="setConstructionMethod('rabbet-glue')">
+                  <span class="option-title">Rabbet + Glue</span>
+                  <span class="option-sub">🔴 Advanced &bull; Router / Dado stack</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Cost Estimates Inputs Grid -->
+            <div class="form-group">
+              <label class="form-label">ESTIMATED COMPONENT &amp; MATERIAL COSTS ({{ state().costs.currencySymbol }}):</label>
+              <div class="costs-form-grid">
+                <div class="input-field">
+                  <label for="woodCostInput" class="field-label">Wood / Sheet Stock:</label>
+                  <input
+                    id="woodCostInput"
+                    type="number"
+                    class="text-input"
+                    [value]="state().costs.woodCost"
+                    (input)="updateCost('woodCost', $any($event.target).value)" />
+                </div>
+                <div class="input-field">
+                  <label for="speakersCostInput" class="field-label">Speaker Drivers:</label>
+                  <input
+                    id="speakersCostInput"
+                    type="number"
+                    class="text-input"
+                    [value]="state().costs.speakersCost"
+                    (input)="updateCost('speakersCost', $any($event.target).value)" />
+                </div>
+                <div class="input-field">
+                  <label for="tolexCostInput" class="field-label">Tolex / Covering:</label>
+                  <input
+                    id="tolexCostInput"
+                    type="number"
+                    class="text-input"
+                    [value]="state().costs.tolexCost"
+                    (input)="updateCost('tolexCost', $any($event.target).value)" />
+                </div>
+                <div class="input-field">
+                  <label for="grillCostInput" class="field-label">Grill Cloth:</label>
+                  <input
+                    id="grillCostInput"
+                    type="number"
+                    class="text-input"
+                    [value]="state().costs.grillClothCost"
+                    (input)="updateCost('grillClothCost', $any($event.target).value)" />
+                </div>
+                <div class="input-field">
+                  <label for="hardwareCostInput" class="field-label">Hardware (Corners, Handles, T-Nuts):</label>
+                  <input
+                    id="hardwareCostInput"
+                    type="number"
+                    class="text-input"
+                    [value]="state().costs.hardwareCost"
+                    (input)="updateCost('hardwareCost', $any($event.target).value)" />
+                </div>
+                <div class="input-field">
+                  <label for="wiringCostInput" class="field-label">Wiring &amp; Jack Plate:</label>
+                  <input
+                    id="wiringCostInput"
+                    type="number"
+                    class="text-input"
+                    [value]="state().costs.wiringCost"
+                    (input)="updateCost('wiringCost', $any($event.target).value)" />
+                </div>
+              </div>
+            </div>
+
+            <div class="step-footer">
+              <button type="button" class="btn-step-prev" (click)="setStep('speakers')">
+                <span class="btn-arrow">&larr;</span>
+                <span>Back to Speaker Layout</span>
+              </button>
+              <button type="button" class="btn-step-next" (click)="setStep('drivers-wiring')">
+                <span>Continue to Drivers &amp; Wiring</span>
+                <span class="btn-arrow">&rarr;</span>
+              </button>
+            </div>
+          </div>
+        }
+
+        <!-- STEP 3: SPEAKER DRIVERS & WIRING SCHEMATICS -->
+        @if (activeStep() === 'drivers-wiring') {
+          <div class="step-card">
+            <div class="step-heading">
+              <span class="step-num-pill">STEP 3</span>
+              <h2 class="step-title">Speaker Driver Database &amp; Wiring Schematics</h2>
+              <p class="step-lead">Select specific driver models from iconic manufacturers, verify 3D depth clearance, and configure series/parallel impedance wiring.</p>
+            </div>
+
+            <!-- Real Speaker Model Database Selector -->
+            <div class="form-group driver-db-section">
+              <div class="db-section-header">
+                <label class="form-label">SPEAKER DRIVER MODEL DATABASE:</label>
+                <div class="brand-filter-pills">
+                  <button
+                    type="button"
+                    class="brand-pill"
+                    [class.active]="selectedBrandFilter() === 'all'"
+                    (click)="setBrandFilter('all')">
+                    All
+                  </button>
+                  <button
+                    type="button"
+                    class="brand-pill"
+                    [class.active]="selectedBrandFilter() === 'celestion'"
+                    (click)="setBrandFilter('celestion')">
+                    Celestion
+                  </button>
+                  <button
+                    type="button"
+                    class="brand-pill"
+                    [class.active]="selectedBrandFilter() === 'eminence'"
+                    (click)="setBrandFilter('eminence')">
+                    Eminence
+                  </button>
+                  <button
+                    type="button"
+                    class="brand-pill"
+                    [class.active]="selectedBrandFilter() === 'jensen'"
+                    (click)="setBrandFilter('jensen')">
+                    Jensen
+                  </button>
+                  <button
+                    type="button"
+                    class="brand-pill"
+                    [class.active]="selectedBrandFilter() === 'electro-voice'"
+                    (click)="setBrandFilter('electro-voice')">
+                    EV
+                  </button>
+                </div>
+              </div>
+
+              <!-- Driver Cards Grid -->
+              <div class="driver-cards-grid">
+                @for (d of filteredDrivers(); track d.id) {
+                  <button
+                    type="button"
+                    class="driver-card"
+                    [class.selected]="state().speaker.modelId === d.id"
+                    (click)="selectDriver(d.id)">
+                    <div class="driver-card-top">
+                      <span class="driver-brand">{{ d.brand }}</span>
+                      <span class="driver-wattage font-mono">{{ d.powerRatingWatts }}W</span>
+                    </div>
+                    <span class="driver-name">{{ d.modelName }}</span>
+                    <div class="driver-card-bottom font-mono">
+                      <span>{{ d.magnetType }}</span>
+                      <span>{{ d.weightKg }} kg</span>
+                    </div>
+                  </button>
+                }
+              </div>
+
+              <!-- Selected Driver Detailed Tech Spec Card -->
+              @if (selectedDriver(); as drv) {
+                <div class="driver-detail-card">
+                  <div class="detail-header">
+                    <div class="detail-title-group">
+                      <span class="driver-badge">{{ drv.brand }} &bull; {{ drv.nominalSizeInches }}" Driver</span>
+                      <h4 class="detail-name">{{ drv.modelName }}</h4>
+                    </div>
+                    <div class="detail-stats-pills">
+                      <span class="spec-pill highlight-green">{{ drv.powerRatingWatts }}W RMS</span>
+                      <span class="spec-pill">{{ drv.magnetType }} Magnet</span>
+                      <span class="spec-pill">{{ drv.weightKg }} kg ({{ drv.weightLbs }} lbs)</span>
+                    </div>
+                  </div>
+
+                  <p class="driver-tone-desc">{{ drv.tonalDescription }}</p>
+
+                  <div class="driver-tech-grid">
+                    <div class="tech-cell">
+                      <span class="cell-lbl">FACTORY CUTOUT:</span>
+                      <span class="cell-val font-mono text-cyan">{{ drv.cutoutDiameterMm }} mm ({{ (drv.cutoutDiameterMm / 25.4).toFixed(2) }}")</span>
+                    </div>
+                    <div class="tech-cell">
+                      <span class="cell-lbl">MOUNTING DEPTH:</span>
+                      <span class="cell-val font-mono text-amber">{{ drv.mountingDepthMm }} mm ({{ (drv.mountingDepthMm / 25.4).toFixed(2) }}")</span>
+                    </div>
+                    <div class="tech-cell">
+                      <span class="cell-lbl">MAGNET DIAMETER:</span>
+                      <span class="cell-val font-mono">{{ drv.magnetDiameterMm }} mm ({{ (drv.magnetDiameterMm / 25.4).toFixed(2) }}")</span>
+                    </div>
+                    <div class="tech-cell">
+                      <span class="cell-lbl">ICONIC RIGS / AMPS:</span>
+                      <span class="cell-val truncate" [title]="drv.iconicUserOrAmp">{{ drv.iconicUserOrAmp }}</span>
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+
+            <!-- Speaker Physical Dimensions Precision Inputs -->
+            <div class="form-row-2">
+              <div class="form-group">
+                <label for="cutoutInput" class="form-label">BAFFLE CUTOUT HOLE (MM):</label>
+                <div class="input-with-unit">
+                  <input
+                    id="cutoutInput"
+                    type="number"
+                    class="text-input"
+                    [value]="state().speaker.cutoutDiameterMm"
+                    (input)="updateCustomCutout($any($event.target).value)"
+                    min="100"
+                    max="450" />
+                  <span class="input-unit-tag">mm</span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="depthInput" class="form-label">DRIVER MOUNTING DEPTH (MM):</label>
+                <div class="input-with-unit">
+                  <input
+                    id="depthInput"
+                    type="number"
+                    class="text-input"
+                    [value]="state().speaker.mountingDepthMm || 124"
+                    (input)="updateMountingDepth($any($event.target).value)"
+                    min="50"
+                    max="300" />
+                  <span class="input-unit-tag">mm</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Interactive Speaker Wiring & Impedance Calculator Component -->
+            <app-speaker-wiring-card
+              [driverCount]="state().speaker.count"
+              [driverModelName]="selectedDriver()?.modelName || 'Speaker Driver'"
+              [singleDriverWatts]="state().speaker.powerHandlingWatts || 60"
+              [initialDriverImpedance]="state().speaker.impedanceOhms || 8">
+            </app-speaker-wiring-card>
+
+            <div class="step-footer">
+              <button type="button" class="btn-step-prev" (click)="setStep('dimensions')">
+                <span class="btn-arrow">&larr;</span>
+                <span>Back to Dimensions</span>
+              </button>
+              <button type="button" class="btn-step-next" (click)="setStep('summary')">
+                <span>Compile Complete Build Plan</span>
+                <span class="btn-arrow">&rarr;</span>
+              </button>
+            </div>
+          </div>
+        }
+
+        <!-- STEP 4: BUILD SUMMARY VIEW (FULL-WIDTH TRAVELER) -->
+        @if (activeStep() === 'summary') {
+          <div class="step-card summary-view-card">
+            <div class="step-heading summary-heading-with-actions">
+              <div>
+                <span class="step-num-pill success-pill">STEP 4</span>
+                <h2 class="step-title">Complete Build Plan &amp; Workshop Traveler</h2>
+                <p class="step-lead">All geometric calculations, cut lists, material yields, tool requirements, and elevation schematics compiled.</p>
+              </div>
+
+              <!-- Workshop Export & Sharing Action Toolbar -->
+              <div class="export-actions-bar no-print">
+                <button type="button" class="btn-action-primary" (click)="printTraveler()" title="Print or save as PDF">
+                  <span class="action-icon">🖨️</span>
+                  <span>Print / PDF Traveler</span>
+                </button>
+                <button type="button" class="btn-action-secondary" (click)="exportCsv()" title="Export panel dimensions to CSV">
+                  <span class="action-icon">📊</span>
+                  <span>Export Cut List (.CSV)</span>
+                </button>
+                <button type="button" class="btn-action-secondary" (click)="exportJson()" title="Save project config to JSON file">
+                  <span class="action-icon">💾</span>
+                  <span>Save Project (.JSON)</span>
+                </button>
+                <button type="button" class="btn-action-secondary" (click)="triggerProjectUpload(fileUploadInput)" title="Load a saved JSON project">
+                  <span class="action-icon">📂</span>
+                  <span>Load Project</span>
+                </button>
+                <button type="button" class="btn-action-secondary" (click)="copyShareLink()" title="Copy shareable link with current configuration">
+                  <span class="action-icon">🔗</span>
+                  <span>Copy Share Link</span>
+                </button>
+
+                <!-- Hidden file input for loading JSON project -->
+                <input
+                  #fileUploadInput
+                  type="file"
+                  accept=".json,application/json"
+                  style="display: none"
+                  (change)="onProjectFileSelected($event)" />
+              </div>
+            </div>
+
+            <!-- Integrated Elevation & Blueprint Section -->
+            <div class="traveler-blueprint-card">
+              <app-live-schematic-preview
+                [buildPlan]="buildPlan()"
+                [state]="state()">
+              </app-live-schematic-preview>
+            </div>
+
+            <!-- Cut List Table Component -->
+            <app-cut-list-table
+              [cutList]="buildPlan().cutList"
+              [displayUnit]="state().dimensions.unit">
+            </app-cut-list-table>
+
+            <!-- 2D Plywood Sheet Cut Layout Optimizer Component -->
+            <app-sheet-cut-diagram
+              [cutList]="buildPlan().cutList"
+              [displayUnit]="state().dimensions.unit">
+            </app-sheet-cut-diagram>
+
+            <!-- Interactive Speaker Wiring & Impedance Schematic Component -->
+            <app-speaker-wiring-card
+              [driverCount]="state().speaker.count"
+              [driverModelName]="selectedDriver()?.modelName || 'Speaker Driver'"
+              [singleDriverWatts]="state().speaker.powerHandlingWatts || 60"
+              [initialDriverImpedance]="state().speaker.impedanceOhms || 8">
+            </app-speaker-wiring-card>
+
+            <!-- Cost Summary & Tools Component -->
+            <app-cost-summary-card
+              [costs]="buildPlan().costs"
+              [difficulty]="buildPlan().difficulty"
+              [tools]="buildPlan().tools"
+              [materials]="buildPlan().materials">
+            </app-cost-summary-card>
+
+            <div class="step-footer">
+              <button type="button" class="btn-step-prev" (click)="setStep('drivers-wiring')">
+                <span class="btn-arrow">&larr;</span>
+                <span>Modify Drivers &amp; Wiring</span>
+              </button>
+              <a routerLink="/" class="btn-return-home">
+                <span>Return to Home</span>
+              </a>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Right Column: Live Schematic Preview Card (Shown only in Steps 1, 2, 3) -->
+      @if (activeStep() !== 'summary') {
+        <div class="preview-column">
+          <div class="schematic-preview-wrapper">
+            <app-live-schematic-preview
+              [buildPlan]="buildPlan()"
+              [state]="state()">
+            </app-live-schematic-preview>
+          </div>
+        </div>
+      }
+    </div>
+
+    <!-- Floating Toast Notification -->
+    @if (toastMessage(); as msg) {
+      <div class="toast-notification">
+        <span class="toast-text">{{ msg }}</span>
+      </div>
+    }
+  </div>
+</div>

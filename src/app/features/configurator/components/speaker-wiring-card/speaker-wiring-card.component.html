@@ -1,0 +1,277 @@
+<div class="wiring-card">
+  <!-- Header -->
+  <div class="wiring-head">
+    <div class="head-left">
+      <span class="wiring-badge">SPEAKER IMPEDANCE &amp; WIRING CALCULATOR</span>
+      <h3 class="wiring-title">Internal Enclosure Wiring Schematic</h3>
+      <p class="wiring-sub">
+        Deterministic network topology, total cabinet load calculation, and amplifier safety matching.
+      </p>
+    </div>
+
+    <!-- Total Load Impedance Glowing Badge -->
+    <div class="load-badge-box">
+      <div class="load-col">
+        <span class="load-label">TOTAL CABINET IMPEDANCE:</span>
+        <span class="load-val highlight">{{ wiringResult().activeOption.totalImpedanceOhms }} &Omega; {{ wiringResult().activeOption.monoOrStereo | uppercase }}</span>
+      </div>
+      <div class="load-col">
+        <span class="load-label">TOTAL POWER:</span>
+        <span class="load-val text-green">{{ wiringResult().totalPowerHandlingWatts }}W RMS</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive Controls Toolbar -->
+  <div class="wiring-controls-bar">
+    <!-- Driver Impedance Selector -->
+    <div class="control-group">
+      <span class="control-label">EACH DRIVER IMPEDANCE:</span>
+      <div class="mini-btn-group">
+        <button
+          type="button"
+          class="mini-btn"
+          [class.active]="selectedImpedance() === 4"
+          (click)="setImpedance(4)">
+          4 &Omega;
+        </button>
+        <button
+          type="button"
+          class="mini-btn"
+          [class.active]="selectedImpedance() === 8"
+          (click)="setImpedance(8)">
+          8 &Omega;
+        </button>
+        <button
+          type="button"
+          class="mini-btn"
+          [class.active]="selectedImpedance() === 16"
+          (click)="setImpedance(16)">
+          16 &Omega;
+        </button>
+      </div>
+    </div>
+
+    <!-- Wiring Topology Mode Options (For 2x and 4x cabs) -->
+    @if (wiringResult().availableOptions.length > 1) {
+      <div class="control-group">
+        <span class="control-label">WIRING TOPOLOGY:</span>
+        <div class="topology-pills">
+          @for (opt of wiringResult().availableOptions; track opt.mode) {
+            <button
+              type="button"
+              class="topology-pill-btn"
+              [class.active]="wiringResult().activeOption.mode === opt.mode"
+              (click)="setWiringMode(opt.mode)">
+              <span class="pill-mode-title">{{ opt.shortLabel }} ({{ opt.totalImpedanceOhms }}&Omega;)</span>
+              @if (opt.isStandardForCount) {
+                <span class="pill-std-badge">STANDARD</span>
+              }
+            </button>
+          }
+        </div>
+      </div>
+    }
+  </div>
+
+  <!-- Technical SVG Schematic Diagram -->
+  <div class="schematic-viewport">
+    <svg class="wiring-svg" viewBox="0 0 540 280" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <pattern id="wireGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+          <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(56, 189, 248, 0.05)" stroke-width="1"/>
+        </pattern>
+        <!-- Terminal Glow Filter -->
+        <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur stdDeviation="2" result="blur" />
+          <feComposite in="SourceGraphic" in2="blur" operator="over" />
+        </filter>
+      </defs>
+
+      <!-- Background Grid -->
+      <rect width="540" height="280" fill="url(#wireGrid)" />
+
+      <!-- Input Jack Plate (Left) -->
+      <g class="jack-plate-group">
+        <rect x="25" y="70" width="60" height="140" rx="6" fill="#0d1527" stroke="#38bdf8" stroke-width="1.5"/>
+        <circle cx="55" cy="140" r="15" fill="#060a12" stroke="#64748b" stroke-width="2"/>
+        <circle cx="55" cy="140" r="7" fill="#1e293b" stroke="#38bdf8" stroke-width="1"/>
+        <text x="55" y="60" text-anchor="middle" fill="#38bdf8" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="bold">1/4" JACK</text>
+
+        <!-- Tip (+) Terminal -->
+        <circle cx="70" cy="105" r="5" fill="#ef4444" stroke="#f87171" stroke-width="1.5" filter="url(#glow)"/>
+        <text x="53" y="109" text-anchor="middle" fill="#ef4444" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="bold">+</text>
+
+        <!-- Sleeve (-) Terminal -->
+        <circle cx="70" cy="175" r="5" fill="#38bdf8" stroke="#7dd3fc" stroke-width="1.5" filter="url(#glow)"/>
+        <text x="53" y="179" text-anchor="middle" fill="#38bdf8" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="bold">&minus;</text>
+      </g>
+
+      <!-- ==================== 1-DRIVER WIRING ==================== -->
+      @if (driverCount() === 1) {
+        <!-- Speaker 1 Circle -->
+        <g class="driver-group">
+          <circle cx="340" cy="140" r="75" fill="#080e1b" stroke="#38bdf8" stroke-width="2"/>
+          <circle cx="340" cy="140" r="50" fill="#111c33" stroke="rgba(56, 189, 248, 0.4)" stroke-width="1"/>
+          <circle cx="340" cy="140" r="22" fill="#f59e0b" stroke="#fbbf24" stroke-width="1"/>
+          <text x="340" y="144" text-anchor="middle" fill="#080e1b" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="bold">{{ selectedImpedance() }}&Omega;</text>
+          <text x="340" y="235" text-anchor="middle" fill="#38bdf8" font-family="'Plus Jakarta Sans', sans-serif" font-size="10" font-weight="bold">Driver 1 ({{ singleDriverWatts() }}W)</text>
+
+          <!-- Terminals -->
+          <circle cx="265" cy="105" r="5" fill="#ef4444" stroke="#ffffff" stroke-width="1.5"/>
+          <text x="278" y="109" fill="#ef4444" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="bold">+</text>
+          <circle cx="265" cy="175" r="5" fill="#38bdf8" stroke="#ffffff" stroke-width="1.5"/>
+          <text x="278" y="179" fill="#38bdf8" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="bold">&minus;</text>
+        </g>
+
+        <!-- Wires -->
+        <path d="M 70 105 C 160 105, 180 105, 265 105" fill="none" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+        <path d="M 70 175 C 160 175, 180 175, 265 175" fill="none" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/>
+      }
+
+      <!-- ==================== 2-DRIVER WIRING ==================== -->
+      @if (driverCount() === 2) {
+        <!-- Driver 1 -->
+        <g class="driver-group">
+          <circle cx="220" cy="140" r="60" fill="#080e1b" stroke="#38bdf8" stroke-width="2"/>
+          <circle cx="220" cy="140" r="38" fill="#111c33" stroke="rgba(56, 189, 248, 0.4)" stroke-width="1"/>
+          <circle cx="220" cy="140" r="18" fill="#f59e0b" stroke="#fbbf24" stroke-width="1"/>
+          <text x="220" y="144" text-anchor="middle" fill="#080e1b" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="bold">{{ selectedImpedance() }}&Omega;</text>
+          <text x="220" y="218" text-anchor="middle" fill="#38bdf8" font-family="'Plus Jakarta Sans', sans-serif" font-size="9" font-weight="bold">Driver #1</text>
+
+          <!-- Terminals -->
+          <circle cx="170" cy="105" r="4.5" fill="#ef4444" stroke="#ffffff" stroke-width="1.2"/>
+          <text x="182" y="109" fill="#ef4444" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="bold">+</text>
+          <circle cx="170" cy="175" r="4.5" fill="#38bdf8" stroke="#ffffff" stroke-width="1.2"/>
+          <text x="182" y="179" fill="#38bdf8" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="bold">&minus;</text>
+        </g>
+
+        <!-- Driver 2 -->
+        <g class="driver-group">
+          <circle cx="410" cy="140" r="60" fill="#080e1b" stroke="#38bdf8" stroke-width="2"/>
+          <circle cx="410" cy="140" r="38" fill="#111c33" stroke="rgba(56, 189, 248, 0.4)" stroke-width="1"/>
+          <circle cx="410" cy="140" r="18" fill="#f59e0b" stroke="#fbbf24" stroke-width="1"/>
+          <text x="410" y="144" text-anchor="middle" fill="#080e1b" font-family="'JetBrains Mono', monospace" font-size="10" font-weight="bold">{{ selectedImpedance() }}&Omega;</text>
+          <text x="410" y="218" text-anchor="middle" fill="#38bdf8" font-family="'Plus Jakarta Sans', sans-serif" font-size="9" font-weight="bold">Driver #2</text>
+
+          <!-- Terminals -->
+          <circle cx="360" cy="105" r="4.5" fill="#ef4444" stroke="#ffffff" stroke-width="1.2"/>
+          <text x="372" y="109" fill="#ef4444" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="bold">+</text>
+          <circle cx="360" cy="175" r="4.5" fill="#38bdf8" stroke="#ffffff" stroke-width="1.2"/>
+          <text x="372" y="179" fill="#38bdf8" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="bold">&minus;</text>
+        </g>
+
+        <!-- Wires: PARALLEL -->
+        @if (wiringResult().activeOption.mode === 'parallel' || wiringResult().activeOption.mode === 'stereo-split') {
+          <!-- Positive Red Wires -->
+          <path d="M 70 105 C 120 105, 140 105, 170 105" fill="none" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+          <path d="M 170 105 C 230 45, 300 45, 360 105" fill="none" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+          <!-- Negative Black Wires -->
+          <path d="M 70 175 C 120 175, 140 175, 170 175" fill="none" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/>
+          <path d="M 170 175 C 230 235, 300 235, 360 175" fill="none" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/>
+        }
+
+        <!-- Wires: SERIES -->
+        @if (wiringResult().activeOption.mode === 'series') {
+          <!-- Jack(+) to Driver 1(+) -->
+          <path d="M 70 105 C 120 105, 140 105, 170 105" fill="none" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+          <!-- Series Jumper: Driver 1(-) to Driver 2(+) -->
+          <path d="M 170 175 C 230 215, 300 65, 360 105" fill="none" stroke="#f59e0b" stroke-width="3" stroke-dasharray="4 2" stroke-linecap="round"/>
+          <!-- Driver 2(-) back to Jack(-) -->
+          <path d="M 360 175 C 320 250, 120 250, 70 175" fill="none" stroke="#38bdf8" stroke-width="3" stroke-linecap="round"/>
+        }
+      }
+
+      <!-- ==================== 4-DRIVER WIRING ==================== -->
+      @if (driverCount() === 4) {
+        <!-- Top-Left SP1 -->
+        <g class="driver-group">
+          <circle cx="210" cy="80" r="44" fill="#080e1b" stroke="#38bdf8" stroke-width="1.5"/>
+          <circle cx="210" cy="80" r="14" fill="#f59e0b" stroke="#fbbf24" stroke-width="1"/>
+          <text x="210" y="84" text-anchor="middle" fill="#080e1b" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="bold">{{ selectedImpedance() }}&Omega;</text>
+          <circle cx="175" cy="60" r="4" fill="#ef4444" stroke="#ffffff"/>
+          <circle cx="175" cy="100" r="4" fill="#38bdf8" stroke="#ffffff"/>
+        </g>
+
+        <!-- Top-Right SP2 -->
+        <g class="driver-group">
+          <circle cx="390" cy="80" r="44" fill="#080e1b" stroke="#38bdf8" stroke-width="1.5"/>
+          <circle cx="390" cy="80" r="14" fill="#f59e0b" stroke="#fbbf24" stroke-width="1"/>
+          <text x="390" y="84" text-anchor="middle" fill="#080e1b" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="bold">{{ selectedImpedance() }}&Omega;</text>
+          <circle cx="355" cy="60" r="4" fill="#ef4444" stroke="#ffffff"/>
+          <circle cx="355" cy="100" r="4" fill="#38bdf8" stroke="#ffffff"/>
+        </g>
+
+        <!-- Bottom-Left SP3 -->
+        <g class="driver-group">
+          <circle cx="210" cy="200" r="44" fill="#080e1b" stroke="#38bdf8" stroke-width="1.5"/>
+          <circle cx="210" cy="200" r="14" fill="#f59e0b" stroke="#fbbf24" stroke-width="1"/>
+          <text x="210" y="204" text-anchor="middle" fill="#080e1b" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="bold">{{ selectedImpedance() }}&Omega;</text>
+          <circle cx="175" cy="180" r="4" fill="#ef4444" stroke="#ffffff"/>
+          <circle cx="175" cy="220" r="4" fill="#38bdf8" stroke="#ffffff"/>
+        </g>
+
+        <!-- Bottom-Right SP4 -->
+        <g class="driver-group">
+          <circle cx="390" cy="200" r="44" fill="#080e1b" stroke="#38bdf8" stroke-width="1.5"/>
+          <circle cx="390" cy="200" r="14" fill="#f59e0b" stroke="#fbbf24" stroke-width="1"/>
+          <text x="390" y="204" text-anchor="middle" fill="#080e1b" font-family="'JetBrains Mono', monospace" font-size="9" font-weight="bold">{{ selectedImpedance() }}&Omega;</text>
+          <circle cx="355" cy="180" r="4" fill="#ef4444" stroke="#ffffff"/>
+          <circle cx="355" cy="220" r="4" fill="#38bdf8" stroke="#ffffff"/>
+        </g>
+
+        <!-- Wires: 4x SERIES-PARALLEL -->
+        @if (wiringResult().activeOption.mode === 'series-parallel' || wiringResult().activeOption.mode === 'stereo-split') {
+          <!-- Red: Jack(+) to SP1(+) and SP2(+) -->
+          <path d="M 70 105 C 110 105, 130 60, 175 60" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M 175 60 C 250 25, 290 25, 355 60" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+          <!-- Yellow Jumpers: SP1(-) to SP3(+), SP2(-) to SP4(+) -->
+          <path d="M 175 100 C 150 140, 150 140, 175 180" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-dasharray="3 2" stroke-linecap="round"/>
+          <path d="M 355 100 C 330 140, 330 140, 355 180" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-dasharray="3 2" stroke-linecap="round"/>
+          <!-- Black: SP3(-) and SP4(-) to Jack(-) -->
+          <path d="M 355 220 C 290 260, 250 260, 175 220" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M 175 220 C 130 220, 110 175, 70 175" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round"/>
+        }
+
+        <!-- Wires: 4x ALL-PARALLEL -->
+        @if (wiringResult().activeOption.mode === 'all-parallel') {
+          <path d="M 70 105 C 110 105, 130 60, 175 60" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M 175 60 C 250 25, 290 25, 355 60" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M 175 60 C 150 120, 150 120, 175 180" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M 355 60 C 330 120, 330 120, 355 180" fill="none" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+
+          <path d="M 70 175 C 110 175, 130 100, 175 100" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M 175 100 C 250 135, 290 135, 355 100" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M 175 100 C 150 160, 150 160, 175 220" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M 355 100 C 330 160, 330 160, 355 220" fill="none" stroke="#38bdf8" stroke-width="2.5" stroke-linecap="round"/>
+        }
+      }
+    </svg>
+  </div>
+
+  <!-- Technical Wiring Details & Amp Matching Info -->
+  <div class="wiring-info-card">
+    <div class="info-row">
+      <div class="info-cell">
+        <span class="info-lbl">SELECTED TOPOLOGY:</span>
+        <span class="info-val font-mono text-cyan">{{ wiringResult().activeOption.name }}</span>
+      </div>
+      <div class="info-cell">
+        <span class="info-lbl">RECOMMENDED WIRE GAUGE:</span>
+        <span class="info-val font-mono text-amber">{{ wiringResult().suggestedWireGauge }}</span>
+      </div>
+      <div class="info-cell">
+        <span class="info-lbl">RECOMMENDED JACK PLATE:</span>
+        <span class="info-val font-mono">{{ wiringResult().jackPlate | titlecase }} 1/4"</span>
+      </div>
+    </div>
+
+    <div class="amp-guide-box">
+      <span class="guide-icon">💡</span>
+      <div class="guide-text">
+        <span class="guide-title">Amplifier Matching Guidance:</span>
+        <p class="guide-msg">{{ wiringResult().activeOption.ampCompatibilityTip }}</p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,652 @@
+@use 'sass:color';
+@use 'variables' as *;
+@use 'mixins' as *;
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+
+body {
+  font-family: $font-sans;
+  background-color: $color-bg-deep;
+  color: $color-text-primary;
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+// Technical grid background overlay for the app
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.7;
+  background-image:
+    linear-gradient(rgba(56, 189, 248, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(56, 189, 248, 0.03) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: $color-text-bright;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+a {
+  color: $color-primary-light;
+  text-decoration: none;
+  transition: color $transition-fast;
+
+  &:hover {
+    color: color.adjust($color-primary-light, $lightness: 15%);
+  }
+}
+
+code, kbd, samp, pre {
+  font-family: $font-mono;
+}
+
+button {
+  font-family: inherit;
+}
+
+// Custom Scrollbar
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: $color-bg-deep;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $color-border-default;
+  border-radius: $radius-full;
+
+  &:hover {
+    background: $color-border-highlight;
+  }
+}
+
+// Utility Layout Classes
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+
+  @include md {
+    padding: 0 2rem;
+  }
+}
+
+.text-gradient-cyan {
+  background: linear-gradient(135deg, #ffffff 30%, $color-primary-light 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.text-gradient-amber {
+  background: linear-gradient(135deg, #ffffff 30%, $color-amber-light 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.mono-spec {
+  font-family: $font-mono;
+  font-size: 0.875rem;
+}
+
+// ==========================================
+// PRINT & PDF EXPORT STYLESHEET
+// ==========================================
+// Print elements hidden by default on screen
+.print-only,
+.print-only-header {
+  display: none !important;
+}
+
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 10mm 12mm;
+  }
+
+  // 1. HIDE ALL GLOBAL APP SHELL & NAVIGATION ELEMENTS
+  app-header,
+  app-footer,
+  header,
+  footer,
+  .app-header,
+  .app-footer,
+  .navbar,
+  .config-header,
+  .wizard-stepper,
+  .step-footer,
+  .preset-selector-box,
+  .back-link,
+  .btn-step-prev,
+  .btn-step-next,
+  .btn-return-home,
+  .no-print,
+  .toast-notification,
+  .export-actions-bar,
+  .brand-filter-pills,
+  .view-switcher,
+  .preview-column,
+  .header-actions,
+  .btn-tool,
+  .controls-toolbar,
+  .secondary-controls-row,
+  .kerf-selector,
+  .rotation-toggle,
+  .preset-pill-group,
+  .sheet-tabs-row,
+  .wiring-controls-bar,
+  .mini-btn-group,
+  .topology-pills,
+  .unit-toggle-row {
+    display: none !important;
+  }
+
+  // 2. ROOT RESET FOR INK-FRIENDLY WHITE BACKGROUND
+  html, body {
+    background: #ffffff !important;
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+    font-size: 9pt !important;
+    line-height: 1.35 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
+
+  body::before {
+    display: none !important;
+  }
+
+  .configurator-page {
+    padding: 0 !important;
+    min-height: auto !important;
+    background: #ffffff !important;
+  }
+
+  .container {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+  }
+
+  .workspace-grid {
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .form-column {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  // 3. PRINT HEADER BANNER
+  .print-only-header {
+    display: block !important;
+    border-bottom: 2px solid #0f172a !important;
+    padding-bottom: 6px !important;
+    margin-bottom: 14px !important;
+
+    .print-title {
+      font-size: 15pt !important;
+      font-weight: 800 !important;
+      text-transform: uppercase !important;
+      letter-spacing: 0.05em !important;
+      color: #0f172a !important;
+    }
+
+    .print-meta {
+      font-family: $font-mono;
+      font-size: 8.5pt !important;
+      color: #475569 !important;
+      display: flex !important;
+      justify-content: space-between !important;
+      margin-top: 4px !important;
+    }
+  }
+
+  // 4. PRINT-READY CARDS & SECTIONS
+  .step-card,
+  .summary-view-card {
+    background: #ffffff !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .traveler-blueprint-card,
+  .cutlist-card,
+  .optimizer-card,
+  .wiring-card,
+  .cost-summary-card {
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 6px !important;
+    margin-bottom: 12px !important;
+    padding: 10px 14px !important;
+    box-shadow: none !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  .step-heading {
+    margin-bottom: 8px !important;
+
+    .step-title {
+      font-size: 13pt !important;
+      color: #0f172a !important;
+    }
+
+    .step-lead {
+      font-size: 8.5pt !important;
+      color: #64748b !important;
+      margin-bottom: 4px !important;
+    }
+  }
+
+  .cutlist-badge,
+  .optimizer-badge,
+  .wiring-badge,
+  .cost-badge,
+  .step-num-pill {
+    background: #f1f5f9 !important;
+    border: 1px solid #cbd5e1 !important;
+    color: #0f172a !important;
+    font-size: 7.5pt !important;
+    padding: 1px 6px !important;
+  }
+
+  .cutlist-title,
+  .optimizer-title,
+  .wiring-title,
+  .cost-title {
+    color: #0f172a !important;
+    font-size: 11pt !important;
+  }
+
+  .cutlist-sub,
+  .optimizer-sub,
+  .wiring-sub {
+    color: #64748b !important;
+    font-size: 8pt !important;
+  }
+
+  // 5. CUT LIST TABLE PRINT STYLES
+  .print-only {
+    display: table-cell !important;
+  }
+
+  .print-checkbox-col {
+    width: 42px !important;
+    text-align: center !important;
+    font-weight: bold !important;
+    color: #475569 !important;
+  }
+
+  .cutlist-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    font-size: 8pt !important;
+
+    th, td {
+      border: 1px solid #cbd5e1 !important;
+      padding: 4px 6px !important;
+      color: #0f172a !important;
+    }
+
+    th {
+      background-color: #f1f5f9 !important;
+      color: #0f172a !important;
+      font-weight: bold !important;
+      font-size: 7.5pt !important;
+    }
+
+    tr:nth-child(even) td {
+      background-color: #f8fafc !important;
+    }
+
+    .text-cyan,
+    .text-amber,
+    .qty-cell,
+    .part-name {
+      color: #0f172a !important;
+      font-weight: 600 !important;
+    }
+
+    .part-bullet {
+      color: #64748b !important;
+    }
+  }
+
+  // 6. TECHNICAL BLUEPRINTS & DIAGRAMS (SCHEMATICS)
+  .schematic-viewport,
+  .svg-sheet-container,
+  .schematic-container {
+    background: #f8fafc !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 4px !important;
+    padding: 6px !important;
+  }
+
+  svg {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  // 7. SHEET CUT LEGEND (COMPACT IN PRINT)
+  .sheet-legend-card {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 4px !important;
+    padding: 6px 10px !important;
+    margin-top: 8px !important;
+
+    .legend-header {
+      margin-bottom: 4px !important;
+
+      .legend-title {
+        color: #0f172a !important;
+        font-size: 8.5pt !important;
+        font-weight: bold !important;
+      }
+      .legend-sub {
+        color: #64748b !important;
+        font-size: 7.5pt !important;
+      }
+    }
+
+    .legend-grid {
+      display: grid !important;
+      grid-template-columns: repeat(3, 1fr) !important;
+      gap: 4px !important;
+    }
+
+    .legend-item {
+      background: #f8fafc !important;
+      border: 1px solid #e2e8f0 !important;
+      padding: 3px 6px !important;
+      border-radius: 3px !important;
+
+      .item-name {
+        color: #0f172a !important;
+        font-size: 7.5pt !important;
+        font-weight: 600 !important;
+      }
+      .item-dims {
+        color: #475569 !important;
+        font-size: 7pt !important;
+      }
+    }
+  }
+
+  // 8. WIRING & AMP GUIDANCE PRINT STYLES
+  .wiring-info-card,
+  .driver-tech-grid,
+  .driver-detail-card,
+  .yield-badge-box,
+  .load-badge-box {
+    background: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 4px !important;
+    padding: 6px 10px !important;
+  }
+
+  .info-cell,
+  .tech-cell {
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    padding: 4px 6px !important;
+  }
+
+  .info-lbl,
+  .cell-lbl,
+  .yield-label,
+  .load-label {
+    color: #64748b !important;
+    font-size: 6.5pt !important;
+  }
+
+  .info-val,
+  .cell-val,
+  .yield-val,
+  .load-val {
+    color: #0f172a !important;
+    font-size: 8.5pt !important;
+    font-weight: bold !important;
+  }
+
+  .amp-guide-box {
+    background: #f1f5f9 !important;
+    border: 1px solid #cbd5e1 !important;
+    padding: 6px 8px !important;
+    margin-top: 6px !important;
+
+    .guide-title {
+      color: #0f172a !important;
+      font-size: 8pt !important;
+      font-weight: bold !important;
+    }
+    .guide-msg {
+      color: #334155 !important;
+      font-size: 7.5pt !important;
+    }
+  }
+
+  // 9. COST SUMMARY & TOOLS BREAKDOWN PRINT STYLES (COHESIVE HORIZONTAL FINAL PAGE)
+  app-cost-summary-card {
+    display: block !important;
+    width: 100% !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  .summary-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    width: 100% !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+    margin-top: 10px !important;
+  }
+
+  .summary-card {
+    background: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 8px !important;
+    padding: 12px 16px !important;
+    box-shadow: none !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+    gap: 10px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+
+    .card-title {
+      font-size: 13pt !important;
+      font-weight: 800 !important;
+      color: #0f172a !important;
+    }
+  }
+
+  .summary-top-row {
+    display: grid !important;
+    grid-template-columns: 1fr 1.3fr !important;
+    gap: 12px !important;
+    align-items: stretch !important;
+  }
+
+  .total-box {
+    background: #f8fafc !important;
+    border: 1.5px solid #0284c7 !important;
+    padding: 10px 14px !important;
+    border-radius: 6px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+
+    .total-label {
+      color: #475569 !important;
+      font-size: 8pt !important;
+      font-weight: 700 !important;
+    }
+    .total-amount {
+      color: #0284c7 !important;
+      font-size: 22pt !important;
+      font-weight: 800 !important;
+      line-height: 1.1 !important;
+    }
+    .total-disclaimer {
+      color: #64748b !important;
+      font-size: 7pt !important;
+      margin-top: 2px !important;
+    }
+  }
+
+  .material-stats {
+    background: #f8fafc !important;
+    border: 1px solid #cbd5e1 !important;
+    padding: 10px 14px !important;
+    border-radius: 6px !important;
+    gap: 4px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+
+    .mat-row {
+      font-size: 9pt !important;
+      display: flex !important;
+      justify-content: space-between !important;
+    }
+    .mat-label {
+      color: #475569 !important;
+    }
+    .mat-val {
+      color: #0f172a !important;
+      font-weight: 700 !important;
+    }
+  }
+
+  .cost-table {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 4px 18px !important;
+    margin-top: 2px !important;
+
+    .cost-row {
+      padding: 3px 0 !important;
+      border-bottom: 1px solid #e2e8f0 !important;
+      font-size: 9pt !important;
+      display: flex !important;
+      justify-content: space-between !important;
+
+      .cost-item {
+        color: #334155 !important;
+      }
+      .cost-val {
+        color: #0f172a !important;
+        font-weight: 700 !important;
+      }
+    }
+  }
+
+  .difficulty-box {
+    background: #f8fafc !important;
+    border: 1px solid #cbd5e1 !important;
+    border-radius: 6px !important;
+    padding: 8px 12px !important;
+    gap: 4px !important;
+
+    .diff-header {
+      display: flex !important;
+      align-items: center !important;
+      gap: 6px !important;
+    }
+
+    .diff-tag {
+      color: #64748b !important;
+      font-size: 8pt !important;
+      font-weight: 700 !important;
+    }
+    .diff-level {
+      color: #d97706 !important;
+      font-size: 11pt !important;
+      font-weight: 800 !important;
+    }
+    .diff-summary {
+      color: #334155 !important;
+      font-size: 8.5pt !important;
+      line-height: 1.35 !important;
+    }
+    .diff-reasons {
+      gap: 2px !important;
+      font-size: 8pt !important;
+      color: #475569 !important;
+      margin-top: 2px !important;
+    }
+  }
+
+  .tools-block {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 12px !important;
+
+    .tool-section {
+      gap: 3px !important;
+      background: #f8fafc !important;
+      border: 1px solid #e2e8f0 !important;
+      border-radius: 6px !important;
+      padding: 8px 10px !important;
+    }
+    .tool-section-title {
+      font-size: 8pt !important;
+      font-weight: 800 !important;
+      letter-spacing: 0.04em !important;
+      color: #0f172a !important;
+      border-bottom: 1px solid #cbd5e1 !important;
+      padding-bottom: 3px !important;
+      margin-bottom: 2px !important;
+    }
+    .tool-list {
+      gap: 2.5px !important;
+    }
+    .tool-item {
+      font-size: 8pt !important;
+      color: #334155 !important;
+      line-height: 1.3 !important;
+    }
+  }
+}
+
+
+

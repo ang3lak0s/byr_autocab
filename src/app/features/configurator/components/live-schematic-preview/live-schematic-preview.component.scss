@@ -1,0 +1,246 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.schematic-card {
+  @include glass-card;
+  background: rgba(12, 18, 32, 0.9);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  box-shadow: $shadow-xl, 0 0 25px rgba(56, 189, 248, 0.15);
+  padding: 1.5rem;
+  border-radius: $radius-xl;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  height: 100%;
+  min-height: 100%;
+
+  &.has-warning {
+    border-color: rgba(239, 68, 68, 0.5);
+    box-shadow: $shadow-xl, 0 0 25px rgba(239, 68, 68, 0.2);
+  }
+}
+
+.schematic-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid $color-border-subtle;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+}
+
+.title-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.view-switcher-pill {
+  display: flex;
+  background: $color-bg-deep;
+  border-radius: $radius-full;
+  padding: 2px;
+  border: 1px solid $color-border-default;
+}
+
+.switch-btn {
+  background: transparent;
+  border: none;
+  color: $color-text-muted;
+  font-family: $font-mono;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 0.25rem 0.6rem;
+  border-radius: $radius-full;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:hover {
+    color: $color-text-bright;
+  }
+
+  &.active {
+    background: $color-primary;
+    color: #ffffff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  }
+}
+
+.live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: $color-primary-light;
+  box-shadow: 0 0 8px $color-primary-light;
+  animation: pulse-dot 2s infinite ease-in-out;
+
+  &.warning-dot {
+    background: #ef4444;
+    box-shadow: 0 0 8px #ef4444;
+  }
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.8); }
+}
+
+.schematic-title {
+  font-family: $font-mono;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: $color-primary-light;
+  letter-spacing: 0.06em;
+}
+
+.volume-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  padding: 0.25rem 0.65rem;
+  border-radius: $radius-sm;
+}
+
+.vol-label {
+  font-family: $font-mono;
+  font-size: 0.65rem;
+  color: $color-text-dim;
+}
+
+.vol-val {
+  font-family: $font-mono;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: $color-amber-light;
+}
+
+.vol-sub {
+  font-family: $font-mono;
+  font-size: 0.7rem;
+  color: $color-text-muted;
+}
+
+.svg-viewport {
+  background: #070c17;
+  border: 1px solid rgba(40, 55, 80, 0.7);
+  border-radius: $radius-lg;
+  overflow: hidden;
+  flex: 1;
+  min-height: 290px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preview-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.validation-feed {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.alert-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  padding: 0.85rem 1rem;
+  border-radius: $radius-md;
+  font-size: 0.85rem;
+  line-height: 1.45;
+
+  &.alert-error {
+    background: rgba(239, 68, 68, 0.12);
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    color: #fca5a5;
+
+    .alert-icon {
+      color: #ef4444;
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
+  }
+
+  &.alert-success {
+    background: rgba(16, 185, 129, 0.12);
+    border: 1px solid rgba(16, 185, 129, 0.35);
+    color: #a7f3d0;
+
+    .alert-icon {
+      color: $color-success;
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
+  }
+}
+
+.alert-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.alert-title {
+  font-weight: 700;
+  font-size: 0.875rem;
+}
+
+.alert-msg {
+  font-size: 0.825rem;
+}
+
+.alert-hint {
+  font-size: 0.75rem;
+  color: $color-text-dim;
+  margin-top: 0.2rem;
+}
+
+.specs-bar {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+
+  @include sm {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.spec-chip {
+  background: rgba(22, 34, 59, 0.7);
+  border: 1px solid $color-border-subtle;
+  padding: 0.4rem 0.65rem;
+  border-radius: $radius-sm;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.chip-label {
+  font-family: $font-mono;
+  font-size: 0.625rem;
+  color: $color-text-dim;
+  text-transform: uppercase;
+}
+
+.chip-val {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: $color-text-primary;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

@@ -1,0 +1,274 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.how-section {
+  padding: 5rem 0;
+  position: relative;
+}
+
+.section-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 3.5rem;
+}
+
+.header-badge {
+  @include badge-pill;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: #34d399;
+  margin-bottom: 1rem;
+}
+
+.badge-icon {
+  font-size: 0.85rem;
+}
+
+.section-title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: $color-text-bright;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.75rem;
+
+  @include md {
+    font-size: 2.75rem;
+  }
+}
+
+.section-subtitle {
+  font-size: 1.05rem;
+  color: $color-text-muted;
+  max-width: 680px;
+  line-height: 1.6;
+}
+
+// 4-Step Cards Grid
+.steps-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin-bottom: 4.5rem;
+
+  @include md {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include xl {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.step-card {
+  @include glass-card;
+  padding: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  position: relative;
+
+  &:hover {
+    transform: translateY(-4px);
+    border-color: rgba(56, 189, 248, 0.4);
+  }
+
+  &.active {
+    border-color: $color-primary-light;
+    box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+    background: rgba(18, 28, 50, 0.85);
+  }
+}
+
+.step-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+.step-num {
+  font-family: $font-mono;
+  font-size: 2rem;
+  font-weight: 800;
+  color: $color-primary-light;
+  line-height: 1;
+}
+
+.step-badge {
+  @include badge-pill;
+  background: rgba(22, 34, 59, 0.9);
+  border: 1px solid $color-border-default;
+  color: $color-text-muted;
+  font-size: 0.7rem;
+}
+
+.step-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: $color-text-bright;
+  margin-bottom: 0.25rem;
+}
+
+.step-subtitle {
+  font-size: 0.825rem;
+  color: $color-amber-light;
+  font-weight: 600;
+  margin-bottom: 0.85rem;
+}
+
+.step-desc {
+  font-size: 0.85rem;
+  color: $color-text-secondary;
+  line-height: 1.55;
+  margin-bottom: 1.25rem;
+}
+
+.step-tech {
+  margin-bottom: 1.25rem;
+  flex-grow: 1;
+}
+
+.tech-label {
+  font-family: $font-mono;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: $color-text-dim;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.4rem;
+  display: block;
+}
+
+.tech-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.tech-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  font-size: 0.775rem;
+  color: $color-text-muted;
+  line-height: 1.4;
+}
+
+.tech-bullet {
+  color: $color-primary-light;
+  font-weight: bold;
+}
+
+.sample-box {
+  background: #070b14;
+  border: 1px solid $color-border-subtle;
+  border-radius: $radius-sm;
+  padding: 0.65rem 0.75rem;
+  margin-top: auto;
+}
+
+.sample-label {
+  display: block;
+  font-family: $font-mono;
+  font-size: 0.625rem;
+  color: $color-text-dim;
+  margin-bottom: 0.2rem;
+}
+
+.sample-code {
+  font-family: $font-mono;
+  font-size: 0.75rem;
+  color: #38bdf8;
+  word-break: break-all;
+  display: block;
+}
+
+// CTA Banner
+.cta-banner {
+  @include glass-card;
+  position: relative;
+  overflow: hidden;
+  padding: 3rem 2rem;
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.15) 0%, rgba(12, 18, 32, 0.95) 70%);
+  box-shadow: $shadow-xl, 0 0 35px rgba(56, 189, 248, 0.2);
+  border-radius: $radius-xl;
+
+  @include md {
+    padding: 3.5rem;
+  }
+}
+
+.banner-glow {
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, $color-primary-light 0%, transparent 70%);
+  opacity: 0.2;
+  filter: blur(80px);
+  pointer-events: none;
+}
+
+.banner-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  @include lg {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.banner-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 620px;
+}
+
+.banner-pill {
+  @include badge-pill;
+  background: rgba(245, 158, 11, 0.2);
+  color: $color-amber-light;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  align-self: flex-start;
+}
+
+.banner-title {
+  font-size: 2rem;
+  font-weight: 800;
+  color: $color-text-bright;
+  letter-spacing: -0.02em;
+
+  @include md {
+    font-size: 2.25rem;
+  }
+}
+
+.banner-desc {
+  font-size: 1rem;
+  color: $color-text-secondary;
+  line-height: 1.6;
+}
+
+.btn-banner-primary {
+  @include btn-amber;
+  padding: 1rem 2rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  border-radius: $radius-lg;
+
+  .btn-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+}

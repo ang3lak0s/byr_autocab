@@ -1,0 +1,315 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.site-header {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background: rgba(7, 11, 20, 0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(40, 55, 80, 0.6);
+  transition: all $transition-normal;
+
+  &.scrolled {
+    background: rgba(7, 11, 20, 0.95);
+    border-bottom-color: $color-border-default;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  }
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 4.5rem;
+}
+
+// Brand Logo
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  text-decoration: none;
+  color: inherit;
+  transition: transform $transition-fast;
+
+  &:hover {
+    transform: scale(1.02);
+  }
+}
+
+.logo-mark {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(14, 165, 233, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  border-radius: $radius-md;
+  padding: 0.25rem;
+}
+
+.logo-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-name {
+  font-family: $font-sans;
+  font-size: 1.2rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: $color-text-bright;
+
+  .accent {
+    color: $color-primary-light;
+  }
+}
+
+.brand-tag {
+  font-family: $font-mono;
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: $color-amber;
+}
+
+// Desktop Navigation
+.desktop-nav {
+  display: none;
+  align-items: center;
+  gap: 1.75rem;
+
+  @include lg {
+    display: flex;
+  }
+}
+
+.nav-link {
+  font-size: 0.925rem;
+  font-weight: 500;
+  color: $color-text-secondary;
+  text-decoration: none;
+  position: relative;
+  padding: 0.35rem 0;
+  transition: color $transition-fast;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: $color-primary-light;
+    border-radius: $radius-full;
+    transition: width $transition-fast;
+  }
+
+  &:hover {
+    color: $color-text-bright;
+
+    &::after {
+      width: 100%;
+    }
+  }
+}
+
+// Header Actions
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.status-badge {
+  display: none;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.65rem;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  border-radius: $radius-full;
+
+  @include md {
+    display: flex;
+  }
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  background: $color-success;
+  border-radius: 50%;
+  box-shadow: 0 0 8px $color-success;
+  animation: pulse-dot 2s infinite ease-in-out;
+}
+
+@keyframes pulse-dot {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(0.85);
+  }
+}
+
+.status-text {
+  font-family: $font-mono;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #34d399;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.btn-cta {
+  @include btn-primary;
+  padding: 0.6rem 1.15rem;
+  font-size: 0.875rem;
+
+  .cta-icon {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+
+  &.full-width {
+    width: 100%;
+  }
+}
+
+// Mobile Toggle Hamburger
+.mobile-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  background: rgba(22, 34, 59, 0.7);
+  border: 1px solid $color-border-default;
+  border-radius: $radius-md;
+  cursor: pointer;
+  padding: 0.5rem;
+
+  @include lg {
+    display: none;
+  }
+
+  &:hover {
+    background: $color-bg-surface-elevated;
+    border-color: $color-border-highlight;
+  }
+}
+
+.hamburger-bar {
+  position: relative;
+  width: 1.25rem;
+  height: 2px;
+  background: $color-text-primary;
+  transition: all $transition-fast;
+
+  &::before, &::after {
+    content: '';
+    position: absolute;
+    width: 1.25rem;
+    height: 2px;
+    background: $color-text-primary;
+    transition: all $transition-fast;
+  }
+
+  &::before {
+    top: -6px;
+  }
+
+  &::after {
+    bottom: -6px;
+  }
+
+  &.open {
+    background: transparent;
+
+    &::before {
+      top: 0;
+      transform: rotate(45deg);
+    }
+
+    &::after {
+      bottom: 0;
+      transform: rotate(-45deg);
+    }
+  }
+}
+
+// Mobile Drawer
+.mobile-drawer {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: rgba(12, 18, 32, 0.98);
+  border-bottom: 1px solid $color-border-default;
+  backdrop-filter: blur(20px);
+  padding: 1.25rem;
+  box-shadow: $shadow-xl;
+  animation: slideDown 200ms ease-out forwards;
+
+  @include lg {
+    display: none;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.mobile-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.mobile-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  color: $color-text-secondary;
+  font-size: 1rem;
+  font-weight: 500;
+  border-radius: $radius-md;
+  text-decoration: none;
+  transition: all $transition-fast;
+
+  &:hover {
+    background: $color-bg-surface-elevated;
+    color: $color-text-bright;
+  }
+}
+
+.mobile-nav-icon {
+  font-size: 1.15rem;
+}
+
+.mobile-drawer-cta {
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid $color-border-subtle;
+}

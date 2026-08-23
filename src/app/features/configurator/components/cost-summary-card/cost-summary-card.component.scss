@@ -1,0 +1,251 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+
+  @include lg {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.summary-card {
+  @include glass-card;
+  background: rgba(12, 18, 32, 0.9);
+  padding: 1.5rem;
+  border-radius: $radius-xl;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.card-head {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.card-badge {
+  @include badge-pill;
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  color: $color-amber-light;
+  align-self: flex-start;
+
+  &.badge-tools {
+    background: rgba(16, 185, 129, 0.12);
+    border-color: rgba(16, 185, 129, 0.35);
+    color: #34d399;
+  }
+}
+
+.card-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: $color-text-bright;
+}
+
+// Top Row
+.summary-top-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+// Total box
+.total-box {
+  background: #080d17;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  border-radius: $radius-lg;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.total-label {
+  font-family: $font-mono;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: $color-text-dim;
+  letter-spacing: 0.05em;
+}
+
+.total-amount {
+  font-family: $font-mono;
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: $color-primary-light;
+  line-height: 1;
+}
+
+.total-disclaimer {
+  font-size: 0.725rem;
+  color: $color-text-dim;
+  margin-top: 0.25rem;
+}
+
+// Material stats
+.material-stats {
+  background: rgba(22, 34, 59, 0.5);
+  border: 1px solid $color-border-subtle;
+  border-radius: $radius-md;
+  padding: 0.85rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.mat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.825rem;
+}
+
+.mat-label {
+  color: $color-text-muted;
+}
+
+.mat-val {
+  color: $color-text-primary;
+  font-weight: 600;
+}
+
+// Cost table
+.cost-table {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.cost-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid rgba(40, 55, 80, 0.3);
+  font-size: 0.85rem;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.cost-item {
+  color: $color-text-secondary;
+}
+
+.cost-val {
+  color: $color-text-bright;
+  font-weight: 600;
+}
+
+// Difficulty box
+.difficulty-box {
+  padding: 1rem 1.25rem;
+  border-radius: $radius-lg;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+
+  &.difficulty-beginner {
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.35);
+    .diff-level { color: #34d399; }
+  }
+
+  &.difficulty-intermediate {
+    background: rgba(245, 158, 11, 0.1);
+    border: 1px solid rgba(245, 158, 11, 0.35);
+    .diff-level { color: $color-amber-light; }
+  }
+
+  &.difficulty-advanced {
+    background: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.35);
+    .diff-level { color: #f87171; }
+  }
+}
+
+.diff-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.diff-tag {
+  font-family: $font-mono;
+  font-size: 0.7rem;
+  color: $color-text-dim;
+}
+
+.diff-level {
+  font-family: $font-mono;
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.diff-summary {
+  font-size: 0.85rem;
+  color: $color-text-secondary;
+  line-height: 1.45;
+}
+
+.diff-reasons {
+  list-style: none;
+  margin-top: 0.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  font-size: 0.775rem;
+  color: $color-text-muted;
+}
+
+// Tools block
+.tools-block {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.tool-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.tool-section-title {
+  font-family: $font-mono;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.tool-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.tool-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.8rem;
+  color: $color-text-secondary;
+  line-height: 1.4;
+}
+
+.tool-check {
+  font-weight: bold;
+  font-size: 0.85rem;
+}
+
+.text-success { color: #34d399; }
+.text-amber { color: $color-amber-light; }
+.text-cyan { color: $color-primary-light; }
+.font-mono { font-family: $font-mono; }

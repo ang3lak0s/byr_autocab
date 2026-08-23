@@ -1,0 +1,509 @@
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.optimizer-card {
+  @include glass-card;
+  background: rgba(12, 18, 32, 0.92);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  border-radius: $radius-xl;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+  box-shadow: $shadow-xl, 0 0 25px rgba(56, 189, 248, 0.08);
+}
+
+// Card Head
+.optimizer-head {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid $color-border-subtle;
+
+  @include md {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.head-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.optimizer-badge {
+  @include badge-pill;
+  background: rgba(14, 165, 233, 0.15);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  color: $color-primary-light;
+  align-self: flex-start;
+}
+
+.optimizer-title {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: $color-text-bright;
+  letter-spacing: -0.01em;
+}
+
+.optimizer-sub {
+  font-size: 0.85rem;
+  color: $color-text-muted;
+}
+
+.yield-badge-box {
+  display: flex;
+  gap: 1.25rem;
+  background: rgba(8, 14, 26, 0.8);
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  padding: 0.75rem 1.25rem;
+  border-radius: $radius-md;
+  align-self: flex-start;
+
+  @include md {
+    align-self: auto;
+  }
+}
+
+.yield-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.yield-label {
+  font-family: $font-mono;
+  font-size: 0.625rem;
+  font-weight: 700;
+  color: $color-text-dim;
+  letter-spacing: 0.05em;
+}
+
+.yield-val {
+  font-family: $font-mono;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: $color-text-bright;
+
+  &.highlight {
+    color: $color-primary-light;
+    text-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+  }
+}
+
+// Controls Toolbar
+.controls-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  background: rgba(22, 34, 59, 0.45);
+  border: 1px solid $color-border-subtle;
+  padding: 1.25rem;
+  border-radius: $radius-lg;
+}
+
+.control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.control-label {
+  font-family: $font-mono;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: $color-text-dim;
+  letter-spacing: 0.06em;
+}
+
+.preset-pill-group {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+
+  @include md {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.preset-pill-btn {
+  background: rgba(8, 14, 26, 0.7);
+  border: 1px solid $color-border-default;
+  border-radius: $radius-md;
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:hover {
+    background: $color-bg-surface-elevated;
+    border-color: $color-border-highlight;
+  }
+
+  &.active {
+    background: rgba(14, 165, 233, 0.18);
+    border-color: $color-primary-light;
+    box-shadow: 0 0 14px rgba(56, 189, 248, 0.25);
+
+    .pill-name {
+      color: $color-primary-light;
+    }
+  }
+}
+
+.pill-name {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: $color-text-bright;
+}
+
+.pill-dim {
+  font-family: $font-mono;
+  font-size: 0.7rem;
+  color: $color-text-muted;
+  margin-top: 0.2rem;
+}
+
+.secondary-controls-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(40, 55, 80, 0.4);
+}
+
+.kerf-selector, .rotation-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.mini-btn-group {
+  display: flex;
+  background: $color-bg-deep;
+  border-radius: $radius-full;
+  padding: 2px;
+  border: 1px solid $color-border-default;
+}
+
+.mini-btn {
+  background: transparent;
+  border: none;
+  color: $color-text-muted;
+  font-family: $font-mono;
+  font-size: 0.725rem;
+  font-weight: 700;
+  padding: 0.35rem 0.75rem;
+  border-radius: $radius-full;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &.active {
+    background: $color-primary;
+    color: #ffffff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  }
+}
+
+.toggle-btn {
+  background: rgba(8, 14, 26, 0.7);
+  border: 1px solid $color-border-default;
+  border-radius: $radius-full;
+  padding: 0.35rem 0.85rem;
+  color: $color-text-secondary;
+  font-family: $font-mono;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:hover {
+    background: $color-bg-surface-elevated;
+    border-color: $color-border-highlight;
+  }
+
+  &.active {
+    background: rgba(16, 185, 129, 0.15);
+    border-color: rgba(16, 185, 129, 0.4);
+    color: #34d399;
+
+    .toggle-icon {
+      color: #34d399;
+    }
+  }
+}
+
+.toggle-icon {
+  font-weight: 800;
+}
+
+// Multi-Sheet Tabs
+.sheet-tabs-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.sheet-tabs-label {
+  font-family: $font-mono;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: $color-text-dim;
+}
+
+.sheet-tabs-list {
+  display: flex;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+}
+
+.sheet-tab-btn {
+  background: rgba(22, 34, 59, 0.6);
+  border: 1px solid $color-border-subtle;
+  padding: 0.5rem 0.85rem;
+  border-radius: $radius-md;
+  color: $color-text-secondary;
+  font-family: $font-mono;
+  font-size: 0.8rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:hover {
+    background: $color-bg-surface-elevated;
+    border-color: $color-border-highlight;
+  }
+
+  &.active {
+    background: rgba(14, 165, 233, 0.2);
+    border-color: $color-primary-light;
+    color: $color-primary-light;
+    box-shadow: 0 0 12px rgba(56, 189, 248, 0.25);
+  }
+}
+
+.tab-yield-pill {
+  background: rgba(16, 185, 129, 0.2);
+  color: #34d399;
+  font-size: 0.65rem;
+  padding: 0.15rem 0.4rem;
+  border-radius: $radius-sm;
+}
+
+// SVG Container
+.svg-sheet-container {
+  background: #060a14;
+  border: 1px solid rgba(40, 55, 80, 0.8);
+  border-radius: $radius-xl;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.sheet-viewport-header {
+  background: rgba(12, 18, 32, 0.95);
+  border-bottom: 1px solid rgba(40, 55, 80, 0.6);
+  padding: 0.75rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.sheet-meta-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.active-sheet-tag {
+  font-family: $font-mono;
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: $color-primary-light;
+  background: rgba(14, 165, 233, 0.15);
+  padding: 0.2rem 0.6rem;
+  border-radius: $radius-sm;
+}
+
+.sheet-dim-tag {
+  font-family: $font-mono;
+  font-size: 0.75rem;
+  color: $color-text-muted;
+}
+
+.sheet-meta-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.meta-item {
+  font-family: $font-mono;
+  font-size: 0.75rem;
+  color: $color-text-dim;
+
+  strong {
+    color: $color-text-bright;
+  }
+
+  &.yield-pill {
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid rgba(16, 185, 129, 0.35);
+    padding: 0.2rem 0.6rem;
+    border-radius: $radius-sm;
+    color: #34d399;
+  }
+}
+
+.svg-scroll-wrapper {
+  width: 100%;
+  padding: 1rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sheet-svg {
+  width: 100%;
+  max-width: 840px;
+  height: auto;
+  display: block;
+}
+
+.panel-svg-group {
+  cursor: pointer;
+  transition: transform $transition-fast;
+
+  rect {
+    transition: all $transition-fast;
+  }
+
+  &:hover rect {
+    filter: brightness(1.25);
+    stroke-width: 2.5;
+  }
+}
+
+// Legend Card
+.sheet-legend-card {
+  background: rgba(8, 14, 26, 0.65);
+  border: 1px solid $color-border-subtle;
+  border-radius: $radius-lg;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.legend-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(40, 55, 80, 0.4);
+}
+
+.legend-title {
+  font-family: $font-mono;
+  font-size: 0.725rem;
+  font-weight: 800;
+  color: $color-primary-light;
+  letter-spacing: 0.05em;
+}
+
+.legend-sub {
+  font-family: $font-mono;
+  font-size: 0.675rem;
+  color: $color-text-dim;
+}
+
+.legend-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.65rem;
+
+  @include md {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include lg {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: rgba(22, 34, 59, 0.45);
+  border: 1px solid $color-border-subtle;
+  padding: 0.6rem 0.85rem;
+  border-radius: $radius-md;
+  transition: all $transition-fast;
+
+  &.highlighted {
+    border-color: $color-primary-light;
+    background: rgba(14, 165, 233, 0.15);
+  }
+}
+
+.item-color-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: $radius-sm;
+  flex-shrink: 0;
+}
+
+.item-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  overflow: hidden;
+}
+
+.item-name {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: $color-text-bright;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.item-dims {
+  font-size: 0.7rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rotation-pill {
+  font-family: $font-mono;
+  font-size: 0.625rem;
+  font-weight: 700;
+  color: $color-amber;
+  background: rgba(245, 158, 11, 0.15);
+  padding: 0.15rem 0.45rem;
+  border-radius: $radius-sm;
+  margin-left: auto;
+  flex-shrink: 0;
+}
