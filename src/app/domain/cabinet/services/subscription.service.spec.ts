@@ -43,4 +43,17 @@ describe('SubscriptionService', () => {
     service.toggleTier();
     expect(service.tier()).toBe('free');
   });
+
+  it('should validate and activate valid license key', () => {
+    const res = service.validateAndActivateLicense('BYR-PRO-TEST-2026');
+    expect(res.success).toBe(true);
+    expect(service.isPro()).toBe(true);
+    expect(service.activeLicenseKey()).toBe('BYR-PRO-TEST-2026');
+  });
+
+  it('should reject short or invalid license keys', () => {
+    const res = service.validateAndActivateLicense('ab');
+    expect(res.success).toBe(false);
+    expect(service.isPro()).toBe(false);
+  });
 });

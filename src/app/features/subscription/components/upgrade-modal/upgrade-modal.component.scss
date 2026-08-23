@@ -281,6 +281,16 @@
   font-weight: 800;
   color: #fbbf24;
   box-shadow: 0 0 12px rgba(245, 158, 11, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+
+  .active-key-sub {
+    font-size: 0.65rem;
+    color: $color-text-secondary;
+    font-weight: 500;
+  }
 }
 
 .btn-secondary-plan {
@@ -320,6 +330,118 @@
   }
 }
 
+.pro-button-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  width: 100%;
+}
+
+.btn-demo-link {
+  background: transparent;
+  border: none;
+  color: $color-text-dim;
+  font-family: $font-mono;
+  font-size: 0.68rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.2rem;
+  text-align: center;
+  transition: color $transition-fast;
+
+  &:hover {
+    color: #fbbf24;
+    text-decoration: underline;
+  }
+}
+
+// License Key Redemption Section
+.license-redeem-section {
+  margin-bottom: 1.15rem;
+  padding: 0.75rem 1rem;
+  background: rgba(10, 16, 28, 0.6);
+  border: 1px dashed rgba(245, 158, 11, 0.3);
+  border-radius: $radius-md;
+  text-align: center;
+}
+
+.btn-toggle-license {
+  background: transparent;
+  border: none;
+  color: $color-text-secondary;
+  font-family: $font-sans;
+  font-size: 0.775rem;
+  cursor: pointer;
+  transition: color $transition-fast;
+
+  &:hover {
+    color: $color-amber-light;
+    text-decoration: underline;
+  }
+}
+
+.license-input-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  text-align: left;
+}
+
+.license-label {
+  font-family: $font-mono;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: $color-amber-light;
+  letter-spacing: 0.05em;
+}
+
+.license-form-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.license-text-input {
+  flex: 1;
+  background: $color-bg-deep;
+  border: 1px solid $color-border-default;
+  border-radius: $radius-sm;
+  padding: 0.45rem 0.75rem;
+  color: $color-text-bright;
+  font-family: $font-mono;
+  font-size: 0.8rem;
+  outline: none;
+  transition: border-color $transition-fast;
+
+  &:focus {
+    border-color: $color-amber;
+    box-shadow: 0 0 10px rgba(245, 158, 11, 0.2);
+  }
+
+  &::placeholder {
+    color: $color-text-dim;
+  }
+}
+
+.btn-redeem {
+  @include btn-primary;
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: #000;
+  font-size: 0.75rem;
+  padding: 0.45rem 0.85rem;
+  font-weight: 700;
+  white-space: nowrap;
+
+  &:hover {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  }
+}
+
+.license-error-msg {
+  font-size: 0.725rem;
+  color: #f87171;
+  margin: 0;
+}
+
 .modal-footer-info {
   text-align: center;
   padding-top: 0.75rem;
@@ -328,6 +450,35 @@
   .guarantee-text {
     font-size: 0.725rem;
     color: $color-text-dim;
+  }
+}
+
+// Global Activation Toast
+.activation-toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: $z-modal + 10;
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.95), rgba(217, 119, 6, 0.95));
+  color: #000000;
+  font-family: $font-sans;
+  font-size: 0.875rem;
+  font-weight: 800;
+  padding: 0.75rem 1.75rem;
+  border-radius: $radius-full;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), 0 0 25px rgba(245, 158, 11, 0.6);
+  animation: toastSlideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes toastSlideUp {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 20px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
   }
 }
 

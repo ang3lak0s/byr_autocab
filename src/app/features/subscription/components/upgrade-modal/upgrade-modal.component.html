@@ -25,7 +25,7 @@
           @if (triggerContext(); as ctx) {
             {{ ctx.description }}
           } @else {
-            Take your cabinet builds from standard hobby enclosures to professional touring stacks and boutique custom builds.
+            Take your cabinet builds to professional touring stacks, custom joinery, and boutique tones.
           }
         </p>
       </div>
@@ -89,21 +89,70 @@
 
           <div class="plan-action">
             @if (isPro()) {
-              <div class="active-pro-pill">👑 PRO UNLOCKED</div>
+              <div class="active-pro-pill">
+                <span>👑 PRO UNLOCKED</span>
+                @if (activeLicenseKey(); as key) {
+                  <span class="active-key-sub">Key: {{ key }}</span>
+                }
+              </div>
             } @else {
-              <button type="button" class="btn-pro-activate" (click)="activatePro()">
-                <span class="btn-icon">⚡</span>
-                <span>Activate Pro (Demo)</span>
-              </button>
+              <div class="pro-button-stack">
+                <button type="button" class="btn-pro-activate" (click)="openCheckout()">
+                  <span class="btn-icon">⚡</span>
+                  <span>Get Pro Workshop Pass ($19)</span>
+                </button>
+                <button type="button" class="btn-demo-link" (click)="activateDemoPro()">
+                  ⚡ Instant Demo Mode (Test Free)
+                </button>
+              </div>
             }
           </div>
         </div>
       </div>
+
+      <!-- License Key Redemption Drawer / Toggle -->
+      @if (!isPro()) {
+        <div class="license-redeem-section">
+          @if (!showLicenseInput()) {
+            <button type="button" class="btn-toggle-license" (click)="toggleLicenseInput()">
+              <span>🔑 Have a License Key or Promo Code?</span>
+            </button>
+          } @else {
+            <div class="license-input-box">
+              <label for="licenseCodeInput" class="license-label">ENTER PRO LICENSE KEY:</label>
+              <div class="license-form-row">
+                <input
+                  id="licenseCodeInput"
+                  type="text"
+                  class="license-text-input"
+                  placeholder="e.g. BYR-PRO-XXXX-XXXX"
+                  [value]="licenseKeyInput()"
+                  (input)="licenseKeyInput.set($any($event.target).value)"
+                  (keydown.enter)="redeemLicense()"
+                />
+                <button type="button" class="btn-redeem" (click)="redeemLicense()">
+                  Verify &amp; Unlock
+                </button>
+              </div>
+              @if (licenseError(); as err) {
+                <p class="license-error-msg">⚠️ {{ err }}</p>
+              }
+            </div>
+          }
+        </div>
+      }
 
       <!-- Footer Guarantee -->
       <div class="modal-footer-info">
         <span class="guarantee-text">🛡️ Instant Lifetime Access &bull; 100% Deterministic Workshop Accuracy</span>
       </div>
     </div>
+  </div>
+}
+
+<!-- Floating Activation Toast -->
+@if (subService.activationToast(); as toast) {
+  <div class="activation-toast" role="alert">
+    <span class="toast-content">{{ toast }}</span>
   </div>
 }
