@@ -12,6 +12,9 @@ html {
   font-size: 16px;
   scroll-behavior: smooth;
   color-scheme: dark;
+  overflow-x: hidden;
+  max-width: 100%;
+  width: 100%;
 }
 
 body {
@@ -23,6 +26,9 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
+  max-width: 100%;
+  width: 100%;
+  position: relative;
 }
 
 // Technical grid background overlay for the app
@@ -181,16 +187,33 @@ button {
     margin: 0 !important;
     padding: 0 !important;
     width: 100% !important;
+    height: auto !important;
+    min-height: auto !important;
+    overflow: visible !important;
+    overflow-x: visible !important;
+    max-width: 100% !important;
   }
 
   body::before {
     display: none !important;
   }
 
+  app-root {
+    display: block !important;
+    height: auto !important;
+    min-height: auto !important;
+    overflow: visible !important;
+    width: 100% !important;
+  }
+
   .configurator-page {
     padding: 0 !important;
     min-height: auto !important;
+    height: auto !important;
     background: #ffffff !important;
+    overflow: visible !important;
+    display: block !important;
+    width: 100% !important;
   }
 
   .container {
@@ -198,12 +221,20 @@ button {
     padding: 0 !important;
     margin: 0 !important;
     width: 100% !important;
+    height: auto !important;
+    min-height: auto !important;
+    overflow: visible !important;
+    display: block !important;
   }
 
   .workspace-grid {
     display: block !important;
     margin: 0 !important;
     padding: 0 !important;
+    height: auto !important;
+    min-height: auto !important;
+    overflow: visible !important;
+    width: 100% !important;
   }
 
   .form-column {
@@ -211,6 +242,10 @@ button {
     max-width: 100% !important;
     margin: 0 !important;
     padding: 0 !important;
+    height: auto !important;
+    min-height: auto !important;
+    overflow: visible !important;
+    display: block !important;
   }
 
   // 3. PRINT HEADER BANNER
@@ -246,6 +281,11 @@ button {
     padding: 0 !important;
     margin: 0 !important;
     box-shadow: none !important;
+    height: auto !important;
+    min-height: auto !important;
+    overflow: visible !important;
+    display: block !important;
+    width: 100% !important;
   }
 
   .traveler-blueprint-card {
@@ -593,21 +633,19 @@ button {
     }
   }
 
-  // 9. COST SUMMARY & TOOLS BREAKDOWN PRINT STYLES (COHESIVE HORIZONTAL FINAL PAGE)
+  // 9. COST SUMMARY & TOOLS BREAKDOWN PRINT STYLES
   app-cost-summary-card {
     display: block !important;
     width: 100% !important;
-    break-inside: avoid !important;
-    page-break-inside: avoid !important;
+    break-inside: auto !important;
+    page-break-inside: auto !important;
   }
 
   .summary-grid {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 12px !important;
+    display: block !important;
     width: 100% !important;
-    break-inside: avoid !important;
-    page-break-inside: avoid !important;
+    break-inside: auto !important;
+    page-break-inside: auto !important;
     margin-top: 10px !important;
   }
 
@@ -616,12 +654,17 @@ button {
     border: 1px solid #cbd5e1 !important;
     border-radius: 8px !important;
     padding: 12px 16px !important;
+    margin-bottom: 14px !important;
     box-shadow: none !important;
     break-inside: avoid !important;
     page-break-inside: avoid !important;
-    gap: 10px !important;
     width: 100% !important;
     box-sizing: border-box !important;
+    display: block !important;
+
+    .card-head {
+      margin-bottom: 8px !important;
+    }
 
     .card-title {
       font-size: 13pt !important;
@@ -635,6 +678,7 @@ button {
     grid-template-columns: 1fr 1.3fr !important;
     gap: 12px !important;
     align-items: stretch !important;
+    margin-bottom: 10px !important;
   }
 
   .total-box {
