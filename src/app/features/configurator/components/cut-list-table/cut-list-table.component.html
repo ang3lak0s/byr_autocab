@@ -26,27 +26,29 @@
       <thead>
         <tr>
           <th class="print-checkbox-col print-only">Done</th>
-          <th>Part Name</th>
-          <th class="text-center">Qty</th>
-          <th>Metric (mm)</th>
-          <th>Imperial (Fractional)</th>
-          <th>Thickness</th>
-          <th>Machining / Assembly Notes</th>
+          <th class="col-part">Part Name</th>
+          <th class="col-qty text-center">Qty</th>
+          <th class="col-metric">Metric (mm)</th>
+          <th class="col-imperial">Imperial (Fractional)</th>
+          <th class="col-thickness">Thickness</th>
+          <th class="col-notes">Machining / Assembly Notes</th>
         </tr>
       </thead>
       <tbody>
         @for (item of cutList; track item.partName) {
           <tr>
-            <td class="print-checkbox-col print-only text-center font-mono">[ &nbsp; ]</td>
-            <td class="part-name">
-              <span class="part-bullet">&#9656;</span>
-              <strong>{{ item.partName }}</strong>
+            <td class="print-checkbox-col print-only text-center font-mono">[&nbsp;&nbsp;]</td>
+            <td class="col-part">
+              <span class="part-name-wrap">
+                <span class="part-bullet">&#9656;</span>
+                <strong>{{ item.partName }}</strong>
+              </span>
             </td>
-            <td class="text-center font-mono qty-cell">{{ item.quantity }}</td>
-            <td class="font-mono text-cyan">{{ item.widthMm }} &times; {{ item.heightOrDepthMm }} mm</td>
-            <td class="font-mono text-amber">{{ item.widthInches }} &times; {{ item.heightOrDepthInches }}</td>
-            <td class="font-mono">{{ item.thicknessMm }}mm ({{ item.thicknessInches }})</td>
-            <td class="part-notes">{{ item.notes }}</td>
+            <td class="text-center font-mono qty-cell col-qty">{{ item.quantity }}</td>
+            <td class="font-mono text-cyan col-metric">{{ item.widthMm }} &times; {{ item.heightOrDepthMm }} mm</td>
+            <td class="font-mono text-amber col-imperial">{{ item.widthInches }} &times; {{ item.heightOrDepthInches }}</td>
+            <td class="font-mono col-thickness">{{ item.thicknessMm }}mm ({{ item.thicknessInches }})</td>
+            <td class="part-notes col-notes">{{ item.notes }}</td>
           </tr>
         }
       </tbody>

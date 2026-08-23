@@ -89,12 +89,16 @@
   }
 }
 
-.part-name {
+.col-part {
   color: $color-text-bright;
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
   white-space: nowrap;
+  vertical-align: middle;
+
+  .part-name-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
 }
 
 .part-bullet {

@@ -152,37 +152,37 @@ export class SheetCutDiagramComponent {
     switch (colorIndex) {
       case 0:
         return {
-          fill: 'rgba(14, 165, 233, 0.18)',
+          fill: 'rgba(14, 165, 233, 0.32)',
           stroke: '#38bdf8',
-          text: '#7dd3fc',
+          text: '#ffffff',
           tag: 'bg-cyan',
         };
       case 1:
         return {
-          fill: 'rgba(245, 158, 11, 0.18)',
+          fill: 'rgba(245, 158, 11, 0.32)',
           stroke: '#f59e0b',
-          text: '#fcd34d',
+          text: '#ffffff',
           tag: 'bg-amber',
         };
       case 2:
         return {
-          fill: 'rgba(16, 185, 129, 0.18)',
+          fill: 'rgba(16, 185, 129, 0.32)',
           stroke: '#10b981',
-          text: '#6ee7b7',
+          text: '#ffffff',
           tag: 'bg-emerald',
         };
       case 3:
         return {
-          fill: 'rgba(168, 85, 247, 0.18)',
+          fill: 'rgba(168, 85, 247, 0.32)',
           stroke: '#c084fc',
-          text: '#e9d5ff',
+          text: '#ffffff',
           tag: 'bg-purple',
         };
       default:
         return {
-          fill: 'rgba(96, 165, 250, 0.18)',
+          fill: 'rgba(96, 165, 250, 0.32)',
           stroke: '#60a5fa',
-          text: '#bfdbfe',
+          text: '#ffffff',
           tag: 'bg-blue',
         };
     }

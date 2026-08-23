@@ -8,8 +8,8 @@
         </span>
       </div>
 
-      <!-- View Switcher Pills -->
-      <div class="view-switcher-pill">
+      <!-- View Switcher Pills (Screen Only) -->
+      <div class="view-switcher-pill no-print">
         <button
           type="button"
           class="switch-btn"
@@ -36,8 +36,8 @@
     </div>
   </div>
 
-  <!-- SVG Viewport -->
-  <div class="svg-viewport">
+  <!-- Screen Viewport (Interactive Single View) -->
+  <div class="svg-viewport no-print">
     <svg class="preview-svg" viewBox="0 0 460 360" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <pattern id="schematicGrid" width="20" height="20" patternUnits="userSpaceOnUse">
@@ -50,388 +50,448 @@
 
       <rect width="460" height="360" fill="url(#schematicGrid)" />
 
-      <!-- ==================== VIEW 1: FRONT ELEVATION ==================== -->
       @if (viewMode() === 'front') {
-        <!-- External Width Dimension (Top) -->
-        <line
-          [attr.x1]="boxX"
-          [attr.y1]="dimWidthY"
-          [attr.x2]="boxX + boxW"
-          [attr.y2]="dimWidthY"
-          stroke="#38bdf8"
-          stroke-width="1.5"
-          stroke-dasharray="3 3"/>
-        <line
-          [attr.x1]="boxX"
-          [attr.y1]="dimWidthY - 6"
-          [attr.x2]="boxX"
-          [attr.y2]="dimWidthY + 6"
-          stroke="#38bdf8"
-          stroke-width="1.5"/>
-        <line
-          [attr.x1]="boxX + boxW"
-          [attr.y1]="dimWidthY - 6"
-          [attr.x2]="boxX + boxW"
-          [attr.y2]="dimWidthY + 6"
-          stroke="#38bdf8"
-          stroke-width="1.5"/>
-        <text
-          [attr.x]="canvasCenterX"
-          [attr.y]="dimWidthY - 6"
-          text-anchor="middle"
-          fill="#38bdf8"
-          font-family="'JetBrains Mono', monospace"
-          font-size="11"
-          font-weight="bold">
-          W: {{ buildPlan.externalWidthMm }} mm ({{ (buildPlan.externalWidthMm / 25.4).toFixed(1) }}")
-        </text>
-
-        <!-- External Height Dimension (Left) -->
-        <line
-          [attr.x1]="dimHeightX"
-          [attr.y1]="boxY"
-          [attr.x2]="dimHeightX"
-          [attr.y2]="boxY + boxH"
-          stroke="#f59e0b"
-          stroke-width="1.5"
-          stroke-dasharray="3 3"/>
-        <line
-          [attr.x1]="dimHeightX - 6"
-          [attr.y1]="boxY"
-          [attr.x2]="dimHeightX + 6"
-          [attr.y2]="boxY"
-          stroke="#f59e0b"
-          stroke-width="1.5"/>
-        <line
-          [attr.x1]="dimHeightX - 6"
-          [attr.y1]="boxY + boxH"
-          [attr.x2]="dimHeightX + 6"
-          [attr.y2]="boxY + boxH"
-          stroke="#f59e0b"
-          stroke-width="1.5"/>
-        <text
-          [attr.x]="dimHeightX - 6"
-          [attr.y]="canvasCenterY"
-          text-anchor="middle"
-          [attr.transform]="'rotate(-90 ' + (dimHeightX - 6) + ' ' + canvasCenterY + ')'"
-          fill="#f59e0b"
-          font-family="'JetBrains Mono', monospace"
-          font-size="11"
-          font-weight="bold">
-          H: {{ buildPlan.externalHeightMm }} mm ({{ (buildPlan.externalHeightMm / 25.4).toFixed(1) }}")
-        </text>
-
-        <!-- Outer Carcass Box -->
-        <rect
-          [attr.x]="boxX"
-          [attr.y]="boxY"
-          [attr.width]="boxW"
-          [attr.height]="boxH"
-          rx="5"
-          fill="#080e1b"
-          stroke="#38bdf8"
-          stroke-width="2"/>
-
-        <!-- Metal Corner Brackets -->
-        <path [attr.d]="'M ' + boxX + ' ' + (boxY + cornerBracketSize) + ' V ' + boxY + ' H ' + (boxX + cornerBracketSize)" stroke="#f59e0b" stroke-width="2" fill="none"/>
-        <path [attr.d]="'M ' + (boxX + boxW) + ' ' + (boxY + cornerBracketSize) + ' V ' + boxY + ' H ' + (boxX + boxW - cornerBracketSize)" stroke="#f59e0b" stroke-width="2" fill="none"/>
-        <path [attr.d]="'M ' + boxX + ' ' + (boxY + boxH - cornerBracketSize) + ' V ' + (boxY + boxH) + ' H ' + (boxX + cornerBracketSize)" stroke="#f59e0b" stroke-width="2" fill="none"/>
-        <path [attr.d]="'M ' + (boxX + boxW) + ' ' + (boxY + boxH - cornerBracketSize) + ' V ' + (boxY + boxH) + ' H ' + (boxX + boxW - cornerBracketSize)" stroke="#f59e0b" stroke-width="2" fill="none"/>
-
-        <!-- Top Handle -->
-        <rect
-          [attr.x]="handleX"
-          [attr.y]="handleY"
-          [attr.width]="handleWidth"
-          height="6"
-          rx="3"
-          fill="#1e293b"
-          stroke="#38bdf8"
-          stroke-width="1.2"/>
-
-        <!-- Inner Baffle Board Perimeter -->
-        <rect
-          [attr.x]="baffleX"
-          [attr.y]="baffleY"
-          [attr.width]="baffleW"
-          [attr.height]="baffleH"
-          rx="2"
-          fill="#0f1a2e"
-          [attr.stroke]="buildPlan.clearanceValidation.isValid ? '#334155' : '#ef4444'"
-          [attr.stroke-width]="buildPlan.clearanceValidation.isValid ? '1.5' : '2'"
-          [attr.stroke-dasharray]="buildPlan.clearanceValidation.isValid ? 'none' : '4 2'"/>
-
-        <!-- Parametric Speaker Cutouts -->
-        @for (sp of speakers; track sp.index) {
-          <!-- Speaker Basket Outer Rim -->
-          <circle
-            [attr.cx]="sp.cx"
-            [attr.cy]="sp.cy"
-            [attr.r]="sp.outerRimR"
-            fill="#070c17"
-            stroke="#38bdf8"
-            stroke-width="1.5"/>
-
-          <!-- Circular Cutout Hole -->
-          <circle
-            [attr.cx]="sp.cx"
-            [attr.cy]="sp.cy"
-            [attr.r]="sp.radius"
-            fill="#13233f"
-            [attr.stroke]="buildPlan.clearanceValidation.isValid ? '#38bdf8' : '#ef4444'"
-            stroke-width="1.5"
-            stroke-dasharray="3 2"/>
-
-          <!-- Speaker Cone Inner Ring -->
-          <circle
-            [attr.cx]="sp.cx"
-            [attr.cy]="sp.cy"
-            [attr.r]="sp.innerConeR"
-            fill="#1b3054"
-            stroke="#38bdf8"
-            stroke-width="1"/>
-
-          <!-- Center Dust Cap -->
-          <circle
-            [attr.cx]="sp.cx"
-            [attr.cy]="sp.cy"
-            [attr.r]="sp.dustCapR"
-            fill="#f59e0b"
-            stroke="#fbbf24"
-            stroke-width="1"/>
-
-          <!-- 4-Bolt T-Nut Mounting Holes -->
-          <circle [attr.cx]="sp.cx" [attr.cy]="sp.cy - sp.boltOffset" r="2.2" fill="#38bdf8"/>
-          <circle [attr.cx]="sp.cx" [attr.cy]="sp.cy + sp.boltOffset" r="2.2" fill="#38bdf8"/>
-          <circle [attr.cx]="sp.cx - sp.boltOffset" [attr.cy]="sp.cy" r="2.2" fill="#38bdf8"/>
-          <circle [attr.cx]="sp.cx + sp.boltOffset" [attr.cy]="sp.cy" r="2.2" fill="#38bdf8"/>
-        }
-      }
-
-      <!-- ==================== VIEW 2: SIDE ELEVATION DEPTH CROSS-SECTION ==================== -->
-      @if (viewMode() === 'side') {
-        <!-- External Depth Dimension (Top) -->
-        <line
-          [attr.x1]="sideBoxX"
-          [attr.y1]="sideBoxY - 18"
-          [attr.x2]="sideBoxX + sideBoxW"
-          [attr.y2]="sideBoxY - 18"
-          stroke="#38bdf8"
-          stroke-width="1.5"
-          stroke-dasharray="3 3"/>
-        <line
-          [attr.x1]="sideBoxX"
-          [attr.y1]="sideBoxY - 24"
-          [attr.x2]="sideBoxX"
-          [attr.y2]="sideBoxY - 12"
-          stroke="#38bdf8"
-          stroke-width="1.5"/>
-        <line
-          [attr.x1]="sideBoxX + sideBoxW"
-          [attr.y1]="sideBoxY - 24"
-          [attr.x2]="sideBoxX + sideBoxW"
-          [attr.y2]="sideBoxY - 12"
-          stroke="#38bdf8"
-          stroke-width="1.5"/>
-        <text
-          [attr.x]="canvasCenterX"
-          [attr.y]="sideBoxY - 24"
-          text-anchor="middle"
-          fill="#38bdf8"
-          font-family="'JetBrains Mono', monospace"
-          font-size="11"
-          font-weight="bold">
-          Total Depth: {{ buildPlan.externalDepthMm }} mm ({{ (buildPlan.externalDepthMm / 25.4).toFixed(1) }}")
-        </text>
-
-        <!-- External Height Dimension (Left) -->
-        <line
-          [attr.x1]="sideBoxX - 18"
-          [attr.y1]="sideBoxY"
-          [attr.x2]="sideBoxX - 18"
-          [attr.y2]="sideBoxY + sideBoxH"
-          stroke="#f59e0b"
-          stroke-width="1.5"
-          stroke-dasharray="3 3"/>
-        <line
-          [attr.x1]="sideBoxX - 24"
-          [attr.y1]="sideBoxY"
-          [attr.x2]="sideBoxX - 12"
-          [attr.y2]="sideBoxY"
-          stroke="#f59e0b"
-          stroke-width="1.5"/>
-        <line
-          [attr.x1]="sideBoxX - 24"
-          [attr.y1]="sideBoxY + sideBoxH"
-          [attr.x2]="sideBoxX - 12"
-          [attr.y2]="sideBoxY + sideBoxH"
-          stroke="#f59e0b"
-          stroke-width="1.5"/>
-        <text
-          [attr.x]="sideBoxX - 24"
-          [attr.y]="canvasCenterY"
-          text-anchor="middle"
-          [attr.transform]="'rotate(-90 ' + (sideBoxX - 24) + ' ' + canvasCenterY + ')'"
-          fill="#f59e0b"
-          font-family="'JetBrains Mono', monospace"
-          font-size="11"
-          font-weight="bold">
-          H: {{ buildPlan.externalHeightMm }} mm
-        </text>
-
-        <!-- Outer Carcass Envelope (Side View) -->
-        <rect
-          [attr.x]="sideBoxX"
-          [attr.y]="sideBoxY"
-          [attr.width]="sideBoxW"
-          [attr.height]="sideBoxH"
-          rx="4"
-          fill="#080e1b"
-          stroke="#38bdf8"
-          stroke-width="2"/>
-
-        <!-- Top & Bottom Walls -->
-        <rect
-          [attr.x]="sideBoxX"
-          [attr.y]="sideBoxY"
-          [attr.width]="sideBoxW"
-          [attr.height]="sideWallThickness"
-          fill="#1e293b"
-          stroke="#334155"/>
-        <rect
-          [attr.x]="sideBoxX"
-          [attr.y]="sideBoxY + sideBoxH - sideWallThickness"
-          [attr.width]="sideBoxW"
-          [attr.height]="sideWallThickness"
-          fill="#1e293b"
-          stroke="#334155"/>
-
-        <!-- Front Baffle Board -->
-        <rect
-          [attr.x]="sideBaffleX"
-          [attr.y]="sideBoxY + sideWallThickness"
-          [attr.width]="sideWallThickness"
-          [attr.height]="sideBoxH - 2 * sideWallThickness"
-          fill="#0f1a2e"
-          stroke="#38bdf8"
-          stroke-width="1.5"/>
-
-        <!-- Rear Back Panel -->
-        <rect
-          [attr.x]="sideBackPanelX"
-          [attr.y]="sideBoxY + sideWallThickness"
-          [attr.width]="sideWallThickness"
-          [attr.height]="sideBoxH - 2 * sideWallThickness"
-          [attr.fill]="state.backConfig === 'closed-back' ? '#1e293b' : 'rgba(30, 41, 59, 0.4)'"
-          stroke="#f59e0b"
-          stroke-width="1.5"/>
-
-        <!-- Speaker Driver Side Cross-Section Profile -->
-        <!-- Front Rim Face -->
-        <line
-          [attr.x1]="sideBaffleX"
-          [attr.y1]="canvasCenterY - 45"
-          [attr.x2]="sideBaffleX"
-          [attr.y2]="canvasCenterY + 45"
-          stroke="#10b981"
-          stroke-width="4"/>
-
-        <!-- Basket Cone Protrusion (Side View Triangle) -->
-        <polygon
-          [attr.points]="sideBaffleBackX + ',' + (canvasCenterY - 45) + ' ' + (sideBaffleBackX + sideSpeakerMountingDepth * 0.6) + ',' + (canvasCenterY - 25) + ' ' + (sideBaffleBackX + sideSpeakerMountingDepth * 0.6) + ',' + (canvasCenterY + 25) + ' ' + sideBaffleBackX + ',' + (canvasCenterY + 45)"
-          fill="#13233f"
-          stroke="#38bdf8"
-          stroke-width="1.5"/>
-
-        <!-- Rear Magnet Assembly (Side View Rectangle) -->
-        <rect
-          [attr.x]="sideBaffleBackX + sideSpeakerMountingDepth * 0.6"
-          [attr.y]="canvasCenterY - 26"
-          [attr.width]="sideSpeakerMountingDepth * 0.4"
-          height="52"
-          rx="2"
-          [attr.fill]="sideIsCollision ? '#ef4444' : '#1e293b'"
-          [attr.stroke]="sideIsCollision ? '#f87171' : '#f59e0b'"
-          stroke-width="1.5"/>
-
-        <!-- Magnet Voice Coil Center Vent Hole -->
-        <circle
-          [attr.cx]="sideMagnetRearX"
-          [attr.cy]="canvasCenterY"
-          r="4"
-          fill="#080e1b"
-          stroke="#f59e0b"
-          stroke-width="1"/>
-
-        <!-- Depth Clearance Dimension & Clash Indicator Line -->
-        @if (sideIsCollision) {
-          <!-- Red Clash Collision Zone -->
-          <rect
-            [attr.x]="sideBackPanelX"
-            [attr.y]="canvasCenterY - 30"
-            [attr.width]="Math.max(1, sideMagnetRearX - sideBackPanelX)"
-            height="60"
-            fill="url(#clashHatch)"
-            stroke="#ef4444"
-            stroke-width="1.5"/>
-          <text
-            [attr.x]="canvasCenterX + 20"
-            [attr.y]="sideBoxY + sideBoxH + 20"
-            text-anchor="middle"
-            fill="#ef4444"
-            font-family="'JetBrains Mono', monospace"
-            font-size="10.5"
-            font-weight="bold">
-            🚨 MAGNET CLASH: {{ Math.abs(Math.round(sideClearanceMm)) }}mm OVERFLOW!
-          </text>
-        } @else {
-          <!-- Green/Amber Clearance Line -->
-          <line
-            [attr.x1]="sideMagnetRearX"
-            [attr.y1]="canvasCenterY"
-            [attr.x2]="sideBackPanelX"
-            [attr.y2]="canvasCenterY"
-            [attr.stroke]="sideIsTight ? '#f59e0b' : '#10b981'"
-            stroke-width="2"
-            stroke-dasharray="3 2"/>
-          <line
-            [attr.x1]="sideMagnetRearX"
-            [attr.y1]="canvasCenterY - 8"
-            [attr.x2]="sideMagnetRearX"
-            [attr.y2]="canvasCenterY + 8"
-            [attr.stroke]="sideIsTight ? '#f59e0b' : '#10b981'"
-            stroke-width="2"/>
-          <line
-            [attr.x1]="sideBackPanelX"
-            [attr.y1]="canvasCenterY - 8"
-            [attr.x2]="sideBackPanelX"
-            [attr.y2]="canvasCenterY + 8"
-            [attr.stroke]="sideIsTight ? '#f59e0b' : '#10b981'"
-            stroke-width="2"/>
-          <text
-            [attr.x]="(sideMagnetRearX + sideBackPanelX) / 2"
-            [attr.y]="canvasCenterY - 10"
-            text-anchor="middle"
-            [attr.fill]="sideIsTight ? '#f59e0b' : '#10b981'"
-            font-family="'JetBrains Mono', monospace"
-            font-size="10"
-            font-weight="bold">
-            Gap: {{ Math.round(sideClearanceMm) }} mm
-          </text>
-          <text
-            [attr.x]="canvasCenterX"
-            [attr.y]="sideBoxY + sideBoxH + 20"
-            text-anchor="middle"
-            [attr.fill]="sideIsTight ? '#f59e0b' : '#38bdf8'"
-            font-family="'JetBrains Mono', monospace"
-            font-size="10"
-            font-weight="bold">
-            Mounting Depth: {{ buildPlan.clearanceValidation.depthValidation.speakerMountingDepthMm }} mm &bull; Rear Gap: {{ Math.round(sideClearanceMm) }} mm
-          </text>
-        }
+        <ng-container *ngTemplateOutlet="frontGeometry"></ng-container>
+      } @else {
+        <ng-container *ngTemplateOutlet="sideGeometry"></ng-container>
       }
     </svg>
   </div>
+
+  <!-- Print Dual-Schematic Grid: Front Elevation + Side Cross-Section Side-by-Side -->
+  <div class="print-dual-schematic-grid print-only-block">
+    <!-- View 1: Front Baffle Elevation -->
+    <div class="print-schematic-box">
+      <div class="print-box-title">1. FRONT BAFFLE ELEVATION &amp; CUTOUTS</div>
+      <svg class="preview-svg" viewBox="0 0 460 360" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="printGrid1" width="20" height="20" patternUnits="userSpaceOnUse">
+            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+          </pattern>
+        </defs>
+        <rect width="460" height="360" fill="url(#printGrid1)" />
+        <ng-container *ngTemplateOutlet="frontGeometry"></ng-container>
+      </svg>
+    </div>
+
+    <!-- View 2: Side Profile Depth Cross-Section -->
+    <div class="print-schematic-box">
+      <div class="print-box-title">2. SIDE PROFILE DEPTH CROSS-SECTION</div>
+      <svg class="preview-svg" viewBox="0 0 460 360" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="printGrid2" width="20" height="20" patternUnits="userSpaceOnUse">
+            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#e2e8f0" stroke-width="1"/>
+          </pattern>
+          <pattern id="printClashHatch" width="8" height="8" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
+            <line x1="0" y1="0" x2="0" y2="8" stroke="#ef4444" stroke-width="2" />
+          </pattern>
+        </defs>
+        <rect width="460" height="360" fill="url(#printGrid2)" />
+        <ng-container *ngTemplateOutlet="sideGeometry"></ng-container>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Reusable SVG Templates for Front & Side Schematics -->
+
+  <!-- TEMPLATE 1: FRONT ELEVATION GEOMETRY -->
+  <ng-template #frontGeometry>
+    <svg:g class="front-geometry-group">
+      <!-- External Width Dimension (Top) -->
+      <line
+        [attr.x1]="boxX"
+        [attr.y1]="dimWidthY"
+        [attr.x2]="boxX + boxW"
+        [attr.y2]="dimWidthY"
+        stroke="#38bdf8"
+        stroke-width="1.5"
+        stroke-dasharray="3 3"/>
+      <line
+        [attr.x1]="boxX"
+        [attr.y1]="dimWidthY - 6"
+        [attr.x2]="boxX"
+        [attr.y2]="dimWidthY + 6"
+        stroke="#38bdf8"
+        stroke-width="1.5"/>
+      <line
+        [attr.x1]="boxX + boxW"
+        [attr.y1]="dimWidthY - 6"
+        [attr.x2]="boxX + boxW"
+        [attr.y2]="dimWidthY + 6"
+        stroke="#38bdf8"
+        stroke-width="1.5"/>
+      <text
+        [attr.x]="canvasCenterX"
+        [attr.y]="dimWidthY - 9"
+        text-anchor="middle"
+        fill="#38bdf8"
+        font-family="'JetBrains Mono', monospace"
+        font-size="11"
+        font-weight="bold">
+        W: {{ buildPlan.externalWidthMm }} mm ({{ (buildPlan.externalWidthMm / 25.4).toFixed(1) }}")
+      </text>
+
+      <!-- External Height Dimension (Left) -->
+      <line
+        [attr.x1]="dimHeightX"
+        [attr.y1]="boxY"
+        [attr.x2]="dimHeightX"
+        [attr.y2]="boxY + boxH"
+        stroke="#f59e0b"
+        stroke-width="1.5"
+        stroke-dasharray="3 3"/>
+      <line
+        [attr.x1]="dimHeightX - 6"
+        [attr.y1]="boxY"
+        [attr.x2]="dimHeightX + 6"
+        [attr.y2]="boxY"
+        stroke="#f59e0b"
+        stroke-width="1.5"/>
+      <line
+        [attr.x1]="dimHeightX - 6"
+        [attr.y1]="boxY + boxH"
+        [attr.x2]="dimHeightX + 6"
+        [attr.y2]="boxY + boxH"
+        stroke="#f59e0b"
+        stroke-width="1.5"/>
+      <text
+        [attr.x]="dimHeightX - 6"
+        [attr.y]="canvasCenterY"
+        text-anchor="middle"
+        [attr.transform]="'rotate(-90 ' + (dimHeightX - 6) + ' ' + canvasCenterY + ')'"
+        fill="#f59e0b"
+        font-family="'JetBrains Mono', monospace"
+        font-size="11"
+        font-weight="bold">
+        H: {{ buildPlan.externalHeightMm }} mm ({{ (buildPlan.externalHeightMm / 25.4).toFixed(1) }}")
+      </text>
+
+      <!-- Outer Carcass Box -->
+      <rect
+        [attr.x]="boxX"
+        [attr.y]="boxY"
+        [attr.width]="boxW"
+        [attr.height]="boxH"
+        rx="5"
+        fill="#080e1b"
+        stroke="#38bdf8"
+        stroke-width="2"/>
+
+      <!-- Metal Corner Brackets -->
+      <path [attr.d]="'M ' + boxX + ' ' + (boxY + cornerBracketSize) + ' V ' + boxY + ' H ' + (boxX + cornerBracketSize)" stroke="#f59e0b" stroke-width="2" fill="none"/>
+      <path [attr.d]="'M ' + (boxX + boxW) + ' ' + (boxY + cornerBracketSize) + ' V ' + boxY + ' H ' + (boxX + boxW - cornerBracketSize)" stroke="#f59e0b" stroke-width="2" fill="none"/>
+      <path [attr.d]="'M ' + boxX + ' ' + (boxY + boxH - cornerBracketSize) + ' V ' + (boxY + boxH) + ' H ' + (boxX + cornerBracketSize)" stroke="#f59e0b" stroke-width="2" fill="none"/>
+      <path [attr.d]="'M ' + (boxX + boxW) + ' ' + (boxY + boxH - cornerBracketSize) + ' V ' + (boxY + boxH) + ' H ' + (boxX + boxW - cornerBracketSize)" stroke="#f59e0b" stroke-width="2" fill="none"/>
+
+      <!-- Top Handle -->
+      <rect
+        [attr.x]="handleX"
+        [attr.y]="handleY"
+        [attr.width]="handleWidth"
+        height="6"
+        rx="3"
+        fill="#1e293b"
+        stroke="#38bdf8"
+        stroke-width="1.2"/>
+
+      <!-- Inner Baffle Board Perimeter -->
+      <rect
+        [attr.x]="baffleX"
+        [attr.y]="baffleY"
+        [attr.width]="baffleW"
+        [attr.height]="baffleH"
+        rx="2"
+        fill="#0f1a2e"
+        [attr.stroke]="buildPlan.clearanceValidation.isValid ? '#334155' : '#ef4444'"
+        [attr.stroke-width]="buildPlan.clearanceValidation.isValid ? '1.5' : '2'"
+        [attr.stroke-dasharray]="buildPlan.clearanceValidation.isValid ? 'none' : '4 2'"/>
+
+      <!-- Parametric Speaker Cutouts -->
+      @for (sp of speakers; track sp.index) {
+        <!-- Speaker Basket Outer Rim -->
+        <circle
+          [attr.cx]="sp.cx"
+          [attr.cy]="sp.cy"
+          [attr.r]="sp.outerRimR"
+          fill="#070c17"
+          stroke="#38bdf8"
+          stroke-width="1.5"/>
+
+        <!-- Circular Cutout Hole -->
+        <circle
+          [attr.cx]="sp.cx"
+          [attr.cy]="sp.cy"
+          [attr.r]="sp.radius"
+          fill="#13233f"
+          [attr.stroke]="buildPlan.clearanceValidation.isValid ? '#38bdf8' : '#ef4444'"
+          stroke-width="1.5"
+          stroke-dasharray="3 2"/>
+
+        <!-- Speaker Cone Inner Ring -->
+        <circle
+          [attr.cx]="sp.cx"
+          [attr.cy]="sp.cy"
+          [attr.r]="sp.innerConeR"
+          fill="#1b3054"
+          stroke="#38bdf8"
+          stroke-width="1"/>
+
+        <!-- Center Dust Cap -->
+        <circle
+          [attr.cx]="sp.cx"
+          [attr.cy]="sp.cy"
+          [attr.r]="sp.dustCapR"
+          fill="#f59e0b"
+          stroke="#fbbf24"
+          stroke-width="1"/>
+
+        <!-- 4-Bolt T-Nut Mounting Holes -->
+        <circle [attr.cx]="sp.cx" [attr.cy]="sp.cy - sp.boltOffset" r="2.2" fill="#38bdf8"/>
+        <circle [attr.cx]="sp.cx" [attr.cy]="sp.cy + sp.boltOffset" r="2.2" fill="#38bdf8"/>
+        <circle [attr.cx]="sp.cx - sp.boltOffset" [attr.cy]="sp.cy" r="2.2" fill="#38bdf8"/>
+        <circle [attr.cx]="sp.cx + sp.boltOffset" [attr.cy]="sp.cy" r="2.2" fill="#38bdf8"/>
+      }
+    </svg:g>
+  </ng-template>
+
+  <!-- TEMPLATE 2: SIDE PROFILE DEPTH CROSS-SECTION GEOMETRY -->
+  <ng-template #sideGeometry>
+    <svg:g class="side-geometry-group">
+      <!-- External Depth Dimension (Top) -->
+      <line
+        [attr.x1]="sideBoxX"
+        [attr.y1]="sideBoxY - 16"
+        [attr.x2]="sideBoxX + sideBoxW"
+        [attr.y2]="sideBoxY - 16"
+        stroke="#38bdf8"
+        stroke-width="1.5"
+        stroke-dasharray="3 3"/>
+      <line
+        [attr.x1]="sideBoxX"
+        [attr.y1]="sideBoxY - 22"
+        [attr.x2]="sideBoxX"
+        [attr.y2]="sideBoxY - 10"
+        stroke="#38bdf8"
+        stroke-width="1.5"/>
+      <line
+        [attr.x1]="sideBoxX + sideBoxW"
+        [attr.y1]="sideBoxY - 22"
+        [attr.x2]="sideBoxX + sideBoxW"
+        [attr.y2]="sideBoxY - 10"
+        stroke="#38bdf8"
+        stroke-width="1.5"/>
+      <text
+        [attr.x]="canvasCenterX"
+        [attr.y]="sideBoxY - 26"
+        text-anchor="middle"
+        fill="#38bdf8"
+        font-family="'JetBrains Mono', monospace"
+        font-size="11"
+        font-weight="bold">
+        Total Depth: {{ buildPlan.externalDepthMm }} mm ({{ (buildPlan.externalDepthMm / 25.4).toFixed(1) }}")
+      </text>
+
+      <!-- External Height Dimension (Left) -->
+      <line
+        [attr.x1]="sideBoxX - 18"
+        [attr.y1]="sideBoxY"
+        [attr.x2]="sideBoxX - 18"
+        [attr.y2]="sideBoxY + sideBoxH"
+        stroke="#f59e0b"
+        stroke-width="1.5"
+        stroke-dasharray="3 3"/>
+      <line
+        [attr.x1]="sideBoxX - 24"
+        [attr.y1]="sideBoxY"
+        [attr.x2]="sideBoxX - 12"
+        [attr.y2]="sideBoxY"
+        stroke="#f59e0b"
+        stroke-width="1.5"/>
+      <line
+        [attr.x1]="sideBoxX - 24"
+        [attr.y1]="sideBoxY + sideBoxH"
+        [attr.x2]="sideBoxX - 12"
+        [attr.y2]="sideBoxY + sideBoxH"
+        stroke="#f59e0b"
+        stroke-width="1.5"/>
+      <text
+        [attr.x]="sideBoxX - 24"
+        [attr.y]="canvasCenterY"
+        text-anchor="middle"
+        [attr.transform]="'rotate(-90 ' + (sideBoxX - 24) + ' ' + canvasCenterY + ')'"
+        fill="#f59e0b"
+        font-family="'JetBrains Mono', monospace"
+        font-size="11"
+        font-weight="bold">
+        H: {{ buildPlan.externalHeightMm }} mm
+      </text>
+
+      <!-- Outer Carcass Envelope (Side View) -->
+      <rect
+        [attr.x]="sideBoxX"
+        [attr.y]="sideBoxY"
+        [attr.width]="sideBoxW"
+        [attr.height]="sideBoxH"
+        rx="4"
+        fill="#080e1b"
+        stroke="#38bdf8"
+        stroke-width="2"/>
+
+      <!-- Top & Bottom Walls -->
+      <rect
+        [attr.x]="sideBoxX"
+        [attr.y]="sideBoxY"
+        [attr.width]="sideBoxW"
+        [attr.height]="sideWallThickness"
+        fill="#1e293b"
+        stroke="#334155"/>
+      <rect
+        [attr.x]="sideBoxX"
+        [attr.y]="sideBoxY + sideBoxH - sideWallThickness"
+        [attr.width]="sideBoxW"
+        [attr.height]="sideWallThickness"
+        fill="#1e293b"
+        stroke="#334155"/>
+
+      <!-- Front Baffle Board -->
+      <rect
+        [attr.x]="sideBaffleX"
+        [attr.y]="sideBoxY + sideWallThickness"
+        [attr.width]="sideWallThickness"
+        [attr.height]="sideBoxH - 2 * sideWallThickness"
+        fill="#0f1a2e"
+        stroke="#38bdf8"
+        stroke-width="1.5"/>
+
+      <!-- Rear Back Panel -->
+      <rect
+        [attr.x]="sideBackPanelX"
+        [attr.y]="sideBoxY + sideWallThickness"
+        [attr.width]="sideWallThickness"
+        [attr.height]="sideBoxH - 2 * sideWallThickness"
+        [attr.fill]="state.backConfig === 'closed-back' ? '#1e293b' : 'rgba(30, 41, 59, 0.4)'"
+        stroke="#f59e0b"
+        stroke-width="1.5"/>
+
+      <!-- Speaker Driver Side Cross-Section Profile -->
+      <!-- Front Rim Face -->
+      <line
+        [attr.x1]="sideBaffleX"
+        [attr.y1]="canvasCenterY - 45"
+        [attr.x2]="sideBaffleX"
+        [attr.y2]="canvasCenterY + 45"
+        stroke="#10b981"
+        stroke-width="4"/>
+
+      <!-- Basket Cone Protrusion (Side View Triangle) -->
+      <polygon
+        [attr.points]="sideBaffleBackX + ',' + (canvasCenterY - 45) + ' ' + (sideBaffleBackX + sideSpeakerMountingDepth * 0.6) + ',' + (canvasCenterY - 25) + ' ' + (sideBaffleBackX + sideSpeakerMountingDepth * 0.6) + ',' + (canvasCenterY + 25) + ' ' + sideBaffleBackX + ',' + (canvasCenterY + 45)"
+        fill="#13233f"
+        stroke="#38bdf8"
+        stroke-width="1.5"/>
+
+      <!-- Rear Magnet Assembly (Side View Rectangle) -->
+      <rect
+        [attr.x]="sideBaffleBackX + sideSpeakerMountingDepth * 0.6"
+        [attr.y]="canvasCenterY - 26"
+        [attr.width]="sideSpeakerMountingDepth * 0.4"
+        height="52"
+        rx="2"
+        [attr.fill]="sideIsCollision ? '#ef4444' : '#1e293b'"
+        [attr.stroke]="sideIsCollision ? '#f87171' : '#f59e0b'"
+        stroke-width="1.5"/>
+
+      <!-- Magnet Voice Coil Center Vent Hole -->
+      <circle
+        [attr.cx]="sideMagnetRearX"
+        [attr.cy]="canvasCenterY"
+        r="4"
+        fill="#080e1b"
+        stroke="#f59e0b"
+        stroke-width="1"/>
+
+      <!-- Depth Clearance Dimension & Clash Indicator Line -->
+      @if (sideIsCollision) {
+        <!-- Red Clash Collision Zone -->
+        <rect
+          [attr.x]="sideBackPanelX"
+          [attr.y]="canvasCenterY - 30"
+          [attr.width]="Math.max(1, sideMagnetRearX - sideBackPanelX)"
+          height="60"
+          fill="url(#clashHatch)"
+          stroke="#ef4444"
+          stroke-width="1.5"/>
+        <text
+          [attr.x]="canvasCenterX + 20"
+          [attr.y]="sideBoxY + sideBoxH + 20"
+          text-anchor="middle"
+          fill="#ef4444"
+          font-family="'JetBrains Mono', monospace"
+          font-size="10.5"
+          font-weight="bold">
+          🚨 MAGNET CLASH: {{ Math.abs(Math.round(sideClearanceMm)) }}mm OVERFLOW!
+        </text>
+      } @else {
+        <!-- Center Subtle Guide Line -->
+        <line
+          [attr.x1]="sideMagnetRearX"
+          [attr.y1]="canvasCenterY"
+          [attr.x2]="sideBackPanelX"
+          [attr.y2]="canvasCenterY"
+          stroke="#475569"
+          stroke-width="1.2"
+          stroke-dasharray="3 2"
+          opacity="0.6"/>
+
+        <!-- Elevated Gap Dimension Line & Extension Ticks (Completely clear of magnet) -->
+        <line
+          [attr.x1]="sideMagnetRearX"
+          [attr.y1]="sideGapDimY"
+          [attr.x2]="sideBackPanelX"
+          [attr.y2]="sideGapDimY"
+          [attr.stroke]="sideIsTight ? '#f59e0b' : '#10b981'"
+          stroke-width="1.8"
+          stroke-dasharray="3 2"/>
+        <line
+          [attr.x1]="sideMagnetRearX"
+          [attr.y1]="canvasCenterY - 26"
+          [attr.x2]="sideMagnetRearX"
+          [attr.y2]="sideGapDimY - 6"
+          [attr.stroke]="sideIsTight ? '#f59e0b' : '#10b981'"
+          stroke-width="1.5"/>
+        <line
+          [attr.x1]="sideBackPanelX"
+          [attr.y1]="canvasCenterY - 26"
+          [attr.x2]="sideBackPanelX"
+          [attr.y2]="sideGapDimY - 6"
+          [attr.stroke]="sideIsTight ? '#f59e0b' : '#10b981'"
+          stroke-width="1.5"/>
+
+        <!-- Clearance Gap Text (Cleanly positioned in open void above the magnet body) -->
+        <text
+          [attr.x]="(sideMagnetRearX + sideBackPanelX) / 2"
+          [attr.y]="sideGapDimY - 6"
+          text-anchor="middle"
+          [attr.fill]="sideIsTight ? '#f59e0b' : '#10b981'"
+          font-family="'JetBrains Mono', monospace"
+          font-size="7.5"
+          font-weight="bold"
+          class="gap-dim-text">
+          Gap: {{ Math.round(sideClearanceMm) }} mm
+        </text>
+        <text
+          [attr.x]="canvasCenterX"
+          [attr.y]="sideBoxY + sideBoxH + 20"
+          text-anchor="middle"
+          [attr.fill]="sideIsTight ? '#f59e0b' : '#38bdf8'"
+          font-family="'JetBrains Mono', monospace"
+          font-size="10"
+          font-weight="bold">
+          Mounting Depth: {{ buildPlan.clearanceValidation.depthValidation.speakerMountingDepthMm }} mm &bull; Rear Gap: {{ Math.round(sideClearanceMm) }} mm
+        </text>
+      }
+    </svg:g>
+  </ng-template>
 
   <!-- Clearance Validation Messages Feed -->
   <div class="validation-feed">

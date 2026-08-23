@@ -206,5 +206,9 @@ export class LiveSchematicPreviewComponent {
   get sideIsTight(): boolean {
     return this.sideClearanceMm >= 0 && this.sideClearanceMm < 20;
   }
+
+  get sideGapDimY(): number {
+    return this.canvasCenterY - 48;
+  }
 }
 

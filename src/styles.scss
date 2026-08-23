@@ -244,7 +244,16 @@ button {
     box-shadow: none !important;
   }
 
-  .traveler-blueprint-card,
+  .traveler-blueprint-card {
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    margin-bottom: 8px !important;
+    box-shadow: none !important;
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
   .cutlist-card,
   .optimizer-card,
   .wiring-card,
@@ -302,60 +311,150 @@ button {
   }
 
   // 5. CUT LIST TABLE PRINT STYLES
+  .table-responsive {
+    overflow: visible !important;
+    overflow-x: visible !important;
+    width: 100% !important;
+  }
+
   .print-only {
     display: table-cell !important;
   }
 
   .print-checkbox-col {
-    width: 42px !important;
+    width: 34px !important;
+    min-width: 34px !important;
+    max-width: 36px !important;
     text-align: center !important;
-    font-weight: bold !important;
-    color: #475569 !important;
+    font-weight: 800 !important;
+    color: #0f172a !important;
+    white-space: nowrap !important;
+    letter-spacing: 0.05em !important;
+    padding: 3px 2px !important;
+    font-size: 8pt !important;
+    vertical-align: middle !important;
   }
 
   .cutlist-table {
     width: 100% !important;
     border-collapse: collapse !important;
-    font-size: 8pt !important;
+    font-size: 7.5pt !important;
+    table-layout: auto !important;
 
     th, td {
       border: 1px solid #cbd5e1 !important;
-      padding: 4px 6px !important;
+      padding: 4px 5px !important;
       color: #0f172a !important;
+      vertical-align: middle !important;
     }
 
     th {
       background-color: #f1f5f9 !important;
       color: #0f172a !important;
-      font-weight: bold !important;
-      font-size: 7.5pt !important;
+      font-weight: 800 !important;
+      font-size: 6.8pt !important;
+      white-space: normal !important;
+      line-height: 1.2 !important;
+      text-transform: uppercase !important;
+      vertical-align: middle !important;
     }
 
     tr:nth-child(even) td {
       background-color: #f8fafc !important;
     }
 
-    .text-cyan,
-    .text-amber,
-    .qty-cell,
-    .part-name {
+    .col-part {
       color: #0f172a !important;
-      font-weight: 600 !important;
+      font-weight: 700 !important;
+      white-space: nowrap !important;
+      font-size: 7.5pt !important;
+      vertical-align: middle !important;
+
+      .part-name-wrap {
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 0.35rem !important;
+        white-space: nowrap !important;
+      }
     }
 
     .part-bullet {
       color: #64748b !important;
+      font-size: 7pt !important;
+    }
+
+    .col-qty {
+      text-align: center !important;
+      width: 26px !important;
+      min-width: 26px !important;
+      font-weight: 700 !important;
+      vertical-align: middle !important;
+    }
+
+    .col-metric,
+    .col-imperial,
+    .col-thickness {
+      font-size: 7pt !important;
+      white-space: nowrap !important;
+      vertical-align: middle !important;
+    }
+
+    .col-notes,
+    .part-notes {
+      font-size: 6.8pt !important;
+      line-height: 1.2 !important;
+      white-space: normal !important;
+      word-break: normal !important;
+      color: #334155 !important;
+      vertical-align: middle !important;
     }
   }
 
   // 6. TECHNICAL BLUEPRINTS & DIAGRAMS (SCHEMATICS)
   .schematic-viewport,
-  .svg-sheet-container,
   .schematic-container {
-    background: #f8fafc !important;
-    border: 1px solid #cbd5e1 !important;
+    background: #ffffff !important;
+    border: 1.5px solid #64748b !important;
     border-radius: 4px !important;
     padding: 6px !important;
+
+    text {
+      fill: #000000 !important;
+      font-weight: 800 !important;
+    }
+
+    line {
+      stroke: #0f172a !important;
+    }
+  }
+
+  .svg-sheet-container {
+    background: #ffffff !important;
+    border: 1.5px solid #64748b !important;
+    border-radius: 4px !important;
+    padding: 6px !important;
+
+    // Outer sheet dimension lines & labels (outside the sheet)
+    > svg > text,
+    .sheet-svg > text {
+      fill: #000000 !important;
+      font-weight: 800 !important;
+    }
+
+    .sheet-svg line {
+      stroke: #0f172a !important;
+    }
+
+    // Inside placed panels: white text that pops against the colored panels!
+    .panel-svg-group text {
+      fill: #ffffff !important;
+      font-weight: 800 !important;
+      filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.8)) !important;
+    }
+
+    .panel-svg-group text[fill="#f59e0b"] {
+      fill: #fbbf24 !important;
+    }
   }
 
   svg {
@@ -387,24 +486,52 @@ button {
 
     .legend-grid {
       display: grid !important;
-      grid-template-columns: repeat(3, 1fr) !important;
-      gap: 4px !important;
+      grid-template-columns: repeat(2, 1fr) !important;
+      gap: 4px 8px !important;
     }
 
     .legend-item {
       background: #f8fafc !important;
-      border: 1px solid #e2e8f0 !important;
+      border: 1px solid #cbd5e1 !important;
       padding: 3px 6px !important;
       border-radius: 3px !important;
+      display: flex !important;
+      align-items: center !important;
+      gap: 6px !important;
+
+      .item-details {
+        overflow: visible !important;
+        min-width: 0 !important;
+        flex: 1 1 auto !important;
+      }
 
       .item-name {
         color: #0f172a !important;
         font-size: 7.5pt !important;
+        font-weight: 700 !important;
+        white-space: nowrap !important;
+        overflow: visible !important;
+        text-overflow: clip !important;
+      }
+
+      .item-dims {
+        color: #0f172a !important;
+        font-size: 6.8pt !important;
+        white-space: nowrap !important;
+        overflow: visible !important;
+        text-overflow: clip !important;
         font-weight: 600 !important;
       }
-      .item-dims {
-        color: #475569 !important;
-        font-size: 7pt !important;
+
+      .rotation-pill {
+        color: #b45309 !important;
+        background: #fef3c7 !important;
+        border: 1px solid #fde68a !important;
+        font-size: 6.5pt !important;
+        font-weight: 800 !important;
+        padding: 1px 4px !important;
+        margin-left: auto !important;
+        flex-shrink: 0 !important;
       }
     }
   }
