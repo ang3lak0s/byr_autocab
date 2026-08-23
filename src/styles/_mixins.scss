@@ -25,6 +25,23 @@
   }
 }
 
+@mixin max-sm {
+  @media (max-width: #{$bp-sm - 1px}) {
+    @content;
+  }
+}
+
+@mixin max-md {
+  @media (max-width: #{$bp-md - 1px}) {
+    @content;
+  }
+}
+
+@mixin touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
 // Glassmorphism Card Effect
 @mixin glass-card {
   background: $color-bg-glass-card;

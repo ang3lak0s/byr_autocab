@@ -21,7 +21,8 @@
     </div>
   </div>
 
-  <div class="table-responsive">
+  <!-- Desktop & Tablet Cut List Table (and Print View) -->
+  <div class="table-responsive desktop-cutlist-wrapper">
     <table class="cutlist-table">
       <thead>
         <tr>
@@ -53,5 +54,42 @@
         }
       </tbody>
     </table>
+  </div>
+
+  <!-- Mobile Touch-Optimized Cut Cards (< 640px Screen View) -->
+  <div class="mobile-cut-cards no-print">
+    @for (item of cutList; track item.partName) {
+      <div class="mobile-cut-card">
+        <div class="cut-card-top">
+          <div class="cut-part-title-group">
+            <span class="cut-bullet">&#9656;</span>
+            <strong class="cut-part-title">{{ item.partName }}</strong>
+          </div>
+          <span class="cut-qty-badge">{{ item.quantity }} &times; QTY</span>
+        </div>
+
+        <div class="cut-card-dims font-mono">
+          <div class="dim-row">
+            <span class="dim-label">METRIC:</span>
+            <span class="dim-val text-cyan">{{ item.widthMm }} &times; {{ item.heightOrDepthMm }} mm</span>
+          </div>
+          <div class="dim-row">
+            <span class="dim-label">IMPERIAL:</span>
+            <span class="dim-val text-amber">{{ item.widthInches }} &times; {{ item.heightOrDepthInches }}</span>
+          </div>
+          <div class="dim-row">
+            <span class="dim-label">THICKNESS:</span>
+            <span class="dim-val">{{ item.thicknessMm }}mm ({{ item.thicknessInches }})</span>
+          </div>
+        </div>
+
+        @if (item.notes) {
+          <div class="cut-card-notes">
+            <span class="notes-icon">📝</span>
+            <span class="notes-text">{{ item.notes }}</span>
+          </div>
+        }
+      </div>
+    }
   </div>
 </div>

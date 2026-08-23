@@ -81,6 +81,10 @@
   font-weight: 600;
   letter-spacing: 0.08em;
   color: $color-amber;
+
+  @include max-sm {
+    display: none;
+  }
 }
 
 // Desktop Navigation
@@ -264,7 +268,7 @@
   background: rgba(12, 18, 32, 0.98);
   border-bottom: 1px solid $color-border-default;
   backdrop-filter: blur(20px);
-  padding: 1.25rem;
+  padding: 1.25rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom, 0px));
   box-shadow: $shadow-xl;
   animation: slideDown 200ms ease-out forwards;
 

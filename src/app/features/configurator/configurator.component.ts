@@ -25,6 +25,8 @@ import { SpeakerWiringCardComponent } from './components/speaker-wiring-card/spe
 import { BuildExportService } from '../../domain/cabinet/services/build-export.service';
 import { SubscriptionService } from '../../domain/cabinet/services/subscription.service';
 
+import { ViewportService } from '../../core/services/viewport.service';
+
 export type ConfigStep = 'speakers' | 'dimensions' | 'drivers-wiring' | 'summary';
 
 @Component({
@@ -47,9 +49,11 @@ export class ConfiguratorComponent implements OnInit {
   private readonly calculator = inject(CabinetCalculatorService);
   private readonly exportService = inject(BuildExportService);
   readonly subService = inject(SubscriptionService);
+  readonly viewport = inject(ViewportService);
   private readonly route = inject(ActivatedRoute);
 
   readonly activeStep = signal<ConfigStep>('speakers');
+  readonly mobileViewMode = signal<'controls' | 'preview'>('controls');
   readonly presets = signal(EXAMPLE_CABINETS);
   readonly speakerDatabase = signal<SpeakerDriverModel[]>(SPEAKER_DATABASE);
   readonly selectedBrandFilter = signal<string>('all');
@@ -95,10 +99,34 @@ export class ConfiguratorComponent implements OnInit {
     },
   });
 
+  readonly Math = Math;
+
   // Reactive calculation result driven strictly by deterministic domain logic
   readonly buildPlan = computed<CompleteBuildPlan>(() => {
     return this.calculator.calculateBuildPlan(this.state());
   });
+
+  readonly activeStepIndex = computed<number>(() => {
+    switch (this.activeStep()) {
+      case 'speakers': return 1;
+      case 'dimensions': return 2;
+      case 'drivers-wiring': return 3;
+      case 'summary': return 4;
+    }
+  });
+
+  readonly activeStepTitle = computed<string>(() => {
+    switch (this.activeStep()) {
+      case 'speakers': return 'Speaker Layout';
+      case 'dimensions': return 'Dimensions & Materials';
+      case 'drivers-wiring': return 'Drivers & Wiring';
+      case 'summary': return 'Build Plan & Cut List';
+    }
+  });
+
+  get clearanceToBackMm(): number {
+    return this.buildPlan().clearanceValidation?.depthValidation?.clearanceToBackPanelMm ?? 0;
+  }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
@@ -114,6 +142,35 @@ export class ConfiguratorComponent implements OnInit {
 
   setStep(step: ConfigStep): void {
     this.activeStep.set(step);
+    this.mobileViewMode.set('controls');
+  }
+
+  nextStep(): void {
+    const steps: ConfigStep[] = ['speakers', 'dimensions', 'drivers-wiring', 'summary'];
+    const currentIndex = steps.indexOf(this.activeStep());
+    if (currentIndex < steps.length - 1) {
+      this.activeStep.set(steps[currentIndex + 1]);
+      this.mobileViewMode.set('controls');
+      if (typeof window !== 'undefined') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+  }
+
+  prevStep(): void {
+    const steps: ConfigStep[] = ['speakers', 'dimensions', 'drivers-wiring', 'summary'];
+    const currentIndex = steps.indexOf(this.activeStep());
+    if (currentIndex > 0) {
+      this.activeStep.set(steps[currentIndex - 1]);
+      this.mobileViewMode.set('controls');
+      if (typeof window !== 'undefined') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+  }
+
+  toggleMobileView(mode: 'controls' | 'preview'): void {
+    this.mobileViewMode.set(mode);
   }
 
   loadPresetById(presetId: string): void {

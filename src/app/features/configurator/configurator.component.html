@@ -32,8 +32,42 @@
       </div>
     </div>
 
-    <!-- Wizard Step Tabs -->
-    <div class="wizard-stepper" role="tablist" aria-label="Configurator Steps">
+    <!-- Mobile Wizard Header / Progress Track (Visible on < 1024px) -->
+    <div class="mobile-wizard-bar">
+      <div class="mobile-wizard-info">
+        <span class="mobile-step-num">Step {{ activeStepIndex() }} of 4</span>
+        <span class="mobile-step-title">{{ activeStepTitle() }}</span>
+      </div>
+      <div class="mobile-wizard-dots" role="tablist">
+        <button
+          type="button"
+          class="wizard-dot"
+          [class.active]="activeStep() === 'speakers'"
+          (click)="setStep('speakers')"
+          aria-label="Step 1: Speakers">1</button>
+        <button
+          type="button"
+          class="wizard-dot"
+          [class.active]="activeStep() === 'dimensions'"
+          (click)="setStep('dimensions')"
+          aria-label="Step 2: Dimensions">2</button>
+        <button
+          type="button"
+          class="wizard-dot"
+          [class.active]="activeStep() === 'drivers-wiring'"
+          (click)="setStep('drivers-wiring')"
+          aria-label="Step 3: Drivers">3</button>
+        <button
+          type="button"
+          class="wizard-dot"
+          [class.active]="activeStep() === 'summary'"
+          (click)="setStep('summary')"
+          aria-label="Step 4: Build Plan">4</button>
+      </div>
+    </div>
+
+    <!-- Desktop Wizard Step Tabs (Hidden on mobile) -->
+    <div class="wizard-stepper desktop-only-stepper" role="tablist" aria-label="Configurator Steps">
       <button
         type="button"
         class="step-tab"
@@ -83,10 +117,38 @@
       </button>
     </div>
 
+    <!-- Mobile View Switcher (Controls ⇄ Live Blueprint) for Steps 1-3 -->
+    @if (activeStep() !== 'summary') {
+      <div class="mobile-view-toggle-bar">
+        <button
+          type="button"
+          class="mobile-toggle-btn"
+          [class.active]="mobileViewMode() === 'controls'"
+          (click)="toggleMobileView('controls')">
+          <span class="btn-icon">⚙️</span>
+          <span>Edit Controls</span>
+        </button>
+        <button
+          type="button"
+          class="mobile-toggle-btn"
+          [class.active]="mobileViewMode() === 'preview'"
+          (click)="toggleMobileView('preview')">
+          <span class="btn-icon">📐</span>
+          <span>Live Blueprint</span>
+          <span class="mobile-clearance-pill" [class.danger]="clearanceToBackMm < 20">
+            {{ Math.round(clearanceToBackMm) }}mm gap
+          </span>
+        </button>
+      </div>
+    }
+
     <!-- Main Workspace Split Grid -->
     <div class="workspace-grid" [class.full-width-layout]="activeStep() === 'summary'">
       <!-- Form / Content Column -->
-      <div class="form-column" [class.full-width-column]="activeStep() === 'summary'">
+      <div
+        class="form-column"
+        [class.full-width-column]="activeStep() === 'summary'"
+        [class.mobile-hidden]="mobileViewMode() === 'preview' && activeStep() !== 'summary'">
         <!-- STEP 1: SPEAKERS & LAYOUT -->
         @if (activeStep() === 'speakers') {
           <div class="step-card">
@@ -275,6 +337,7 @@
                   <input
                     id="widthInput"
                     type="number"
+                    inputmode="decimal"
                     class="text-input"
                     [value]="state().dimensions.width"
                     (input)="updateWidth($any($event.target).value)"
@@ -289,6 +352,7 @@
                   <input
                     id="heightInput"
                     type="number"
+                    inputmode="decimal"
                     class="text-input"
                     [value]="state().dimensions.height"
                     (input)="updateHeight($any($event.target).value)"
@@ -303,6 +367,7 @@
                   <input
                     id="depthInput"
                     type="number"
+                    inputmode="decimal"
                     class="text-input"
                     [value]="state().dimensions.depth"
                     (input)="updateDepth($any($event.target).value)"
@@ -752,7 +817,9 @@
 
       <!-- Right Column: Live Schematic Preview Card (Shown only in Steps 1, 2, 3) -->
       @if (activeStep() !== 'summary') {
-        <div class="preview-column">
+        <div
+          class="preview-column"
+          [class.mobile-hidden]="mobileViewMode() === 'controls' && activeStep() !== 'summary'">
           <div class="schematic-preview-wrapper">
             <app-live-schematic-preview
               [buildPlan]="buildPlan()"

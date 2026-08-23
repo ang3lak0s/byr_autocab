@@ -16,6 +16,11 @@
   justify-content: center;
   padding: 1rem;
   animation: fadeIn 0.18s ease-out;
+
+  @include max-sm {
+    align-items: flex-end;
+    padding: 0 0 env(safe-area-inset-bottom, 0px) 0;
+  }
 }
 
 .modal-card {
@@ -31,6 +36,13 @@
   padding: 1.25rem 1.45rem;
   position: relative;
   animation: scaleUp 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+
+  @include max-sm {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    max-height: 90vh;
+    padding: 1.15rem 1.25rem 1.75rem;
+  }
 
   @include sm {
     padding: 1.5rem 1.85rem;
