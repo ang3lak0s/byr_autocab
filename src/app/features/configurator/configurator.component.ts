@@ -23,6 +23,7 @@ import { CostSummaryCardComponent } from './components/cost-summary-card/cost-su
 import { SheetCutDiagramComponent } from './components/sheet-cut-diagram/sheet-cut-diagram.component';
 import { SpeakerWiringCardComponent } from './components/speaker-wiring-card/speaker-wiring-card.component';
 import { BuildExportService } from '../../domain/cabinet/services/build-export.service';
+import { from } from 'rxjs';
 
 export type ConfigStep = 'speakers' | 'dimensions' | 'drivers-wiring' | 'summary';
 
